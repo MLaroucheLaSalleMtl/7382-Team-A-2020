@@ -1,0 +1,11 @@
+Base path: 'D:/Programming/2019.3.0f5/Editor/Data', plugins path 'D:/Programming/2019.3.0f5/Editor/Data/PlaybackEngines'
+Cmd: initializeCompiler
+Cmd: compileComputeKernel
+  api=4 insize=18731 outsize=8523 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4443 outsize=2478 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=927 outsize=1119 ok=1
+Unhandled exception: Protocol error - unexpected end of data (did the Editor crash?)
+
+Quitting shader compiler process
