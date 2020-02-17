@@ -4,121 +4,166 @@ using UnityEngine;
 
 public class SquadSelection : MonoBehaviour
 {
+    #region Singleton
+    GameManager code;
+    public static SquadSelection instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion Singleton
+
     [SerializeField] private GameObject[] squad; //Manages The Squad
-    private int selected; //Know which character is selected 
+    private int selected=0; //Know which character is selected 
 
     //Can Be Replaced Later 
     //This is just a bool to know the turn
     [SerializeField] private bool playerTurn = false;
-    
+   
+    public GameObject[] Squad { get => squad; set => squad = value; }
+    public int Selected { get => selected; set => selected = value; }
+
     //Disables the character highlights
     //Will probably need to add different functions for the menus and such later
-    private void DisableHighLights()
+    //private void DisableHighLights()
+    //{
+    //    squad[0].GetComponent<Light>().enabled = false;
+    //    squad[1].GetComponent<Light>().enabled = false;
+    //    squad[2].GetComponent<Light>().enabled = false;
+    //    squad[3].GetComponent<Light>().enabled = false;
+    //    squad[4].GetComponent<Light>().enabled = false;
+    //}
+    private void DisableHighLights(int totalPlayers)
     {
-        squad[0].GetComponent<Light>().enabled = false;
-        squad[1].GetComponent<Light>().enabled = false;
-        squad[2].GetComponent<Light>().enabled = false;
-        squad[3].GetComponent<Light>().enabled = false;
-        squad[4].GetComponent<Light>().enabled = false;
+        for (int i=0;i<totalPlayers;i++)
+        {
+            Squad[i].GetComponent<Light>().enabled = false;
+
+        }
     }
 
-    
+
     void Start()
     {
-        DisableHighLights();       
+        #region ZachNotes
+        //so this is here if you dont want to manually assign the players in the inspector
+        #endregion ZachNotes
+        Squad = GameObject.FindGameObjectsWithTag("Player");
+        code = GameManager.instance;
+        DisableHighLights(Squad.Length);       
     }
 
-    //HighlightCharacter(int totalPlayers,int selectedPlayer)
-    //{
-    //    for (int i; i < totalPlayers; i++)
-    //    {
-    //        if (i == selectedPlayer)
-    //        {
-    //  Debug.Log("Selected = " + selectedPlayer);
-    //            squad[i].]GetComponent<Light>().enabled = true;
-    //        }
-    //        else
-    //            squad[i].GetComponent<Light>().enabled = false;
-    //    }
-    //}
+   void HighlightCharacter(int totalPlayers,int selectedPlayer)
+    {
+        for (int i=0; i < totalPlayers; i++)
+        {
+            if (i == selectedPlayer)
+            {
+                
+                Squad[i].GetComponent<Light>().enabled = true;
+                Squad[i].GetComponent<Bears>().Selected = true;
+                
+            }
+            else
+            {
+                Squad[i].GetComponent<Light>().enabled = false;
+                Squad[i].GetComponent<Bears>().Selected = false;
+            }
+        }
+    }
 
     void Update()
     {
-        if(playerTurn)
+        //also ya you can only swap selection during the menu phase
+        if(playerTurn&&code.MenuPhase)
         {
-           
 
             //Change the controls to input system, getkeydown is only a place holder
-            if (Input.GetKeyDown(KeyCode.RightArrow))
+            if (Input.GetAxisRaw("Horizontal") > 0 && Input.GetButtonDown("Horizontal"))
             {
-                selected++;
                 // selected = Mathf.Min(selected, 4); //Limits the selection to 4
-                if (selected > 4)
+                if (Selected+1 >= squad.Length)
                 {
-                    selected = 0;
+                    Selected = 0;
                 }
-
+                else
+                Selected++;
+                Debug.Log("Selected = " + Selected);
             }
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetAxisRaw("Horizontal") < 0&&Input.GetButtonDown("Horizontal"))
             {
-               selected--;
-               //selected = Mathf.Max(selected, 0); //Limits the selection to 0
-               if (selected < 0)
-               {
-                  selected = 4;
-               }
+
+                //selected = Mathf.Max(selected, 0); //Limits the selection to 0
+                if (Selected-1 < 0)
+                {
+                    Selected = squad.Length - 1;
+                }
+                else
+                    Selected--;
+                Debug.Log("Selected = " + Selected);
             }
-           
+            //I changed your if statements to the loop function it works the same I also added so that 
+            //it tells the bear script that it is selected
+            HighlightCharacter(Squad.Length, Selected);
 
             //Enables the highlight depending on the index.
             //We can add the different menus for the character and such to the code later
             #region Highlights
-            if (selected == 0)
-            {
-                //Debug.Log("Selected = 0");
-                squad[0].GetComponent<Light>().enabled = true;
-                squad[1].GetComponent<Light>().enabled = false;
-                squad[2].GetComponent<Light>().enabled = false;
-                squad[3].GetComponent<Light>().enabled = false;
-                squad[4].GetComponent<Light>().enabled = false;
-                
-            }
-            if (selected == 1)
-            {
-               // Debug.Log("Selected = 1");
-                squad[0].GetComponent<Light>().enabled = false;
-                squad[1].GetComponent<Light>().enabled = true;
-                squad[2].GetComponent<Light>().enabled = false;
-                squad[3].GetComponent<Light>().enabled = false;
-                squad[4].GetComponent<Light>().enabled = false;
-            }
-            if (selected == 2)
-            {
-                //Debug.Log("Selected = 2");
-                squad[0].GetComponent<Light>().enabled = false;
-                squad[1].GetComponent<Light>().enabled = false;
-                squad[2].GetComponent<Light>().enabled = true;
-                squad[3].GetComponent<Light>().enabled = false;
-                squad[4].GetComponent<Light>().enabled = false;
-            }
-            if (selected == 3)
-            {
-                //Debug.Log("Selected = 3");
-                squad[0].GetComponent<Light>().enabled = false;
-                squad[1].GetComponent<Light>().enabled = false;
-                squad[2].GetComponent<Light>().enabled = false;
-                squad[3].GetComponent<Light>().enabled = true;
-                squad[4].GetComponent<Light>().enabled = false;
-            }
-            if (selected == 4)
-            {
-                //Debug.Log("Selected = 4");
-                squad[0].GetComponent<Light>().enabled = false;
-                squad[1].GetComponent<Light>().enabled = false;
-                squad[2].GetComponent<Light>().enabled = false;
-                squad[3].GetComponent<Light>().enabled = false;
-                squad[4].GetComponent<Light>().enabled = true;
-            }
+
+            //if (selected == 0)
+            //{
+            //    //Debug.Log("Selected = 0");
+            //    squad[0].GetComponent<Light>().enabled = true;
+            //    squad[1].GetComponent<Light>().enabled = false;
+            //    squad[2].GetComponent<Light>().enabled = false;
+            //    squad[3].GetComponent<Light>().enabled = false;
+            //    squad[4].GetComponent<Light>().enabled = false;
+            
+
+            //}
+            //if (selected == 1)
+            //{
+            //   // Debug.Log("Selected = 1");
+            //    squad[0].GetComponent<Light>().enabled = false;
+            //    squad[1].GetComponent<Light>().enabled = true;
+            //    squad[2].GetComponent<Light>().enabled = false;
+            //    squad[3].GetComponent<Light>().enabled = false;
+            //    squad[4].GetComponent<Light>().enabled = false;
+            //}
+            //if (selected == 2)
+            //{
+            //    //Debug.Log("Selected = 2");
+            //    squad[0].GetComponent<Light>().enabled = false;
+            //    squad[1].GetComponent<Light>().enabled = false;
+            //    squad[2].GetComponent<Light>().enabled = true;
+            //    squad[3].GetComponent<Light>().enabled = false;
+            //    squad[4].GetComponent<Light>().enabled = false;
+            //}
+            //if (selected == 3)
+            //{
+            //    //Debug.Log("Selected = 3");
+            //    squad[0].GetComponent<Light>().enabled = false;
+            //    squad[1].GetComponent<Light>().enabled = false;
+            //    squad[2].GetComponent<Light>().enabled = false;
+            //    squad[3].GetComponent<Light>().enabled = true;
+            //    squad[4].GetComponent<Light>().enabled = false;
+            //}
+            //if (selected == 4)
+            //{
+            //    //Debug.Log("Selected = 4");
+            //    squad[0].GetComponent<Light>().enabled = false;
+            //    squad[1].GetComponent<Light>().enabled = false;
+            //    squad[2].GetComponent<Light>().enabled = false;
+            //    squad[3].GetComponent<Light>().enabled = false;
+            //    squad[4].GetComponent<Light>().enabled = true;
+            //}
             #endregion Highlights
         }
     }

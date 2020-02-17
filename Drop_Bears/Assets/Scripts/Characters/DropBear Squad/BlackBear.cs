@@ -2,8 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BlackBear : Bears
+public class BlackBear : MonoBehaviour, IBear
 {
+    #region Singleton
+    public static BlackBear instance;
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+    #endregion Singleton
+    #region BearFields
+    int hp =100;
+    int totalHp=100;
+    int defense=7;
+    int melee=150;
+    int ranged=50;
+    int movement;
+    #endregion BearFields
+     
+    public int Hp { get => hp; set => hp = value; }
+    public int TotalHP { get => totalHp; set => totalHp = value; }
+    public int Defense { get => defense; set => defense = value; }
+    public int Melee { get => melee; set => melee = value; }
+    public int Ranged { get => ranged; set => ranged = value; }
+    public int Movement { get => movement; set => movement = value; }
     //Offensive Unit 
     //High Melee Attack
     //Average Movement, Average Defence, Average HP, 
@@ -18,11 +47,7 @@ public class BlackBear : Bears
     // Start is called before the first frame update
     void Start()
     {
-        this.Hp = 100;
-        this.TotalHP = 100;
-        this.Defense = 7;
-        this.Melee = 150;
-        this.Ranged = 50;
+       
         //this.Movement = 
         //Special = 
     }

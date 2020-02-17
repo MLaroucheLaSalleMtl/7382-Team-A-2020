@@ -6,15 +6,31 @@ public class TileSelector : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private TileManager tilemanager;
-    [SerializeField] private GameManager gameManager;
-    [SerializeField] private PlayerManager playermanager;
+    [SerializeField] private GameManager code;
+    [SerializeField] private SquadSelection squadManager;
     private bool tilecheck = false;
     private GameObject currentTile;
+    [SerializeField]private bool canBeSelected=true;
+    public static TileSelector instance;
+
+    public GameObject CurrentTile { get => currentTile; set => currentTile = value; }
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
     void Start()
     {
         tilemanager = tilemanager.GetComponent<TileManager>();
-        gameManager = GameManager.instance;
-        playermanager = playermanager.GetComponent<PlayerManager>();
+      code= GameManager.instance;
+        squadManager = SquadSelection.instance;
     }
     private void MoveTile(Vector2 tilecoordinates,Tile currentTileShort)
     {
@@ -28,7 +44,7 @@ public class TileSelector : MonoBehaviour
         {
             currentTileShort.IsSelected = false;
             nextTile.GetComponent<Tile>().IsSelected = true;
-            currentTile = nextTile;
+            CurrentTile = nextTile;
         }
     }
     // Update is called once per frame
@@ -38,51 +54,78 @@ public class TileSelector : MonoBehaviour
         //We would only want to see the characters movement range if hes selected and we are in 
         //a movement phase I would think
         #endregion ZachNotes
-        //if(gameManager.MovementPhase)
+        if (code.AttackPhase || code.MovementPhase)
+        {
+            canBeSelected = true;
+            
+        }
+        else
+        {
+            canBeSelected = false;
+            tilecheck = false;
+            if (CurrentTile != null)
+            {
+                CurrentTile.GetComponent<Tile>().IsSelected = false;
+                squadManager.Squad[squadManager.Selected].GetComponent<Movement>().DisplayMovementRange();
+                CurrentTile = null;
+            }
+
+        }
+      
+        if (canBeSelected)
+        {
+            if (!tilecheck)
+            {
+                #region ZachNotes
+                //Replace this later with selected character position
+                //needs to be sent from an outside script the one that switches to movement phase
+                CurrentTile = tilemanager.GetTileDic(squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Position);
+                #endregion ZachNotes
+                CurrentTile.GetComponent<Tile>().IsSelected = true;
+                tilecheck = true;
+
+            }
+            Tile currentTileShort = CurrentTile.GetComponent<Tile>();
+            #region ZachNotes
+            //We can replace this with the new input system later
+            //Also maybe support mouse if you guys want
+            #endregion ZachNotes
+            if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical")))
+            {
+
+                MoveTile(new Vector2(currentTileShort.Loc.x - 1, currentTileShort.Loc.y), currentTileShort);
+            }
+            else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical")))
+            {
+                MoveTile(new Vector2(currentTileShort.Loc.x + 1, currentTileShort.Loc.y), currentTileShort);
+            }
+            else if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) < Mathf.Abs(Input.GetAxisRaw("Vertical")))
+            {
+                MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y + 1), currentTileShort);
+            }
+            else if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) < Mathf.Abs(Input.GetAxisRaw("Vertical")))
+            {
+                MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y - 1), currentTileShort);
+            }
+            if (Input.GetButtonDown("Jump"))
+            {
+
+                if (currentTileShort.Movementvalue > 0&&!currentTileShort.IsPlayer &&!currentTileShort.IsEnemy)
+                {
+                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().MoveDestination = CurrentTile;
+                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
+                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
+                }
+                if(currentTileShort.Attackvalue>0 &&currentTileShort.IsPlayer||currentTileShort.IsEnemy)
+                {
+                    
+                }
+            }
+         
+        }
+        //else
         //{
 
-        if (!tilecheck)
-            {
-            #region ZachNotes
-            //Replace this later with selected character position
-            //needs to be sent from an outside script the one that switches to movement phase
-            currentTile = tilemanager.GetTileDic(new Vector2(0, 0));
-            #endregion ZachNotes
-            currentTile.GetComponent<Tile>().IsSelected = true;
-            tilecheck = true;
-          
-        }
-        Tile currentTileShort = currentTile.GetComponent<Tile>();
-        #region ZachNotes
-        //We can replace this with the new input system later
-        //Also maybe support mouse if you guys want
-        #endregion ZachNotes
-        if (Input.GetButtonDown("Horizontal")&&Input.GetAxisRaw("Horizontal") < 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical")))
-        {
-           
-            MoveTile(new Vector2(currentTileShort.Loc.x - 1, currentTileShort.Loc.y),currentTileShort);
-        }
-     else if (Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") > 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical")))
-        {
-            MoveTile(new Vector2(currentTileShort.Loc.x + 1, currentTileShort.Loc.y), currentTileShort);
-        }
-      else if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") > 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) < Mathf.Abs(Input.GetAxisRaw("Vertical")))
-        {
-            MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y + 1), currentTileShort);
-        }
-      else  if (Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical") < 0 && Mathf.Abs(Input.GetAxisRaw("Horizontal")) < Mathf.Abs(Input.GetAxisRaw("Vertical")))
-        {
-            MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y - 1), currentTileShort);
-        }
-       if (Input.GetButtonDown("Jump"))
-        {
-            
-            if (currentTileShort.Movementvalue>0)
-            {
-                playermanager.Players[0].GetComponent<Movement>().MoveDestination = currentTile;
-                playermanager.Players[0].GetComponent<Movement>().ExecuteMovement = true;
-            }
-        }
         //}
     }
 }

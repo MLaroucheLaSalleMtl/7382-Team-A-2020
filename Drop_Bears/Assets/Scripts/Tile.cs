@@ -7,6 +7,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
     [SerializeField] private bool isPlayer;
+    [SerializeField] private bool isEnemy;
     [SerializeField] private bool isObstacle;
     [SerializeField] private Vector2 loc;
     #region zachnotes
@@ -37,6 +38,7 @@ public class Tile : MonoBehaviour
     public bool IsSelected { get => isSelected; set => isSelected = value; }
     public int Attackvalue { get => attackvalue; set => attackvalue = value; }
     public Material AttackMat { get => attackMat; set => attackMat = value; }
+    public bool IsEnemy { get => isEnemy; set => isEnemy = value; }
 
     void Awake()
     {

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public interface IBear 
 {
-    int hp {get; set;}
-    int totalHP { get; set; }
-    int defense { get; set; }
-    int melee { get; set; }
-    int ranged { get; set; }
-    int movement { get; set; }
+    int Hp {get; set;}
+    int TotalHP { get; set; }
+    int Defense { get; set; }
+    int Melee { get; set; }
+    int Ranged { get; set; }
+    int Movement { get; set; }
 
 }
