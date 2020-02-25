@@ -183,7 +183,7 @@ public class EnemyAI : MonoBehaviour
                             }
                         }
                     }
-                    atkRangeMethods.ClearTileAttackValues(tileManager);
+                    AttackRange.ClearTileAttackValues(tileManager);
                     atkRangeMethods.AssignDescendingTileAttackRange(tileManager.TileDic[finalAttackTarget], attackRange + 1);
                     int furthestblock = 0;
                     foreach (GameObject tile in tilesInMovementRange)
@@ -249,7 +249,7 @@ public class EnemyAI : MonoBehaviour
                     }
                     mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingtile, TileManager.instance);
                 }
-                mover.ClearTileMovementValues(tileManager);
+                Movement.ClearTileMovementValues(tileManager);
 
             }
         }

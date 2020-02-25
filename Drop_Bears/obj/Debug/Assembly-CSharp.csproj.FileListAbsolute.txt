@@ -287,3 +287,7 @@ D:\Game Engine 2\Drop Bears\Drop_Bears\obj\Debug\Assembly-CSharp.csproj.CoreComp
 D:\Game Engine 2\Drop Bears\Drop_Bears\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 D:\Game Engine 2\Drop Bears\Drop_Bears\obj\Debug\Assembly-CSharp.dll
 D:\Game Engine 2\Drop Bears\Drop_Bears\obj\Debug\Assembly-CSharp.pdb
+D:\Game Engine 2\Drop Bears\Drop_Bears\Temp\bin\Debug\Cinemachine.dll
+D:\Game Engine 2\Drop Bears\Drop_Bears\Temp\bin\Debug\com.unity.cinemachine.editor.dll
+D:\Game Engine 2\Drop Bears\Drop_Bears\Temp\bin\Debug\Cinemachine.pdb
+D:\Game Engine 2\Drop Bears\Drop_Bears\Temp\bin\Debug\com.unity.cinemachine.editor.pdb

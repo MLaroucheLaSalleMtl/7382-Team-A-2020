@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class PinkBear : MonoBehaviour, IBear
 {
+    #region UnitNotes
+    //Support Unit (Healer)
+    //High HP, 
+    //Average Movement, Average Attack
+
+    //Support Ability
+    //Individual Heal (Itself or Teammates)
+
+    //Special Abilities
+    //Revive (Can Revive One Teammate per Battle)
+    #endregion UnitNotes
     #region Singleton
     public static PinkBear instance;
     private void Awake()
@@ -19,46 +30,52 @@ public class PinkBear : MonoBehaviour, IBear
     }
     #endregion Singleton
     #region BearFields
-    int hp;
-    int totalHp;
-    int defense;
-    int melee;
-    int ranged;
-    int movement;
+    int hp = 150;
+    int totalHp = 150;
+    int defense = 3;
+    int attackStrength = 25;
+    int movement = 3;
+    int attackRange = 4;
+    Color bearRace = Color.black;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
     public int TotalHP { get => totalHp; set => totalHp = value; }
     public int Defense { get => defense; set => defense = value; }
-    public int Melee { get => melee; set => melee = value; }
-    public int Ranged { get => ranged; set => ranged = value; }
     public int Movement { get => movement; set => movement = value; }
-    //Support Unit (Healer)
-    //High HP, 
-    //Average Movement, Average Ranged
-    //Low Attack, Low Defence
+    public int AttackRange { get => attackRange; set => attackRange = value; }
+    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
+    public Color BearRace { get => bearRace; set => bearRace = value; }
 
-    //Support Ability
-    //Individual Heal (Itself or Teammates)
+    public void MeleeAttack()
+    {
 
-    //Special Abilities
-    //Area Heal (Heals All Teammates)
-    //Revive (Can Revive One Teammate per Battle)
+    }
 
+    
     void Start()
     {
-        this.Hp = 150;
-        this.TotalHP = 150;
-        this.Defense = 5;
-        this.Melee = 50;
-        this.Ranged = 100;
-        //this.Movement = 
-        //Special = 
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Ability1(Bears Target)
+    {
+        //Heals Target
+        Target.Hp += 40;
+    }
+
+    public void Ability2(Bears Target)
+    {
+        //Revives Fallen Target
+        if(Target.IsAlive == false)
+        {
+            Target.Hp = TotalHP;
+        }
     }
 }

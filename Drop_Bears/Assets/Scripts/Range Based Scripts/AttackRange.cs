@@ -15,9 +15,11 @@ public class AttackRange : MonoBehaviour
     [SerializeField] private int x;
     [SerializeField] private int y;
     private GameManager code;
+    //public Bears nerd;
 
     public int Range { get => range; set => range = value; }
-   
+    public bool JustOnce { get => justOnce; set => justOnce = value; }
+
 
     void Start()
     {
@@ -54,6 +56,25 @@ public class AttackRange : MonoBehaviour
             }
         }
     }
+    private void DisplayAttackRange(TileManager tilemanager)
+    {
+        #region ZachNotes
+        //This function checks after a movement value has been assigned to a tile if its moveable
+        //if it is it gives it a material to indicate so
+        #endregion ZachNotes
+        foreach (GameObject tile in tilemanager.TileDic.Values)
+        {
+            Tile tileshort = tile.GetComponent<Tile>();
+            if (tileshort.Attackvalue > 0 && !tileshort.IsSelected && !tileshort.IsObstacle)
+            {
+                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().AttackMat;
+            }
+            else if (tileshort.Attackvalue == 0 && !tileshort.IsObstacle && !tileshort.IsSelected)
+            {
+                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().Defaultmat;
+            }
+        }
+    }
     public void GetAttackRangeIgnoreObstacles(int Range,int x,int y)
     {
         #region ZachNotes
@@ -68,6 +89,26 @@ public class AttackRange : MonoBehaviour
             {
                GameObject thistile=tilemanager.GetTile(new Vector2(i,k));
                 if(thistile!=null)
+                {
+                    thistile.GetComponent<Tile>().Attackvalue = 1;
+                }
+            }
+        }
+    }
+    public void GetAttackRangeIgnoreObstacles(int Range, Tile tile)
+    {
+        #region ZachNotes
+        //this will treat all tiles the same
+        //this is usefull for attacks that disregard range
+        #endregion ZachNotes
+        for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
+        {
+            int cal1 = Mathf.Abs(x - i);
+            int diff = Mathf.Abs(cal1 - Range);
+            for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
+            {
+                GameObject thistile = tilemanager.GetTile(new Vector2(i, k));
+                if (thistile != null)
                 {
                     thistile.GetComponent<Tile>().Attackvalue = 1;
                 }
@@ -98,6 +139,42 @@ public class AttackRange : MonoBehaviour
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
                     nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
+
+                }
+            }
+            else
+            {
+                tile.GetComponent<Tile>().Attackvalue = -1;
+            }
+        }
+
+        return;
+
+    }
+    private void AssignTileAttackRange(Tile tile, int AttackRange)
+    {
+        #region ZachNotes
+        //this will assign attack values according to distance and with obstacles in mind
+        //this could be usefull if we want descending hit values according to range 
+        //and dont want be able to attack through cover
+        #endregion ZachNotes
+        if (tile != null)
+        {
+
+           
+            if (!tile.IsObstacle)
+            {
+                if (tile.Attackvalue >= 0 && tile.Attackvalue < AttackRange)
+                {
+                    tile.Attackvalue = AttackRange;
+                    GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                    AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                    AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                    AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                    AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
 
                 }
             }
@@ -141,8 +218,39 @@ public class AttackRange : MonoBehaviour
         return;
 
     }
- 
-    public void ClearTileAttackValues(TileManager tilemanager)
+    public void AssignDescendingTileAttackRange(Tile tile, int AttackRange)
+    {
+        #region ZachNotes
+        //this will assign attack values according to distance not taking in to account obstacles 
+        //this could be usefull if we want descending hit values accoridng to range
+        #endregion ZachNotes
+        if (tile != null)
+        {
+
+            
+
+            if (tile.Attackvalue >= 0 && tile.Attackvalue < AttackRange)
+            {
+                tile.Attackvalue = AttackRange;
+                GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
+                nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
+                nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
+                nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
+
+            }
+
+
+        }
+
+        return;
+
+    }
+    /// VERY IMPORTANT FUNCTION MAKE SURE TO CALL WHENEVER YOU SWITCH CHARACTER AND ATTACK VALUES HAVE BEEN GENERATED
+    public static void ClearTileAttackValues(TileManager tilemanager)
     {
         #region ZachNotes
         //this function clears the Attack values of all the tiles
@@ -158,25 +266,41 @@ public class AttackRange : MonoBehaviour
             }
         }
     }
+    public static void ClearTileAttackValues()
+    {
+        #region ZachNotes
+        //this function clears the Attack values of all the tiles
+        //this will need to be called whenever new attack ranges are calculated if not it can cause crashes
+        //Because of the pathfinding system
+        #endregion ZachNotes
+        foreach (GameObject tile in TileManager.instance.Tilearray)
+        {
+            Tile tileshort = tile.GetComponent<Tile>();
+            if (!tileshort.IsObstacle)
+            {
+                tileshort.Attackvalue = 0;
+            }
+        }
+    }
     void Update()
     {
         if (code.AttackPhase&&GetComponent<Bears>().Selected)
         {
             this.x = GetComponent<Movement>().X;
             this.y = GetComponent<Movement>().Y;
-            if (melee && !justOnce)
+            if (melee && !JustOnce)
             {
                 
                 GameObject startingtile = tilemanager.TileDic[new Vector2(x, y)];
                 AssignTileAttackRange(startingtile, 2);
-                justOnce = true;
+                JustOnce = true;
             }
-            else if (rangecheck && !justOnce)
+            else if (rangecheck && !JustOnce)
             {
                 GameObject startingtile = tilemanager.TileDic[new Vector2(x, y)];
                 // AssignTileAttackRange(startingtile, range+1);
                 GetAttackRangeIgnoreObstacles(range,x,y);
-                justOnce = true;
+                JustOnce = true;
             }
             DisplayAttackRange();
         }

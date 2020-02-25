@@ -10,19 +10,19 @@ public class Movement : MonoBehaviour
    [SerializeField] private int y;
     [SerializeField] private Vector2 position;
     //here for testing purposes 
-   private int move; 
+   
     [SerializeField] private TileManager tilemanager;
    //Movementcheck is to say whether the player has already moved this turn
     [SerializeField]private bool movementcheck = false;
     [SerializeField]private bool moving;
     private GameObject[] playerTiles;
     private bool hasMoved = false;
-  
+    private Bears stats;
     private bool executeMovement;
     private GameObject moveDestination;
     private float timer = .05f;
     private GameManager code;
-    public int Move { get => move; set => move = value; }
+   
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
     public bool ExecuteMovement { get => executeMovement; set => executeMovement = value; }
@@ -102,7 +102,46 @@ public class Movement : MonoBehaviour
         }
      
         return;
-       
+
+    }
+    public void AssignTileMovementValue(Tile tile, int move)
+    {
+   
+        if (tile != null)
+        {
+
+            
+            if (!tile.IsObstacle)
+            {
+                if (tile.Movementvalue >= 0 && tile.Movementvalue < move)
+                {
+                    tile.Movementvalue = move;
+                    if (move >= 0)
+                    {
+                        tile.Moveable = true;
+                    }
+                    #region DicMethod(Broken)
+                    
+                    #endregion DicMethod(Broken)
+                    GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                    AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                    AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                    AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
+                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                    AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
+
+                }
+            }
+            else
+            {
+                tile.GetComponent<Tile>().Movementvalue = -1;
+            }
+        }
+
+        return;
+
     }
     public void TurnOffMovement()
     {
@@ -114,7 +153,9 @@ public class Movement : MonoBehaviour
         code.MenuPhase = true;
 
     }
-        public void ClearTileMovementValues(TileManager tilemanager)
+    // VERY IMPORTANT ALSO CALL THIS METHOD WHENEVER SWITCHING CHARACTERS AND MOVEMENT RANGES HAVE BEEN GENERATED
+    //IF NOT WILL HARD CRASH UNITY!!!
+        public static void ClearTileMovementValues(TileManager tilemanager)
     {
         #region ZachNotes
         //this function clears the movement values of all the tiles
@@ -122,6 +163,19 @@ public class Movement : MonoBehaviour
         //Because of the pathfinding system
         #endregion ZachNotes
         foreach (GameObject tile in tilemanager.Tilearray)
+        {
+            Tile tileshort = tile.GetComponent<Tile>();
+            if (!tileshort.IsObstacle)
+            {
+                tileshort.Movementvalue = 0;
+            }
+        }
+    }
+    public static void ClearTileMovementValues()
+    {
+        
+       
+        foreach (GameObject tile in TileManager.instance.Tilearray)
         {
             Tile tileshort = tile.GetComponent<Tile>();
             if (!tileshort.IsObstacle)
@@ -175,6 +229,42 @@ public class Movement : MonoBehaviour
         return i;
        
     }
+ // I havent tested with this constructor it may not work 
+    public float MoveToFinalTile(Tile tile, Tile playertile, TileManager tilemanager)
+    {
+   
+        Stack<Vector2> moves = new Stack<Vector2>();
+       
+        moves.Push(tile.Loc);
+        this.moving = true;
+        while (tile.X != playertile.X || tile.Y != playertile.Y)
+        {
+            #region ZachNotes
+            //Creating the Stack
+            #endregion ZachNotes
+            Tile nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y)).GetComponent<Tile>();
+            tile = PathChecker(tile, nexttile, moves);
+            nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y)).GetComponent<Tile>();
+            tile = PathChecker(tile, nexttile, moves);
+            nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1)).GetComponent<Tile>();
+            tile = PathChecker(tile, nexttile, moves);
+            nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1)).GetComponent<Tile>();
+            tile = PathChecker(tile, nexttile, moves);
+        }
+        float i = 0;
+        while (moves.Count > 0)
+        {
+            #region ZachNotes
+            //So im using a coroutine to do the movement currently he just teleports to spots we will have 
+            //to adjust that with animations later
+            #endregion ZachNotes
+            StartCoroutine(MoveToIndividualTile(moves.Pop(), i, tilemanager));
+
+            i += .5f;
+        }
+        return i;
+
+    }
     //So this lerp is weird needs work to get the player from point a to be
     //Smooth movement would need to be added  in this MoveToIndividualTile;
     private IEnumerator MoveToIndividualTile(Vector2 tile,float time,TileManager tilemanager)
@@ -221,7 +311,7 @@ public class Movement : MonoBehaviour
         //This function checks after a movement value has been assigned to a tile if its moveable
         //if it is it gives it a material to indicate so
         #endregion ZachNotes
-        foreach (GameObject tile in tilemanager.TileDic.Values)
+        foreach (GameObject tile in TileManager.instance.TileDic.Values)
         {
             Tile tileshort = tile.GetComponent<Tile>();
             if (tileshort.Movementvalue > 0 && !tileshort.IsSelected)
@@ -235,6 +325,7 @@ public class Movement : MonoBehaviour
         }
 
     }
+  
     private void OnTriggerEnter(Collider other)
     {
         if (tag == "Player")
@@ -268,14 +359,11 @@ public class Movement : MonoBehaviour
      
     }
  
-
+    
     void Start()
     {
-        if (tag == "Player")
-        {
-            move = GetComponent<Bears>().Movement;
-            tilemanager = tilemanager.GetComponent<TileManager>();
-        }
+            stats = GetComponent<Bears>();
+            tilemanager = TileManager.instance;  
         code = GameManager.instance;
        //move= this.GetComponent<Bears>().Movement;
        // InvokeRepeating("DisplayMovementRange", 0, timer);
@@ -303,7 +391,7 @@ public class Movement : MonoBehaviour
                     //starting tile
                     #endregion ZachFuckUps
                     GameObject startingtile = tilemanager.TileDic[new Vector2(this.X, this.Y)];
-                    AssignTileMovementValue(startingtile, move+1);
+                    AssignTileMovementValue(startingtile, stats.Movement+1);
                     Movementcheck = true;
                     //AssignTileMovementValue(tiles[half],move+1);
 

@@ -4,6 +4,17 @@ using UnityEngine;
 
 public class BlackBear : MonoBehaviour, IBear
 {
+    #region UnitNotes
+    //Offensive Unit 
+    //High Melee Attack
+    //Average Movement, Average Defence, Average HP, 
+
+    //Support Ability
+    //Increases Melee Damage (Itself or Teammates)
+
+    //Special Ability
+    //High Damage Melee Attack
+    #endregion UnitNotes
     #region Singleton
     public static BlackBear instance;
     private void Awake()
@@ -21,39 +32,48 @@ public class BlackBear : MonoBehaviour, IBear
     #region BearFields
     int hp =100;
     int totalHp=100;
-    int defense=7;
-    int melee=150;
-    int ranged=50;
-    int movement;
+    int defense=15;
+    int attackStrength=50;
+    int movement = 5;
+    int attackRange = 4;
+    Color bearRace = Color.black;
     #endregion BearFields
      
     public int Hp { get => hp; set => hp = value; }
     public int TotalHP { get => totalHp; set => totalHp = value; }
     public int Defense { get => defense; set => defense = value; }
-    public int Melee { get => melee; set => melee = value; }
-    public int Ranged { get => ranged; set => ranged = value; }
     public int Movement { get => movement; set => movement = value; }
-    //Offensive Unit 
-    //High Melee Attack
-    //Average Movement, Average Defence, Average HP, 
-    //Low Ranged Attack
+    public int AttackRange { get => attackRange; set => attackRange = value; }
+    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
+    public Color BearRace { get => bearRace; set => bearRace = value; }
 
-    //Support Ability
-    //Increases Melee Damage (Itself or Teammates)
+    public void MeleeAttack()
+    {
 
-    //Special Ability
-    //High Damage Melee Attack
+    }
+    
 
     // Start is called before the first frame update
     void Start()
     {
-       
-        //this.Movement = 
-        //Special = 
+        
+        
     }
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Ability1(Bears Target)
+    {
+        //Increases Attack Damage of Target
+        Target.AttackStrength += 10;
+    }
+
+    public void Ability2(Bears Target)
+    {
+        //High Damage Melee Ability
+        Target.Hp -= 50;
     }
 }

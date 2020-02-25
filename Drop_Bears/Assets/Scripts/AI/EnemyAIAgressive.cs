@@ -13,36 +13,26 @@ public class EnemyAIAgressive : EnemyAIBase
     // Update is called once per frame
     void Update()
     {
-        
-        if (code.EnemyPhase)
+     
+        //So he will only act during enemy phases
+        if (code.EnemyPhase &&TakeTurn)
         {
-            
-            if (!onlyOnce)
+            //I only want him to do his stuff once
+            if (!OnlyOnce)
             {
-                onlyOnce = true;
-                GameObject startingtile = tileManager.TileDic[new Vector2(position.x, position.y)];
-                AssignTileMovementValue(startingtile, moveRange+1);
-                foreach (GameObject tile in tilesInMovementRange)
-                {
-                    if (!tile.GetComponent<Tile>().IsPlayer && !tile.GetComponent<Tile>().IsEnemy)
-                    {
-                        #region ZachNotes
-                        //this calculates every space the the enemy can attack
-                        #endregion ZachNotes
-                        atkRangeMethods.GetAttackRangeIgnoreObstacles(attackRange, tile.GetComponent<Tile>().X, tile.GetComponent<Tile>().Y);
-                    }
-
-                }
-                foreach (GameObject playertile in squadManager.Squad)
-                {
-                    #region ZachNotes
-                    //this takes the players positions and then sees if they are in range
-                    #endregion ZachNotes
-                    if (tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>().Attackvalue > 0)
-                    {
-                        PlayersInRange.Add(playertile.GetComponent<Movement>().Position, tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>());
-                    }
-                }
+                Acting = true;
+                GameObject startingtile;
+                #region ZachNotes
+                //this section will combine the enemies movement range and attack range together 
+                //to see if there are players in range
+                #endregion ZachNotes
+                OnlyOnce = true;
+                     startingtile = tileManager.TileDic[new Vector2(position.x, position.y)];
+               
+                AssignTileMovementValue(startingtile, moveRange + 1);
+                AssignEnemyAttackSpaces(startingtile);
+                CheckForPlayersInRange();
+              
                 #region LessEfficient
                 //           foreach (GameObject tile in tileManager.Tilearray)
                 //           {
@@ -61,103 +51,31 @@ public class EnemyAIAgressive : EnemyAIBase
                 #endregion LessEfficient
                 if (playersInRange.Count > 0)//only executes if there were players in range
                 {
-                    int lowesthp = -1;
-                    foreach (KeyValuePair<Vector2, Tile> playertile in PlayersInRange)
-                    {
-                        #region ZachNotes
-                        //Tells the enemy to head hunt the weakest bear
-                        #endregion ZachNotes
-
-                        for (int i = 0; i < squadManager.Squad.Length; i++)
-                        {
-                            if (playertile.Value.Loc == squadManager.Squad[i].GetComponent<Movement>().Position)
-                            {
-                                if (lowesthp == -1)
-                                {
-                                    lowesthp = squadManager.Squad[i].GetComponent<Bears>().Hp;
-                                    finalAttackTarget = playertile.Value.Loc;
-                                }
-                                else if (squadManager.Squad[i].GetComponent<Bears>().Hp < lowesthp)
-                                {
-                                    lowesthp = squadManager.Squad[i].GetComponent<Bears>().Hp;
-                                    finalAttackTarget = playertile.Value.Loc;
-                                }
-                            }
-                        }
-                    }
-                    atkRangeMethods.ClearTileAttackValues(tileManager);
-                    atkRangeMethods.AssignDescendingTileAttackRange(tileManager.TileDic[finalAttackTarget], attackRange + 1);
-                    int furthestblock = 0;
-                    foreach (GameObject tile in tilesInMovementRange)
-                    {
-                        if (tile.GetComponent<Tile>().Attackvalue > 0 && !tile.GetComponent<Tile>().IsEnemy && !tile.GetComponent<Tile>().IsPlayer)
-                        {
-                            if (furthestblock == 0)
-                            {
-                                furthestblock = tile.GetComponent<Tile>().Attackvalue;
-                                FinalMoveTarget = tile.GetComponent<Tile>().Loc;
-                            }
-                            else if (furthestblock > tile.GetComponent<Tile>().Attackvalue)
-                            {
-                                furthestblock = tile.GetComponent<Tile>().Attackvalue;
-                                FinalMoveTarget = tile.GetComponent<Tile>().Loc;
-                            }
-                        }
-                    }
+                    FindWeakestPlayerInRange();
+                    ////////ALWAYS CLEAR ATTACK VALUES WHEN THEY ARE NO LONGER IN USE 
+                    ///////SAME THING FOR TILE MOVEMENT VALUES WILL CAUSE CRASHES IF NOT
+                    FindAttackPosition();                 
                    timer= mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingtile, TileManager.instance);
                     stats.Attack(finalAttackTarget);
+                    AttackRange.ClearTileAttackValues(tileManager);
+                    Movement.ClearTileMovementValues(tileManager);
                     Invoke("EndTurn", timer);
 
                 }
-                else
+                //if there are no players in range and the enemy can move go towards a weak bear
+               else if (playersInRange.Count <= 0 &&stats.Movement>0)
                 {
-                    Vector2 playerPos = new Vector2(0, 0);
-                    int lowestHp = -1;
-                    //     //Im thinking of having the opponent rush down the player so move closest to player with lowest hp
-                    foreach (GameObject player in squadManager.Squad)
-                    {
-                        if (lowestHp == -1)
-                        {
-                            lowestHp = player.GetComponent<Bears>().Hp;
-                            playerPos = player.GetComponent<Movement>().Position;
-
-                        }
-                        else if (lowestHp > player.GetComponent<Bears>().Hp)
-                        {
-                            lowestHp = player.GetComponent<Bears>().Hp;
-                            playerPos = player.GetComponent<Movement>().Position;
-                        }
-                    }
-                    int lowestdistance = -1;
-                    Vector2 finalMoveTarget = new Vector2(0, 0);
-                    foreach (GameObject tile in tilesInMovementRange)
-                    {
-                        Tile tileshort = tile.GetComponent<Tile>();
-                        if (!tileshort.IsEnemy && !tileshort.IsPlayer)
-                        {
-                            //int diffx = (int)Mathf.Abs(tileshort.X - playerPos.x);
-                            //int diffy = (int)Mathf.Abs(tileshort.Y - playerPos.y);
-                            int distance = ((int)Mathf.Abs(tileshort.X - playerPos.x)) + ((int)Mathf.Abs(tileshort.Y - playerPos.y));
-                            if (lowestdistance == -1)
-                            {
-                                lowestdistance = distance;
-                                FinalMoveTarget = tileshort.Loc;
-                            }
-                            else if (lowestdistance > distance)
-                            {
-                                lowestdistance = distance;
-                                FinalMoveTarget = tileshort.Loc;
-                            }
-                        }
-                    }
+                    Vector2 playerPos = FindWeakestPlayerOnMap();
+                    FindTileNearWeakestPlayerOnMap(playerPos);
                    timer= mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingtile, TileManager.instance);
+                    AttackRange.ClearTileAttackValues(tileManager);
+                    Movement.ClearTileMovementValues(tileManager);
                     Invoke("EndTurn", timer);
                 }
-                atkRangeMethods.ClearTileAttackValues(tileManager);
-                mover.ClearTileMovementValues(tileManager);
+             
                
             }
-           // mover.ClearTileMovementValues(tileManager);
+          
         }
     }
 }

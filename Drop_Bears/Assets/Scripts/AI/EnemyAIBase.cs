@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAIBase : MonoBehaviour
 {
+    protected bool getstats = false;
     protected GameManager code;
     protected int moveRange;
     [SerializeField] protected int attackRange;
@@ -13,20 +14,172 @@ public class EnemyAIBase : MonoBehaviour
     protected TileManager tileManager;
     [SerializeField] protected List<GameObject> tilesInMovementRange = new List<GameObject>();
     protected Dictionary<Vector2, Tile> playersInRange = new Dictionary<Vector2, Tile>();
-    protected bool onlyOnce = false;
+    private bool onlyOnce = false;
     //private List<Vector2> playerPositions;
     protected AttackRange atkRangeMethods;
     protected SquadSelection squadManager;
    [SerializeField] protected Vector2 finalAttackTarget;
     [SerializeField] protected Vector2 FinalMoveTarget;
     protected Movement mover;
-    [SerializeField] protected bool turnCompleted=false;
+    [SerializeField] private bool turnCompleted = false;
     protected float timer;
     protected Bears stats;
+    private bool acting=false;
+    [SerializeField] private bool takeTurn = false;
     public Dictionary<Vector2, Tile> PlayersInRange { get => playersInRange; set => playersInRange = value; }
+    public bool TakeTurn { get => takeTurn; set => takeTurn = value; }
+    public bool OnlyOnce { get => onlyOnce; set => onlyOnce = value; }
+    public bool TurnCompleted { get => turnCompleted; set => turnCompleted = value; }
+    public bool Acting { get => acting; set => acting = value; }
+
+    protected void ClearArrays()
+    {
+        tilesInMovementRange.Clear();
+        playersInRange.Clear();
+    }
     protected void EndTurn()
     {
-        turnCompleted = true;
+        AttackRange.ClearTileAttackValues(tileManager);
+        Movement.ClearTileMovementValues(tileManager);
+        ClearArrays();
+        Acting = false;
+        TurnCompleted = true;
+    }
+    protected void AssignEnemyAttackSpaces(GameObject startingtile)
+    {
+       
+        foreach (GameObject tile in tilesInMovementRange)
+        {
+            if (!tile.GetComponent<Tile>().IsPlayer && !tile.GetComponent<Tile>().IsEnemy)
+            {
+                #region ZachNotes
+                //this calculates every space the the enemy can attack
+                #endregion ZachNotes
+                atkRangeMethods.GetAttackRangeIgnoreObstacles(attackRange, tile.GetComponent<Tile>().X, tile.GetComponent<Tile>().Y);
+            }
+
+        }
+    }
+    protected void CheckForPlayersInRange()
+    {
+        foreach (GameObject playertile in squadManager.Squad)
+        {
+            #region ZachNotes
+            //this takes the players positions and cross refernces them with the enemies attack range
+            #endregion ZachNotes
+            if (tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>().Attackvalue > 0&&tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponentInChildren<Bears>().IsAlive)
+            {
+                PlayersInRange.Add(playertile.GetComponent<Movement>().Position, tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>());
+            }
+        }
+    }
+    protected void FindWeakestPlayerInRange()
+    {
+        int lowesthp = -1;
+        foreach (KeyValuePair<Vector2, Tile> playertile in PlayersInRange)
+        {
+            #region ZachNotes
+            //Tells the enemy to head hunt the weakest bear
+            #endregion ZachNotes
+
+            for (int i = 0; i < squadManager.Squad.Length; i++)
+            {
+                if (playertile.Value.Loc == squadManager.Squad[i].GetComponent<Movement>().Position)
+                {
+                    if (lowesthp == -1)
+                    {
+                        lowesthp = squadManager.Squad[i].GetComponent<Bears>().Hp;
+                        finalAttackTarget = playertile.Value.Loc;
+                    }
+                    else if (squadManager.Squad[i].GetComponent<Bears>().Hp < lowesthp)
+                    {
+                        lowesthp = squadManager.Squad[i].GetComponent<Bears>().Hp;
+                        finalAttackTarget = playertile.Value.Loc;
+                    }
+                }
+            }
+        }
+    }
+    protected void FindAttackPosition()
+    {
+        AttackRange.ClearTileAttackValues(tileManager);
+        atkRangeMethods.AssignDescendingTileAttackRange(tileManager.TileDic[finalAttackTarget], attackRange + 1);
+        int furthestblock = 0;
+        #region ZachNotes
+        //So this section has the enemy move to his max range to attack the player instead of min range.
+        //basically earlier I assigned from the player attack values to blocks
+        //I just tell the enemy go to the block with the lowest attack value in your movement range
+        #endregion ZachNotes
+        foreach (GameObject tile in tilesInMovementRange)
+        {
+            if (tile.GetComponent<Tile>().Attackvalue > 0 && !tile.GetComponent<Tile>().IsEnemy && !tile.GetComponent<Tile>().IsPlayer)
+            {
+                if (furthestblock == 0)
+                {
+                    furthestblock = tile.GetComponent<Tile>().Attackvalue;
+                    FinalMoveTarget = tile.GetComponent<Tile>().Loc;
+                }
+                else if (furthestblock > tile.GetComponent<Tile>().Attackvalue)
+                {
+                    furthestblock = tile.GetComponent<Tile>().Attackvalue;
+                    FinalMoveTarget = tile.GetComponent<Tile>().Loc;
+                }
+            }
+        }
+        
+    }
+    protected Vector2 FindWeakestPlayerOnMap()
+    {
+        Vector2 playerPos = new Vector2(0, 0);
+        int lowestHp = -1;
+        //Im thinking of having the opponent rush down the player so move closest to player with lowest hp
+        foreach (GameObject player in squadManager.Squad)
+        {
+            #region ZachNotes
+            //checks all players for lowest hp takes that position
+            #endregion ZachNotes
+            if (lowestHp == -1 &&player.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = player.GetComponent<Bears>().Hp;
+                playerPos = player.GetComponent<Movement>().Position;
+
+            }
+            else if (lowestHp > player.GetComponent<Bears>().Hp && player.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = player.GetComponent<Bears>().Hp;
+                playerPos = player.GetComponent<Movement>().Position;
+            }
+        }
+        return playerPos;
+    }
+    protected void FindTileNearWeakestPlayerOnMap(Vector2 playerPos)
+    {
+
+        int lowestdistance = -1;
+        Vector2 finalMoveTarget = new Vector2(0, 0);
+        foreach (GameObject tile in tilesInMovementRange)
+        {
+            Tile tileshort = tile.GetComponent<Tile>();
+            if (!tileshort.IsEnemy && !tileshort.IsPlayer)
+            {
+                #region ZachNotes
+                //now i check all the tile in the bears movement range that arent occupied
+                //And i see how far they are to the weakest bear
+                //I then so go to the closest tile
+                #endregion ZachNotes
+                int distance = ((int)Mathf.Abs(tileshort.X - playerPos.x)) + ((int)Mathf.Abs(tileshort.Y - playerPos.y));
+                if (lowestdistance == -1)
+                {
+                    lowestdistance = distance;
+                    FinalMoveTarget = tileshort.Loc;
+                }
+                else if (lowestdistance > distance)
+                {
+                    lowestdistance = distance;
+                    FinalMoveTarget = tileshort.Loc;
+                }
+            }
+        }
     }
     public void AssignTileMovementValue(GameObject tile, int move)
     {

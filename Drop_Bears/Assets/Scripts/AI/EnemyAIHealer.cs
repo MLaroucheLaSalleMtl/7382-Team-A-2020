@@ -15,9 +15,9 @@ public class EnemyAIHealer : EnemyAIBase
     {
         if(code.EnemyPhase)
         {
-            if(!onlyOnce)
+            if(!OnlyOnce)
             {
-                onlyOnce = true;
+                OnlyOnce = true;
                 GameObject startingtile = tileManager.TileDic[new Vector2(position.x, position.y)];
                 AssignTileMovementValue(startingtile, moveRange);
             }

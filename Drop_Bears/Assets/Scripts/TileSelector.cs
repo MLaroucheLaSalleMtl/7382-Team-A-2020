@@ -63,6 +63,10 @@ public class TileSelector : MonoBehaviour
         {
             canBeSelected = false;
             tilecheck = false;
+            #region ZachNotes
+            //So this makes it so that when you select an option the first tile selected is 
+            //the players tile
+            #endregion ZachNotes
             if (CurrentTile != null)
             {
                 CurrentTile.GetComponent<Tile>().IsSelected = false;
@@ -71,7 +75,7 @@ public class TileSelector : MonoBehaviour
             }
 
         }
-      
+      //canBeSelected is the variable that allows you to maneover the grid
         if (canBeSelected)
         {
             if (!tilecheck)
@@ -109,17 +113,31 @@ public class TileSelector : MonoBehaviour
             }
             if (Input.GetButtonDown("Jump"))
             {
-
+                #region ZachNotes
+                //so this will pass an to the player depending on what we want to do 
+                //currently we only pass it the move;
+                #endregion ZachNotes
                 if (currentTileShort.Movementvalue > 0&&!currentTileShort.IsPlayer &&!currentTileShort.IsEnemy)
                 {
                     squadManager.Squad[squadManager.Selected].GetComponent<Movement>().MoveDestination = CurrentTile;
                     squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
-                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
+                  
                 }
                 if(currentTileShort.Attackvalue>0 &&currentTileShort.IsPlayer||currentTileShort.IsEnemy)
                 {
-                    
+                    //CurrentTileShort is whatever tile is curently selected
+                    //this is what is done when we are in attack phase
                 }
+            }
+            if (Input.GetButton("Back"))
+            {
+                Movement.ClearTileMovementValues();
+                AttackRange.ClearTileAttackValues();
+                code.MenuPhase = true;
+                code.AttackPhase = false;
+                code.MovementPhase = false;
+                squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Movementcheck = false;
+                squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
             }
          
         }

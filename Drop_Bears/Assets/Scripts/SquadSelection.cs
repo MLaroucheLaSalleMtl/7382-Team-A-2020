@@ -6,7 +6,7 @@ public class SquadSelection : MonoBehaviour
 {
     #region Singleton
     GameManager code;
-    public static SquadSelection instance;
+    public static SquadSelection instance=null;
     private void Awake()
     {
         if (instance == null)
@@ -30,16 +30,7 @@ public class SquadSelection : MonoBehaviour
     public GameObject[] Squad { get => squad; set => squad = value; }
     public int Selected { get => selected; set => selected = value; }
 
-    //Disables the character highlights
-    //Will probably need to add different functions for the menus and such later
-    //private void DisableHighLights()
-    //{
-    //    squad[0].GetComponent<Light>().enabled = false;
-    //    squad[1].GetComponent<Light>().enabled = false;
-    //    squad[2].GetComponent<Light>().enabled = false;
-    //    squad[3].GetComponent<Light>().enabled = false;
-    //    squad[4].GetComponent<Light>().enabled = false;
-    //}
+  
     private void DisableHighLights(int totalPlayers)
     {
         for (int i=0;i<totalPlayers;i++)
@@ -77,36 +68,39 @@ public class SquadSelection : MonoBehaviour
                 Squad[i].GetComponent<Bears>().Selected = false;
             }
         }
-    }
+   }
 
     void Update()
     {
         //also ya you can only swap selection during the menu phase
-        if(playerTurn&&code.MenuPhase)
+      
+        if(playerTurn&&code.MenuPhase && !BtnManager.instance.AttackIsSelected)
         {
-
-            //Change the controls to input system, getkeydown is only a place holder
             if (Input.GetAxisRaw("Horizontal") > 0 && Input.GetButtonDown("Horizontal"))
             {
-                // selected = Mathf.Min(selected, 4); //Limits the selection to 4
-                if (Selected+1 >= squad.Length)
+                do
                 {
-                    Selected = 0;
-                }
-                else
-                Selected++;
+                    if (Selected + 1 >= squad.Length)
+                    {
+                        Selected = 0;
+                    }
+                    else
+                        Selected++;
+                } while (!Squad[selected].GetComponent<Bears>().IsAlive || squad[selected].GetComponent<Bears>().TurnComplete);
                 Debug.Log("Selected = " + Selected);
             }
             if (Input.GetAxisRaw("Horizontal") < 0&&Input.GetButtonDown("Horizontal"))
             {
 
-                //selected = Mathf.Max(selected, 0); //Limits the selection to 0
-                if (Selected-1 < 0)
+                do
+                {
+                    if (Selected-1 < 0)
                 {
                     Selected = squad.Length - 1;
                 }
                 else
                     Selected--;
+                } while (!Squad[selected].GetComponent<Bears>().IsAlive || squad[selected].GetComponent<Bears>().TurnComplete);
                 Debug.Log("Selected = " + Selected);
             }
             //I changed your if statements to the loop function it works the same I also added so that 

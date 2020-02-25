@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class RedBear : MonoBehaviour, IBear
 {
+    #region UnitNotes
+    //All-Rounder Unit
+    //Average Everything
+
+    //Support Ability
+    //High Damage Attack but loses HP
+
+    //Special Abilities   
+    //Makes One teammates special Ability Avaliable Again
+    #endregion UnitNotes
     #region Singleton
     public static RedBear instance;
     private void Awake()
@@ -19,44 +29,48 @@ public class RedBear : MonoBehaviour, IBear
     }
     #endregion Singleton
     #region BearFields
-    int hp;
-    int totalHp;
-    int defense;
-    int melee;
-    int ranged;
-    int movement;
+    int hp = 100;
+    int totalHp = 100;
+    int defense = 7;
+    int attackStrength = 30;
+    int movement = 3;
+    int attackRange = 3;
+    Color bearRace = Color.black;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
     public int TotalHP { get => totalHp; set => totalHp = value; }
     public int Defense { get => defense; set => defense = value; }
-    public int Melee { get => melee; set => melee = value; }
-    public int Ranged { get => ranged; set => ranged = value; }
     public int Movement { get => movement; set => movement = value; }
-    //All-Rounder Unit
-    //Average Everything
+    public int AttackRange { get => attackRange; set => attackRange = value; }
+    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
+    public Color BearRace { get => bearRace; set => bearRace = value; }
 
-    //Support Ability
-    //
+    public void MeleeAttack()
+    {
 
-    //Special Abilities
-    //Increases Teammates Stats
-    //Makes One teammates special Ability Avaliable Again
+    }
+    
 
     void Start()
     {
-        this.Hp = 100;
-        this.TotalHP = 100;
-        this.Defense = 7;
-        this.Melee = 100;
-        this.Ranged = 100; 
-        //this.Movement = 
-        //Special =     
+
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void Ability1(Bears Target)
+    {
+        Target.Hp -= 40;
+        this.Hp -= 20;
+    }
+
+    public void Ability2(Bears Target)
+    {
+        Target.Special = true;
     }
 }

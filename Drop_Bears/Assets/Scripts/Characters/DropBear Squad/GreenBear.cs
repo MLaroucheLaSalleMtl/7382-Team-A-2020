@@ -4,6 +4,18 @@ using UnityEngine;
 
 public class GreenBear : MonoBehaviour, IBear
 {
+    #region UnitNotes
+    //Deffensive Unit
+    //High Defence, High HP,
+    //Average Attack
+    //Low Movement, 
+
+    //Support Ability 
+    //Increases Defence (Itself Or Teammates)
+
+    //Special Ability
+    //Nullifies Damage for 1 Turn
+    #endregion UnitNotes
     #region Singleton
     public static GreenBear instance;
     private void Awake()
@@ -20,47 +32,49 @@ public class GreenBear : MonoBehaviour, IBear
     #endregion Singleton
 
     #region BearFields
-    int hp;
-    int totalHp;
-    int defense;
-    int melee;
-    int ranged;
-    int movement;
+    int hp = 150;
+    int totalHp = 150;
+    int defense = 40;
+    int attackStrength = 25;
+    int movement = 2;
+    int attackRange = 4;
+    Color bearRace = Color.black;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
     public int TotalHP { get => totalHp; set => totalHp = value; }
     public int Defense { get => defense; set => defense = value; }
-    public int Melee { get => melee; set => melee = value; }
-    public int Ranged { get => ranged; set => ranged = value; }
     public int Movement { get => movement; set => movement = value; }
+    public int AttackRange { get => attackRange; set => attackRange = value; }
+    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
+    public Color BearRace { get => bearRace; set => bearRace = value; }
 
-    #region UnitNotes
-    //Deffensive Unit
-    //High Defence, High HP,
-    //Average Melee, Average Ranged
-    //Low Movement, 
-
-    //Support Ability 
-    //Increases Defence (Itself Or Teammates)
-
-    //Special Ability
-    //Enrages Enemies (Pulls In All Enemies)
-    #endregion UnitNotes
+    public void MeleeAttack()
+    {
+        
+    }
+    
 
     void Start()
     {
-        this.Hp = 150;
-        this.TotalHP = 150;
-        this.Defense = 10;
-        this.Melee = 100;
-        this.Ranged = 100;
-        //this.Movement = 
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    public void Ability1(Bears Target)
+    {
+        //Increases Defense
+        Target.Defense += 10;
+    }
+
+    public void Ability2(Bears Target)
+    {
+        //Nullifies Damage For 1 Turn 
         
     }
 }
