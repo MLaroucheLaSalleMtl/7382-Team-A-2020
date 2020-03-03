@@ -112,7 +112,7 @@ SpaceBar/Enter – Confirm Selection
 
 **Move:**
 
- ![](Images/Move Controls.JPG)
+ ![](Images/MoveControls.JPG)
 
 Once move has been selected you will be moved to the map and the range of your movement will be displayed in blue.
 
