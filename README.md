@@ -12,11 +12,11 @@ The objective of the game is simple, defeat the enemy team before your team is w
 | --- | --- | --- | --- |
 | This panel will display the selected character. | This panel will display the gameplay options. (Explained Below) | This panel will display the information of the different attack option in the submenu. | This panel displays the current health of the player characters and has indicators to show if the abilities are usable. |
 
- ![](data:image/)
+ ![](Images/AttackSubMenu.JPG)
 
 **Map:**
 
-The placeholder battle map:
+The placeholder battle map: ![](Images/Map.JPG)
 
 - The Map is divided into squares.
 - Grey Squares = Can be interacted with
@@ -27,27 +27,25 @@ The placeholder battle map:
 | DropBear Squad | Squad Stats | BasicAttack | Ability | Special |
 | --- | --- | --- | --- | --- |
 |
- ![](data:image/*;base64,/9j/4AAQSkZJRgABAQEA3ADcAAD)
+
 
 
  | HP = 100Defense = 7Attack = 30Movement = 3Attack Range = 3 | Play with Matches:  Deals 30 Damage. | Body Fire: Deals 50 damagedeals 20 self-damage. | Energize: Let an ally use their special again. |
 |
- ![](data:image/*;)
 
 
  | HP = 100Defense = 7Attack = 40Movement = 3Attack Range = 3 | Black Lightning: Deals 40 damage. | Beef Up: Basic Attack Up 1.5x (One Turn) | Drive By: Deals 60 Damage. |
 |
- ![](data:image/*;)
+
 
 
  | HP = 100Defense = 7Attack = 40Movement = 5Attack Range = 5 | Blue Balls: Deals 40 Damage. | Gotta Go Fast: Gives Ally +2Movement(One Turn). | Power Strike: Deals 50 Damage. |
 |
- ![](data:image/*;)
 
 
  | HP = 150Defense = 10Attack = 30Movement = 2Attack Range = 2 | Skull Smash: Deals 30 damage. | Hunker Down Defence x2(One Turn). | Juggernaut Become Invicible(One Turn). |
 |
- ![](data:image/*;)
+
 
 
  | HP = 150Defense = 5Attack = 30Movement = 3Attack Range = 4 | Love Beam: Deals 30 damage. | Heal: Heals 40 HP | Resurrect: Fully Heal or revive ally. |
@@ -61,17 +59,17 @@ The placeholder battle map:
 | Enemy Types | Stats | Basic Attack |
 | --- | --- | --- |
 |
- ![](data:image/*;)
+ ![](Images/Melee Enemy.JPG)
 
 
  | HP = 80Defense = 5Attack = 20Movement = 3Attack Range = 1 |   Deals 20 damage. |
 |
- ![](data:image/*;)
+ ![](Images/Strong Melee.JPG)
 
 
  | HP = 140Defense = 9Attack = 35Movement = 4Attack Range = 1 |   Deals 35 damage.  |
 |
- ![](data:image/*;)
+ ![](Images/Ranged Enemy.JPG)
 
 
  | HP = 70Defense = 3Attack = 35Movement = 4Attack Range = 3 |   Deals 35 damage. |
@@ -80,7 +78,7 @@ The placeholder battle map:
 
 **Navigating the Menu:**
 
- ![](data:image/*;)
+ ![](Images/Basic HUD.JPG)
 
 AD/Left and Right Arrow Keys – Switch characters.
 
@@ -94,7 +92,7 @@ Esc – Pause the game.
 
 **Attack:**
 
- ![](data:image/*;)
+ ![](Images/AttackSubMenu.JPG)
 
 The attack option brings up a submenu with the specific bears different abilities:
 
@@ -102,7 +100,7 @@ The attack option brings up a submenu with the specific bears different abilitie
 - Ability - Each Bear has an ability that can deal extra damage to an enemy or buff one of the stats of itself or another bear. (Once used it has a 3 turn cooldown)
 - Special -  Same as ability but stronger. (Can only be used once per battle).
 
- ![](data:image/*;)
+ ![](Images/SubMenu Ability.JPG)
 
 Once an option has been selected you will be moved to the map and the range of the attack will be displayed in red.
 
@@ -114,7 +112,7 @@ SpaceBar/Enter – Confirm Selection
 
 **Move:**
 
- ![](data:image/*;)
+ ![](Images/MoveControls.JPG)
 
 Once move has been selected you will be moved to the map and the range of your movement will be displayed in blue.
 
