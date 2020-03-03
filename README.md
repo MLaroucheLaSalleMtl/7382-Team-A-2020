@@ -12,7 +12,7 @@ The objective of the game is simple, defeat the enemy team before your team is w
 | --- | --- | --- | --- |
 | This panel will display the selected character. | This panel will display the gameplay options. (Explained Below) | This panel will display the information of the different attack option in the submenu. | This panel displays the current health of the player characters and has indicators to show if the abilities are usable. |
 
- ![](data:image/)
+ ![](Images/AttackSubMenu.JPG)
 
 **Map:**
 
