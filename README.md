@@ -27,27 +27,25 @@ The placeholder battle map: ![](Images/Map.JPG)
 | DropBear Squad | Squad Stats | BasicAttack | Ability | Special |
 | --- | --- | --- | --- | --- |
 |
- ![](Images/RedBear.JPG)
+
 
 
  | HP = 100Defense = 7Attack = 30Movement = 3Attack Range = 3 | Play with Matches:  Deals 30 Damage. | Body Fire: Deals 50 damagedeals 20 self-damage. | Energize: Let an ally use their special again. |
 |
- ![](Images/BlackBear.JPG)
 
 
  | HP = 100Defense = 7Attack = 40Movement = 3Attack Range = 3 | Black Lightning: Deals 40 damage. | Beef Up: Basic Attack Up 1.5x (One Turn) | Drive By: Deals 60 Damage. |
 |
- ![](Images/BlueBear.JPG)
+
 
 
  | HP = 100Defense = 7Attack = 40Movement = 5Attack Range = 5 | Blue Balls: Deals 40 Damage. | Gotta Go Fast: Gives Ally +2Movement(One Turn). | Power Strike: Deals 50 Damage. |
 |
- ![](Images/Green Bear.JPG)
 
 
  | HP = 150Defense = 10Attack = 30Movement = 2Attack Range = 2 | Skull Smash: Deals 30 damage. | Hunker Down Defence x2(One Turn). | Juggernaut Become Invicible(One Turn). |
 |
- ![](Images/Pink Bear.JPG)
+
 
 
  | HP = 150Defense = 5Attack = 30Movement = 3Attack Range = 4 | Love Beam: Deals 30 damage. | Heal: Heals 40 HP | Resurrect: Fully Heal or revive ally. |
@@ -114,7 +112,7 @@ SpaceBar/Enter – Confirm Selection
 
 **Move:**
 
- ![](https://github.com/MLaroucheLaSalleMtl/7382-Team-A-2020/blob/master/Images/AttackSubMenu.JPG;)
+ ![](Images/Move Controls.JPG)
 
 Once move has been selected you will be moved to the map and the range of your movement will be displayed in blue.
 
