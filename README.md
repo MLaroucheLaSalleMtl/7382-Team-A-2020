@@ -27,7 +27,7 @@ The placeholder battle map:
 | DropBear Squad | Squad Stats | BasicAttack | Ability | Special |
 | --- | --- | --- | --- | --- |
 |
- ![](data:image/*;base64,/9j/4AAQSkZJRgABAQEA3ADcAAD)
+ ![](data:image/*;)
 
 
  | HP = 100Defense = 7Attack = 30Movement = 3Attack Range = 3 | Play with Matches:  Deals 30 Damage. | Body Fire: Deals 50 damagedeals 20 self-damage. | Energize: Let an ally use their special again. |
@@ -114,7 +114,7 @@ SpaceBar/Enter – Confirm Selection
 
 **Move:**
 
- ![](data:image/*;)
+ ![](https://github.com/MLaroucheLaSalleMtl/7382-Team-A-2020/blob/master/Images/AttackSubMenu.JPG;)
 
 Once move has been selected you will be moved to the map and the range of your movement will be displayed in blue.
 
