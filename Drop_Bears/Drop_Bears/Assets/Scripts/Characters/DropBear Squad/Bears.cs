@@ -17,6 +17,7 @@ public class Bears : MonoBehaviour
     [SerializeField] private bool hasAttacked;
     private Color bearRace;
     [SerializeField] private bool turnComplete;
+    [SerializeField] private int countDown;
     
 
     [Space()]
@@ -33,6 +34,9 @@ public class Bears : MonoBehaviour
     [SerializeField] private Bears Target;
     public int avatarNumber;
     public bool onlyOnce = true;
+
+    public int counterSupport = 0;
+    
 
 
     //Ablilities
@@ -55,6 +59,7 @@ public class Bears : MonoBehaviour
     public bool HasAttacked { get => hasAttacked; set => hasAttacked = value; }
     public bool Invincible { get => invincible; set => invincible = value; }
     public IBear BearColor { get => bearColor; set => bearColor = value; }
+    public int CountDown { get => countDown; set => countDown = value; }
 
     public void DistributeStats()
     {
@@ -66,6 +71,7 @@ public class Bears : MonoBehaviour
         this.Movement = this.BearColor.Movement;
         this.Range = this.BearColor.AttackRange;
         this.BearRace = this.BearColor.BearRace;
+        this.CountDown = this.bearColor.CountDown;
         //if (color != EnumColour.MeleeEnemy)
         //{
         //    this.Avatar = avatarCode.Avatar[avatarNumber];
@@ -73,7 +79,15 @@ public class Bears : MonoBehaviour
 
     }
   
-
+   public override string ToString()
+    {
+        string info = "HP: " + totalHP.ToString() + "/" + Hp.ToString() + "\n" +
+           "Attack: " + attackStrength.ToString() + "\n" +
+           "Defense: " + defense.ToString() + "\n" +
+           "Movement: " + movement + "\n" +
+           "Range: " + range;
+        return info;
+    }
     private void Start()
     {
         GiveColour(color);
@@ -91,67 +105,82 @@ public class Bears : MonoBehaviour
         else if (Hp <= 0)
         {
             IsAlive = false;
-            if (this.color == EnumColour.MeleeEnemy)
+            //if (this.color == EnumColour.MeleeEnemy || this.color == EnumColour.RangedEnemy || this.color == EnumColour.StrongMeleeEnemy)
+            //{
+            if (onlyOnce)
             {
-                if (onlyOnce)
-                {
-                    onlyOnce = false;
+                onlyOnce = false;
                     Die();
-                }
             }
-            else
-            {
-                if(onlyOnce)
-                {
-                    onlyOnce = false;
-                    Die();
-                }
-            }
+            //}
+            //else
+            //{
+            //    if(onlyOnce)
+            //    {
+            //        onlyOnce = false;
+            //        Die();
+            //    }
+            //}
+        }
+        if(counterSupport <= 0)
+        {
+            support = true;
         }
     }
 
     private void GiveColour(EnumColour colour)
     {
-        if(colour == EnumColour.Green)
+        switch(colour)
         {
+            case EnumColour.Green:
+        
             this.BearColor=GreenBear.instance;
             this.avatarNumber = 3;
-        }
-        else if(colour == EnumColour.Black)
-        {
+                break;
+
+            case EnumColour.Black:
+        
             this.BearColor=BlackBear.instance;
             this.avatarNumber = 0;
-        }
-        else if (colour == EnumColour.Blue)
-        {
+                break;
+
+            case EnumColour.Blue:
+        
             this.BearColor=BlueBear.instance;
             this.avatarNumber = 1;
-        }
-        else if (colour == EnumColour.Pink)
-        {
+                break;
+
+            case EnumColour.Pink:
+        
             this.BearColor = PinkBear.instance;
             this.avatarNumber = 2;
-        }
-        else if (colour == EnumColour.Red)
-        {
+                break;
+
+            case EnumColour.Red:
+        
             this.BearColor = RedBear.instance;
             this.avatarNumber = 4;
-        }
-        else if (colour == EnumColour.MeleeEnemy)
-        {
+                break;
+
+            case EnumColour.MeleeEnemy:
+        
             this.BearColor = MeleeEnemy.instance;
-        }
-        else if(colour==EnumColour.StrongMeleeEnemy)
-        {
+                break;
+
+            case EnumColour.StrongMeleeEnemy:
+        
             this.BearColor = StrongMeleeEnemy.instance;
-        }
-        else if (colour==EnumColour.RangedEnemy)
-        {
+                break;
+
+            case EnumColour.RangedEnemy:
+        
             this.BearColor = RangedEnemy.instance;
-        }
-        else
-        {
+                break;
+
+            default:
+        
             this.BearColor = RedBear.instance;
+                break;
         }
       
 
@@ -176,8 +205,9 @@ public void Attack(Tile tileToAttack)
             GetTarget(tileToAttack);
             Target.hp -= this.AttackStrength - Target.Defense;
             if (Target.hp <= 0)
+            {
                 SquadSelection.instance.PlayersAlive--;
-                
+            }
         }
 
         
@@ -190,8 +220,9 @@ public void Attack(Tile tileToAttack)
             GetTarget(tileToAttack);
             Target.hp -= this.AttackStrength - Target.Defense;
             if (Target.hp <= 0)
+            {
                 SquadSelection.instance.PlayersAlive--;
-
+            }
         }
     }
     public void PlayerAttack(Tile tileToAttack, int ability)
@@ -213,9 +244,9 @@ public void Attack(Tile tileToAttack)
             EnemyManager.instance.EnemiesAlive--;
         }
         AttackRange.ClearTileAttackValues();
-       // GameManager.instance.CurrPhase = GameManager.Phase.menuPhase;
-        GameManager.instance.AttackPhase = false;
-        GameManager.instance.MenuPhase = true;
+       GameManager.instance.CurrPhase = GameManager.Phase.menuPhase;
+        //GameManager.instance.AttackPhase = false;
+        //GameManager.instance.MenuPhase = true;
     }
     public void Attack(Vector2 tileToAttack)
     {
@@ -232,6 +263,7 @@ public void Attack(Tile tileToAttack)
         GetTarget(selectedTile);
         this.BearColor.Ability1(Target);
         support = false;
+        counterSupport = CountDown;
     }
 
     public void Ability1(Vector2 selectedTile)
@@ -239,6 +271,7 @@ public void Attack(Tile tileToAttack)
         GetTarget(selectedTile); //Gets the player you want to use thew ability on
         this.BearColor.Ability1(Target); // it checks which bear instance is using ability and then executes it
         support = false;
+        counterSupport = CountDown;
     }
 
     public void Ability2(Tile selectedTile)
@@ -258,8 +291,8 @@ public void Attack(Tile tileToAttack)
 
     public void Die()
     {
-        this.transform.Rotate(90f, 0f, 0f);
-        if (this.color == EnumColour.MeleeEnemy)
+        this.gameObject.transform.Rotate(90f, 0f, 0f);
+        if (this.color == EnumColour.MeleeEnemy || this.color == EnumColour.RangedEnemy || this.color == EnumColour.StrongMeleeEnemy)
         {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<CapsuleCollider>().enabled = false;

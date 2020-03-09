@@ -113,7 +113,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (code.EnemyPhase)
+        if (code.CurrPhase==GameManager.Phase.enemyPhase)
         {
             if (!onlyOnce)
             {

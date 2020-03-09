@@ -24,44 +24,63 @@ public class CameraControls : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        //switch (code.CurrPhase)
+        switch (code.CurrPhase)
+        {
+            case GameManager.Phase.menuPhase:
+                camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+                camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+                break;
+            case GameManager.Phase.movementPhase:
+            case GameManager.Phase.attackPhase:
+            case GameManager.Phase.mapPhase:
+                if (tileSelector.CurrentTile != null && !squadmanager.Squad[squadmanager.Selected].GetComponent<Movement>().Moving)
+                {
+                    camera.LookAt = tileSelector.CurrentTile.GetComponent<Transform>();
+                    camera.Follow = tileSelector.CurrentTile.GetComponent<Transform>();
+                }
+                else if (squadmanager.Squad[squadmanager.Selected].GetComponent<Movement>().Moving)
+                {
+                    camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+                    camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+                }
+                break;
+            case GameManager.Phase.enemyPhase:
+                if (enemyManager.ActingEnemy != null)
+                {
+                    camera.LookAt = enemyManager.ActingEnemy.transform;
+                    camera.Follow = enemyManager.ActingEnemy.transform;
+                }
+                break;
+
+
+        }
+        #region zachfuckupsnonenum
+        //if (code.MenuPhase)
         //{
-        //    case GameManager.Phase.menuPhase:
+        //    camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+        //    camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+        //}
+        //else if (code.MovementPhase || code.AttackPhase)
+        //{
+        //    if (tileSelector.CurrentTile != null&&!squadmanager.Squad[squadmanager.Selected].GetComponent<Movement>().Moving)
+        //    {
+        //        camera.LookAt = tileSelector.CurrentTile.GetComponent<Transform>();
+        //        camera.Follow = tileSelector.CurrentTile.GetComponent<Transform>();
+        //    }
+        //   else if(squadmanager.Squad[squadmanager.Selected].GetComponent<Movement>().Moving)
+        //    {
         //        camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-        //        camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-        //        break;
-        //    case GameManager.Phase.movementPhase:
-        //    case GameManager.Phase.attackPhase:
-        //        camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-        //        camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-        //        break;
-        //    case GameManager.Phase.enemyPhase:
+        //        camera.Follow= squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
+        //    }
+        //}
+        //else if (code.EnemyPhase)
+        //{
+        //    if (enemyManager.ActingEnemy != null)
+        //    {
         //        camera.LookAt = enemyManager.ActingEnemy.transform;
         //        camera.Follow = enemyManager.ActingEnemy.transform;
-        //        break;
-
-
+        //    }
         //}
-        if (code.MenuPhase)
-        {
-            camera.LookAt = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-            camera.Follow = squadmanager.Squad[squadmanager.Selected].GetComponent<Transform>();
-        }
-        else if (code.MovementPhase || code.AttackPhase)
-        {
-            if (tileSelector.CurrentTile != null)
-            {
-                camera.LookAt = tileSelector.CurrentTile.GetComponent<Transform>();
-                camera.Follow = tileSelector.CurrentTile.GetComponent<Transform>();
-            }
-        }
-        else if (code.EnemyPhase)
-        {
-            if (enemyManager.ActingEnemy != null)
-            {
-                camera.LookAt = enemyManager.ActingEnemy.transform;
-                camera.Follow = enemyManager.ActingEnemy.transform;
-            }
-        }
+        #endregion zachfuckupsnonenum
     }
 }

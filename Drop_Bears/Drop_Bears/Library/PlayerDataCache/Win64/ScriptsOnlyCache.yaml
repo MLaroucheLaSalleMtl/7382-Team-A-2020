@@ -196,6 +196,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 14470}
     - Class: 114
       Script: {instanceID: 14512}
+    - Class: 114
+      Script: {instanceID: 17960}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -203,6 +205,8 @@ ScriptsOnlyBuild:
     - Class: 136
       Script: {instanceID: 0}
     - Class: 157
+      Script: {instanceID: 0}
+    - Class: 195
       Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
@@ -213,6 +217,8 @@ ScriptsOnlyBuild:
     - Class: 223
       Script: {instanceID: 0}
     - Class: 224
+      Script: {instanceID: 0}
+    - Class: 238
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -373,7 +379,7 @@ ScriptsOnlyBuild:
     className: CinemachineCollisionImpulseSource
   - hash:
       serializedVersion: 2
-      Hash: 9e2e11176515f398264759d9c3d8287c
+      Hash: c634bb92b90d634740d68714fe40f441
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager

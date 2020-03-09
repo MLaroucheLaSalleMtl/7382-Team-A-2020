@@ -77,19 +77,22 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(x + "," + y);
-        AbilityDescriptions();
-        BtnSelection();
-        GetText();
-        text.color = DecideColor();
-        //still need to get the colour to work with the text
-        if (onlyOnce)
+        if (PauseMenu.isGamePaused == false)
         {
-            DisplaySubMenu();
-        }
-        if (Input.GetButtonDown("Back") && AttackIsSelected)
-        {
-            OnClickAttack();
+            //Debug.Log(x + "," + y);
+            AbilityDescriptions();
+            BtnSelection();
+            GetText();
+            text.color = DecideColor();
+            //still need to get the colour to work with the text
+            if (onlyOnce)
+            {
+                DisplaySubMenu();
+            }
+            if (Input.GetButtonDown("Back") && AttackIsSelected)
+            {
+                OnClickAttack();
+            }
         }
     }
 
@@ -99,6 +102,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
         OnSelectUp();
         //OnSelectSide();
         info = x + "," + y;
+        if(buttons.ContainsKey(info))
         buttons[info].Select();
         GetText();
         //buttons[info].GetComponentInChildren<Text>().color = Color.red;
@@ -109,6 +113,12 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     [SerializeField] private GameObject[] attackDes;
     [SerializeField] private GameObject[] supportDes; //Ability 1
     [SerializeField] private GameObject[] specialDes; //Ability 2
+    public void DisableAbilityDescription()
+    {
+        attackDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
+        supportDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
+        specialDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
+    }
     void AbilityDescriptions()
     {
         if (info == 1 + "," + 1)
@@ -162,15 +172,31 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
 
     private void GetText()
     {
+        if(buttons.ContainsKey(info))
         text = buttons[info].GetComponentInChildren<Text>();
     }
 
     //couldnt figure out how to use the new input system for this
-    void OnSelectUp(/*InputAction.CallbackContext context*/)
+    public void Selection(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            Vector2 navigate = context.ReadValue<Vector2>();
+            //x = x + (int)navigate.x;
+            y = y + (int)navigate.y;
+            if(y == 2)
+            {
+                y = -2;
+            }
+            Debug.Log(x + ", " + y);
+        }
+    }
+
+
+    void OnSelectUp(/*/*InputAction.CallbackContext context*/)
     {
 
-        if (/*selection.y>0*/Input.GetAxisRaw("Vertical") > 0.1f && Input.GetButtonDown("Vertical"))
-        {
+        
             if (y == 1)
             {
                 y = -2;
@@ -180,9 +206,8 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
                 y += 1;
             }
             text.color = Color.white;
-        }
-        else if (Input.GetAxisRaw("Vertical") < -0.1f && Input.GetButtonDown("Vertical"))
-        {
+        
+        
             if (y == -2)
             {
                 y = 1;
@@ -192,7 +217,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
                 y -= 1;
             }
             text.color = Color.white;
-        }
+        
         
     }
     #region NianMistakes

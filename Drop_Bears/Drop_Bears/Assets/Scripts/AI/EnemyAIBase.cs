@@ -52,26 +52,11 @@ public class EnemyAIBase : MonoBehaviour
         TurnCompleted = true;
      
     }
-    //protected Tile AssignEnemyAttackSpaces(GameObject startingtile)
-    //{
-    //    Tile tiletogoto=null;
-    //    foreach (GameObject tile in tilesInMovementRange)
-    //    {
-    //        if (!tile.GetComponent<Tile>().IsPlayer && !tile.GetComponent<Tile>().IsEnemy)
-    //        {
-    //            #region ZachNotes
-    //            //this calculates every space the the enemy can attack
-    //            #endregion ZachNotes
-    //            if(tiletogoto==null)
-    //            tiletogoto=atkRangeMethods.GetAttackRangeIgnoreObstaclesMovementEnemies(attackRange, tile.GetComponent<Tile>());
-    //        }
 
-    //    }
-    //    return tiletogoto;
-    //}
-    protected void CheckForWeakestPlayerInRange()
+    protected IEnumerator EnemyAttack(float timer,Tile tileToAttack)
     {
-
+        yield return new WaitForSeconds(timer);
+        stats.Attack(tileToAttack);
     }
    protected void AssignEnemyAttackSpaces ()
     {
@@ -147,6 +132,8 @@ public class EnemyAIBase : MonoBehaviour
         }
         return playerPos;
     }
+    //this dont account for obstacles so its abit weird
+    //i would need to basically figure out a* to account for obstacles
     protected void FindTileNearWeakestPlayerOnMap(Vector2 playerPos,GameObject startingtile)
     {
 
@@ -190,33 +177,60 @@ public class EnemyAIBase : MonoBehaviour
         #endregion ZachNotes
         if (tile != null)
         {
-
-            Tile tileshort = tile.GetComponent<Tile>();
-            if (!tileshort.IsObstacle)
+            if (tile == tileManager.TileDic[position])
             {
-                if (tileshort.Movementvalue >= 0 && tileshort.Movementvalue < move)
+                Tile tileshort = tile.GetComponent<Tile>();
+                if (!tileshort.IsObstacle)
                 {
-                    tileshort.Movementvalue = move;
-                    if (move >= 0&&!tileshort.IsPlayer&&!tileshort.IsEnemy)
+                    if (tileshort.Movementvalue >= 0 && tileshort.Movementvalue < move)
                     {
-                        tilesInMovementRange.Add(tile);
-                        tileshort.Moveable = true;
+                        tileshort.Movementvalue = move;
+                        if (move >= 0 && !tileshort.IsPlayer && !tileshort.IsEnemy)
+                        {
+                            tilesInMovementRange.Add(tile);
+                            tileshort.Moveable = true;
+                        }
+
+                        GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+
                     }
-
-                    GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
-                    AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
-                    AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
-                    AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
-                    AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-
                 }
             }
             else
             {
-                tile.GetComponent<Tile>().Movementvalue = -1;
+                Tile tileshort = tile.GetComponent<Tile>();
+                if (!tileshort.IsObstacle && !tileshort.IsEnemy && !tileshort.IsPlayer)
+                {
+                    if (tileshort.Movementvalue >= 0 && tileshort.Movementvalue < move)
+                    {
+                        tileshort.Movementvalue = move;
+                        if (move >= 0)
+                        {
+                            tilesInMovementRange.Add(tile);
+                            tileshort.Moveable = true;
+                        }
+                        GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
+
+                    }
+                }
+                else if (tileshort.IsEnemy || tileshort.IsPlayer || tileshort.IsObstacle)
+                {
+                    tile.GetComponent<Tile>().Movementvalue = -1;
+                }
             }
         }
 
@@ -238,20 +252,10 @@ public class EnemyAIBase : MonoBehaviour
             this.x = other.GetComponent<Tile>().X;
             this.y = other.GetComponent<Tile>().Y;
             position = new Vector2(x, y);
-            other.GetComponent<Tile>().IsEnemy = true;
             transform.parent = other.transform;
         }
     }
-    protected void OnTriggerExit(Collider other)
-    {
-       
-            if (other.tag == "Tile")
-            {
-                other.GetComponent<Tile>().IsEnemy = false;
-            }
-        
-
-    }
+  
     // Start is called before the first frame update
 
     protected void GetVariables()
@@ -271,8 +275,5 @@ public class EnemyAIBase : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

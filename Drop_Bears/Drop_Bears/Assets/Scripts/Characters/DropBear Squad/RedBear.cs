@@ -37,6 +37,7 @@ public class RedBear : MonoBehaviour, IBear
     int movement = 3;
     int attackRange = 3;
     Color bearRace = Color.red;
+    int countdown = 2;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
@@ -46,6 +47,7 @@ public class RedBear : MonoBehaviour, IBear
     public int AttackRange { get => attackRange; set => attackRange = value; }
     public int AttackStrength { get => attackStrength; set => attackStrength = value; }
     public Color BearRace { get => bearRace; set => bearRace = value; }
+    public int CountDown { get => countdown; set => countdown = value; }
 
     public void MeleeAttack()
     {
@@ -53,7 +55,7 @@ public class RedBear : MonoBehaviour, IBear
     }
     
 
-    // Update is called once per frame
+   
    
     public void Ability1(Bears Target)
     {

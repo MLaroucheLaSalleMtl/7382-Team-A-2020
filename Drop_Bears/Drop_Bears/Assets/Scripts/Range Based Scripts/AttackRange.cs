@@ -319,9 +319,9 @@ public class AttackRange : MonoBehaviour
     }
     void Update()
     {
-        //if(code.CurrPhase==GameManager.Phase.attackPhase&&GetComponent<Bears>().Selected)
-        if (code.AttackPhase&&GetComponent<Bears>().Selected)
-        {
+            // if (code.AttackPhase&&GetComponent<Bears>().Selected)
+            if (code.CurrPhase == GameManager.Phase.attackPhase && GetComponent<Bears>().Selected)
+            {
             this.x = GetComponent<Movement>().X;
             this.y = GetComponent<Movement>().Y;
           

@@ -14,7 +14,7 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
     void Update()
     {
        //if(code.Phase=enemyPhase &&TakeTurn)
-        if (code.EnemyPhase && TakeTurn )
+        if (code.CurrPhase==GameManager.Phase.enemyPhase && TakeTurn )
         {
             if (!OnlyOnce && stats.IsAlive)
             {
@@ -40,11 +40,12 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                             tileToMoveTo = attackpairs.EnemyTile;
                         }
                     }
-                    if (tileToMoveTo != startingTile.GetComponent<Tile>())
-                        tileToMoveTo.IsEnemy = true;
+                    //if (tileToMoveTo != startingTile.GetComponent<Tile>())
+                    //    tileToMoveTo.IsEnemy = true;
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
-                   // stats.EnemyAttack(tileToAttack, timer);
-                    stats.Attack(tileToAttack);
+                   StartCoroutine( EnemyAttack(timer, tileToAttack));
+                   // stats.Attack(tileToAttack);
+                    tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     AttackRange.ClearTileAttackValues(tileManager);
                     Movement.ClearTileMovementValues(tileManager);
                     Invoke("EndTurn", timer);
@@ -53,8 +54,9 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 {
                     Vector2 playerPos= FindWeakestPlayerOnMap();
                     FindTileNearWeakestPlayerOnMap(playerPos,startingTile);
-                    if (FinalMoveTarget != null)
+                    //if (FinalMoveTarget != null)
                     tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
+                   
                     timer = mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingTile, TileManager.instance);
                     AttackRange.ClearTileAttackValues(tileManager);
                     Movement.ClearTileMovementValues(tileManager);

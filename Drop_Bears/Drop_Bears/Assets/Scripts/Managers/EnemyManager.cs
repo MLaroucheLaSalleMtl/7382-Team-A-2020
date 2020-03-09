@@ -46,17 +46,19 @@ public class EnemyManager : MonoBehaviour
       
         yield return new WaitForSeconds(.1f);
     }
-    public void SwitchToPlayerTurns()
-    {
-        code.EnemyPhase = false;
-            code.MenuPhase = true;
-            code.PlayerTurn = true;
-            FirstEnemyHasActed = false;
+    //public void SwitchToPlayerTurns()
+    //{
+    //    code.EnemyPhase = false;
+    //        code.MenuPhase = true;
+    //        code.PlayerTurn = true;
+    //        FirstEnemyHasActed = false;
         
-    }
+    //}
     public void SwitchToPlayerTurnsEnum()
     {
         code.CurrPhase = GameManager.Phase.menuPhase;
+        FirstEnemyHasActed = false;
+        code.PlayerTurn = true;
     }
     public void ResetEnemyTurns()
     {
@@ -78,8 +80,5 @@ public class EnemyManager : MonoBehaviour
             EnemiesAlive++;
         }
     }
-    void Update()
-    {
-
-    }
+   
 }

@@ -16,16 +16,21 @@ public class ButtonFunctions : MonoBehaviour
         code = GameManager.instance;
        
     }
-   public void SwitchToMovement()
-    {
-        code.MovementPhase = true;
-        code.MenuPhase = false;
-    }
-    public void SwitchToAttack()
-    {
-        code.AttackPhase = true;
-        code.MenuPhase = false;
-    }
+   //public void SwitchToMovement()
+   // {
+   //     code.MovementPhase = true;
+   //     code.MenuPhase = false;
+   // }
+   // public void SwitchToMap()
+   // {
+      
+   //     code.MenuPhase = false;
+   // }
+   // public void SwitchToAttack()
+   // {
+   //     code.AttackPhase = true;
+   //     code.MenuPhase = false;
+   // }
     public void SwitchToAttackEnum()
     {
         code.CurrPhase = GameManager.Phase.attackPhase;
@@ -45,6 +50,10 @@ public class ButtonFunctions : MonoBehaviour
     public void PassAbility2()
     {
         TileSelector.instance.AbilityToUse = 3;
+    }
+    public void SwitchToMapEnum()
+    {
+        code.CurrPhase = GameManager.Phase.mapPhase;
     }
     public void ReloadLevel()
     {

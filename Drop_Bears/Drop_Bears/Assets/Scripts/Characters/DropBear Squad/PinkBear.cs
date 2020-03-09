@@ -38,6 +38,7 @@ public class PinkBear : MonoBehaviour, IBear
     int movement = 3;
     int attackRange = 4;
     Color bearRace = Color.magenta ;
+    int countdown = 2;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
@@ -47,6 +48,7 @@ public class PinkBear : MonoBehaviour, IBear
     public int AttackRange { get => attackRange; set => attackRange = value; }
     public int AttackStrength { get => attackStrength; set => attackStrength = value; }
     public Color BearRace { get => bearRace; set => bearRace = value; }
+    public int CountDown { get => countdown; set => countdown = value; }
 
     public void MeleeAttack()
     {
@@ -54,16 +56,7 @@ public class PinkBear : MonoBehaviour, IBear
     }
 
     
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+  
 
     public void Ability1(Bears Target)
     {
@@ -83,6 +76,10 @@ public class PinkBear : MonoBehaviour, IBear
             Target.onlyOnce = true;
             Target.transform.Rotate(-90f, 0f, 0f);
             SquadSelection.instance.PlayersAlive++;
+        }
+        else
+        {
+            Target.Hp = TotalHP;
         }
     }
 }

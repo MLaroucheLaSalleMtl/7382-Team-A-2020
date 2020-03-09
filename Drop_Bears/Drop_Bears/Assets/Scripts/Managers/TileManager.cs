@@ -55,6 +55,14 @@ public class TileManager : MonoBehaviour
         else
             return null;
     }
+    public GameObject GetTileDicMove(Vector2 coordinates,Tile currenttile)
+    {
+
+        if (TileDic.ContainsKey(coordinates))
+            return TileDic[coordinates];
+        else
+            return currenttile.gameObject;
+    }
 
     public GameObject GetTile(Vector2 coordinates)
     {
@@ -76,16 +84,5 @@ public class TileManager : MonoBehaviour
 
     }
   
-    private void LateUpdate()
-    {
-        //save memory erase the array this can be done if you can make GetTile work with dic
-        //if (check==false)
-        //{
-        //    Array.Clear(tilearray, 0, tilearray.Length);
-        //}
-    }
-    void Update()
-    {
-        
-    }
+   
 }

@@ -38,6 +38,7 @@ public class BlueBear : MonoBehaviour, IBear
     int movement = 5;
     int attackRange = 5;
     Color bearRace = Color.blue;
+    int countdown = 2;
     #endregion BearFields
 
     public int Hp { get => hp; set => hp = value; }
@@ -47,22 +48,13 @@ public class BlueBear : MonoBehaviour, IBear
     public int AttackRange { get => attackRange; set => attackRange = value; }
     public int AttackStrength { get => attackStrength; set => attackStrength = value; }
     public Color BearRace { get => bearRace; set => bearRace = value; }
+    public int CountDown { get => countdown; set => countdown = value; }
 
     public void MeleeAttack()
     {
         
     }
-    void Start()
-    {
-        //Movement Should be the higest of the squad
-        //this.Movement = 
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
    
 
     public void Ability1(Bears Target)

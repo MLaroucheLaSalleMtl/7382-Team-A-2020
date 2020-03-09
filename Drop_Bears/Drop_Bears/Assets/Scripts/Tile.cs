@@ -9,6 +9,7 @@ public class Tile : MonoBehaviour
     [SerializeField] private bool isPlayer;
     [SerializeField] private bool isEnemy;
     [SerializeField] private bool isObstacle;
+    private MeshRenderer renderer;
     [SerializeField] private Vector2 loc;
     #region zachnotes
     //this is zach testing something that may account for obstacles
@@ -30,10 +31,25 @@ public class Tile : MonoBehaviour
         if (other.tag=="Enemy")
         {
             isEnemy = true;
+           
         }
         if(other.tag=="Player")
         {
             IsPlayer = true;
+           
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag=="Player")
+        {
+            isPlayer = false;
+          
+        }
+        if (other.tag=="Enemy")
+        {
+            IsEnemy = false;
+         
         }
     }
     public int X { get => x; set => x = value; }
@@ -59,7 +75,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        renderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -67,12 +83,17 @@ public class Tile : MonoBehaviour
     {
        if (IsSelected)
         {
-            gameObject.GetComponent<MeshRenderer>().material = selectedTile;
+            renderer.material = selectedTile;
         }
-       else if (IsObstacle)
+       else if (IsObstacle )
         {
-            gameObject.GetComponent<MeshRenderer>().material = obstacleMat;
+            renderer.material = obstacleMat;
         }
+       else if(/*(isPlayer||IsEnemy)*/ /*&&*/(movementvalue<=0&&attackvalue<=0))
+        {
+            renderer.material = defaultmat;
+        }
+    
     
        
     }

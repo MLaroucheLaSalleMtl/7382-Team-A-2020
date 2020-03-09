@@ -12,6 +12,7 @@ public class StrongMeleeEnemy : MonoBehaviour,IBear
     int movement = 4;
     int attackRange = 1;
     Color bearRace = Color.white;
+    int countdown = 2;
     #endregion Stats
 
     public static StrongMeleeEnemy instance = null;
@@ -35,6 +36,7 @@ public class StrongMeleeEnemy : MonoBehaviour,IBear
     public int AttackRange { get => attackRange; set => attackRange = value; }
     public int AttackStrength { get => attackStrength; set => attackStrength = value; }
     public Color BearRace { get => bearRace; set => bearRace = value; }
+    public int CountDown { get => countdown; set => countdown = value; }
 
     public void MeleeAttack()
     {

@@ -13,7 +13,7 @@ public class EnemyAIHealer : EnemyAIBase
     // Update is called once per frame
     void Update()
     {
-        if(code.EnemyPhase)
+        if(code.CurrPhase==GameManager.Phase.enemyPhase)
         {
             if(!OnlyOnce)
             {

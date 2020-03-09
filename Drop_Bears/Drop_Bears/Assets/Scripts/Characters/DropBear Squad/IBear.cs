@@ -12,6 +12,7 @@ public interface IBear
     int Movement { get; set; }
     int AttackRange { get; set; }
     Color BearRace { get; set; }
+    int CountDown { get; set; }
 
     void MeleeAttack();
     void Ability1(Bears Target);
