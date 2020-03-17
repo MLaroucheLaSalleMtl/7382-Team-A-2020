@@ -12,6 +12,7 @@ public class EnemyAIBase : MonoBehaviour
     [SerializeField] protected int attackRange;
     [SerializeField] protected int x;
     [SerializeField] protected int y;
+    protected const float healMult = 2.5f;
     protected Vector2 position;
     protected TileManager tileManager;
     [SerializeField] protected List<GameObject> tilesInMovementRange = new List<GameObject>();
@@ -52,11 +53,34 @@ public class EnemyAIBase : MonoBehaviour
         TurnCompleted = true;
      
     }
-
+    
+    protected IEnumerator EnemyHeal(float timer,Tile tileToHeal)
+    {
+        yield return new WaitForSeconds(timer);
+        if (tileToHeal.GetComponentInChildren<Bears>() != null)
+        {
+            Bears target = tileToHeal.GetComponentInChildren<Bears>();
+            target.Hp += (int)(stats.AttackStrength * healMult);
+            if (target.Hp>target.TotalHP)
+            {
+                target.Hp = target.TotalHP;
+            }
+                }
+    }
+    protected IEnumerator SelfHeal(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        stats.Hp += (int)(stats.AttackStrength * healMult);
+        if(stats.Hp>stats.TotalHP)
+        {
+            stats.Hp = stats.TotalHP;
+        }
+    }
     protected IEnumerator EnemyAttack(float timer,Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
         stats.Attack(tileToAttack);
+        //trigger for attack animations 
     }
    protected void AssignEnemyAttackSpaces ()
     {
@@ -65,7 +89,14 @@ public class EnemyAIBase : MonoBehaviour
             atkRangeMethods.GetAttackRangeIgnoreObstaclesEnemies(stats.Range, tile.GetComponent<Tile>(), this);
         }
     }
- 
+    protected void AssignEnemyAttackSpacesHealer()
+    {
+        foreach (GameObject tile in tilesInMovementRange)
+        {
+            atkRangeMethods.GetAttackRangeIgnoreObstaclesEnemyHealer(stats.Range, tile.GetComponent<Tile>(), this);
+        }
+    }
+
     protected void CheckForPlayersInRange()
     {
         foreach (GameObject playertile in squadManager.Squad)
@@ -132,6 +163,30 @@ public class EnemyAIBase : MonoBehaviour
         }
         return playerPos;
     }
+    protected Vector2 FindWeakestEnemyOnMap()
+    {
+        Vector2 playerPos = new Vector2();
+        int lowestHp = -1;
+       
+        foreach (GameObject enemy in EnemyManager.instance.Enemies)
+        {
+            #region ZachNotes
+            //checks all players for lowest hp takes that position
+            #endregion ZachNotes
+            if (lowestHp == -1 && enemy.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = enemy.GetComponent<Bears>().Hp;
+                playerPos = enemy.GetComponent<Movement>().Position;
+
+            }
+            else if (lowestHp > enemy.GetComponent<Bears>().Hp && enemy.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = enemy.GetComponent<Bears>().Hp;
+                playerPos = enemy.GetComponent<Movement>().Position;
+            }
+        }
+        return playerPos;
+    }
     //this dont account for obstacles so its abit weird
     //i would need to basically figure out a* to account for obstacles
     protected void FindTileNearWeakestPlayerOnMap(Vector2 playerPos,GameObject startingtile)
@@ -185,7 +240,7 @@ public class EnemyAIBase : MonoBehaviour
                     if (tileshort.Movementvalue >= 0 && tileshort.Movementvalue < move)
                     {
                         tileshort.Movementvalue = move;
-                        if (move >= 0 && !tileshort.IsPlayer && !tileshort.IsEnemy)
+                        if (move >= 0 )
                         {
                             tilesInMovementRange.Add(tile);
                             tileshort.Moveable = true;

@@ -204,24 +204,27 @@ public class Movement : MonoBehaviour
     #region PlayerMovementMethods
     public float MoveToFinalTile(GameObject tile,GameObject playertile,TileManager tilemanager)
     {
-        if(tile.GetComponent<Tile>().Movementvalue<=0)
+        Tile tileshort = tile.GetComponent<Tile>();
+        if (tileshort.Movementvalue<=0||tileshort.IsPlayer||tileshort.IsEnemy)
         {
             return 0;
         }
         #region ZachNotes
-        //So this function takes the tile you want to go to and the tile your currently on
-        //and will have the player move to that tile
-        //It works by starting at the endtile and then using the movement values assigned to those
-        //tiles by the assignmovementvalues method moves back to the players starting tile
-        //by seeing if there is a tile adjacent to it with a higher movement value
-        //(It kinda backwords engineers how to get back to the player) 
-        //then it destacks itself pushing the player tile by tile to the destination
+       
         #endregion ZachNotes
         Stack<Vector2> moves=new Stack<Vector2>();
         Tile originpoint = playertile.GetComponent<Tile>();
-        Tile tileshort = tile.GetComponent<Tile>();
+        
         moves.Push(tileshort.Loc);
         this.Moving = true;
+        if (stats.MoveSounds != null)
+        {
+            if (stats.MoveSounds.Length > 0)
+            {
+                int random = Random.Range(0, stats.MoveSounds.Length);
+                stats.AudioS.PlayOneShot(stats.MoveSounds[random]);
+            }
+        }
         while (tileshort.X!=originpoint.X ||tileshort.Y!=originpoint.Y)
         {
             #region ZachNotes
@@ -258,6 +261,12 @@ public class Movement : MonoBehaviour
        
         moves.Push(tile.Loc);
         this.Moving = true;
+        if(stats.MoveSounds!=null)
+        if (stats.MoveSounds.Length > 0)
+        {
+            int random = Random.Range(0, stats.MoveSounds.Length);
+            stats.AudioS.PlayOneShot(stats.MoveSounds[random]);
+        }
         while (tile.X != playertile.X || tile.Y != playertile.Y)
         {
             #region ZachNotes

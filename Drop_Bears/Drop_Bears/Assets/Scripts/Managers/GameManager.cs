@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
     }
     #endregion Singleton
    public enum Phase { menuPhase,attackPhase,enemyPhase,movementPhase,mapPhase}
-    private Phase currPhase;
+    [SerializeField]private Phase currPhase;
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private GameObject selectedPlayer;
     [SerializeField] private GameObject selectedTile;
@@ -44,8 +44,9 @@ public class GameManager : MonoBehaviour
     //For the turn system
     [SerializeField] private bool playerTurn;
     private bool onlyOnce = false;
+    
 
-    Bears[] allBears;
+    //Bears[] allBears;
 
 
     private int endTurn;
@@ -54,6 +55,7 @@ public class GameManager : MonoBehaviour
     public GameObject InteractionMenu { get => interactionMenu; set => interactionMenu = value; }
     public bool PlayerTurn { get => playerTurn; set => playerTurn = value; }
     public Phase CurrPhase { get => currPhase; set => currPhase = value; }
+    bool substracted = false;
 
     void Start()
     {
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
         tileSelector = TileSelector.instance;
         playerTurn = true;
         CurrPhase = Phase.menuPhase;
-        allBears = FindObjectsOfType(typeof(Bears)) as Bears[];
+        //allBears = FindObjectsOfType(typeof(Bears)) as Bears[]; <-My Mistakes (nian)
         #region oldnonenum
         //EnemyPhase = false;
         //MenuPhase = true;
@@ -164,12 +166,14 @@ public class GameManager : MonoBehaviour
                 switch (CurrPhase)
                 {
                     case Phase.menuPhase:
+                    
                         StartCoroutine(CheckTurns());
                         selectedPlayer = squadSelector.Squad[squadSelector.Selected];
                         HighlightTileUnderSelectedPlayer(selectedPlayer);
                         interactionMenu.SetActive(true);
                         if (selectedPlayer.GetComponent<Bears>().HasAttacked)
                         {
+                       
                             DisableAttackButtons();
                         }
                         else
@@ -196,6 +200,18 @@ public class GameManager : MonoBehaviour
                             onlyOnce = true;
                         }
                     statsText.gameObject.SetActive(false) ;
+                    if (!substracted)
+                    {
+                        substracted = true;
+                        for (int i = 0; i < squadSelector.Squad.Length; i++)
+                        {
+                            squadSelector.Squad[i].GetComponent<Bears>().counterSupport--;
+                            squadSelector.Squad[i].GetComponent<Bears>().DeductThemBuffs();
+                            squadSelector.Squad[i].GetComponent<Bears>().CheckThemBuffs();
+                        }
+                        
+                    }
+
                     break;
                     case Phase.attackPhase:
                     case Phase.movementPhase:
@@ -219,6 +235,7 @@ public class GameManager : MonoBehaviour
                     }
                         break;
                     case Phase.enemyPhase:
+                    substracted = false;
                         interactionMenu.SetActive(false);
                         if (enemyManager.Enemies != null)
                         {
@@ -239,10 +256,7 @@ public class GameManager : MonoBehaviour
 
                             }
                         }
-                        foreach(Bears bear in allBears)
-                    {
-                        bear.counterSupport--;
-                    }
+                    
                         
                     statsText.gameObject.SetActive(false) ;
                     break;

@@ -25,12 +25,13 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 AssignTileMovementValue(startingTile, stats.Movement + 1);
                 AssignEnemyAttackSpaces();
 
-                if (Pairs.Count != 0)
+                if (Pairs.Count != 0 &&tilesInMovementRange.Count!=0)
                 {
+
                     int lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
                     Tile tileToAttack = Pairs[0].PlayerTile;
                     Tile tileToMoveTo = Pairs[0].EnemyTile;
-
+                   
                     foreach (AttackTilePairings attackpairs in Pairs)
                     {
                         if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
@@ -43,12 +44,13 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                     //if (tileToMoveTo != startingTile.GetComponent<Tile>())
                     //    tileToMoveTo.IsEnemy = true;
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
-                   StartCoroutine( EnemyAttack(timer, tileToAttack));
+                   StartCoroutine( EnemyAttack(timer+.5f, tileToAttack));
                    // stats.Attack(tileToAttack);
                     tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     AttackRange.ClearTileAttackValues(tileManager);
                     Movement.ClearTileMovementValues(tileManager);
-                    Invoke("EndTurn", timer);
+                    //this would need to be commented
+                    Invoke("EndTurn", timer+.5f);
                 }
                 else if (Pairs.Count==0 && stats.Movement > 0)
                 {
@@ -62,6 +64,8 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                     Movement.ClearTileMovementValues(tileManager);
                     Invoke("EndTurn", timer);
                 }
+              
+               
 
             }
             else if (!stats.IsAlive)

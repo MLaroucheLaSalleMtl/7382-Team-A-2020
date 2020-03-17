@@ -15,7 +15,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     public int x = 0;
     public int y = 0;
     string info;
-    public static BtnManager instance;
+    public static BtnManager instance=null;
     private Color textColor = Color.red;
     public bool AttackIsSelected = false;
     public bool onlyOnce = false;

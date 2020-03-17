@@ -2,6 +2,7 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - AttackRange
+    - BearSFX
     - Bears
     - BlackBear
     - BlueBear
@@ -100,6 +101,10 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
+    - Class: 82
+      Script: {instanceID: 0}
+    - Class: 83
+      Script: {instanceID: 0}
     - Class: 104
       Script: {instanceID: 0}
     - Class: 108
@@ -193,11 +198,13 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 14230}
     - Class: 114
-      Script: {instanceID: 14470}
+      Script: {instanceID: 14380}
     - Class: 114
-      Script: {instanceID: 14512}
+      Script: {instanceID: 14472}
     - Class: 114
-      Script: {instanceID: 17960}
+      Script: {instanceID: 14514}
+    - Class: 114
+      Script: {instanceID: 17998}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -219,6 +226,12 @@ ScriptsOnlyBuild:
     - Class: 224
       Script: {instanceID: 0}
     - Class: 238
+      Script: {instanceID: 0}
+    - Class: 241
+      Script: {instanceID: 0}
+    - Class: 243
+      Script: {instanceID: 0}
+    - Class: 245
       Script: {instanceID: 0}
   scriptHashData:
   - hash:
@@ -331,7 +344,7 @@ ScriptsOnlyBuild:
     className: TerrainGroup
   - hash:
       serializedVersion: 2
-      Hash: 57edf71fdf5ab648634b176538065754
+      Hash: ecb9f96085c3dda08f89c8bc99a012b2
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Bears
@@ -379,7 +392,7 @@ ScriptsOnlyBuild:
     className: CinemachineCollisionImpulseSource
   - hash:
       serializedVersion: 2
-      Hash: c634bb92b90d634740d68714fe40f441
+      Hash: 16cd13e083a50b2b8b746d2636f41643
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -1141,7 +1154,7 @@ ScriptsOnlyBuild:
     className: AudioTrack
   - hash:
       serializedVersion: 2
-      Hash: 70674342ef14c9bea0e53f784be0482e
+      Hash: 2798e983a34c18670e7e4c3e5c69a7c3
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: TileSelector
@@ -1241,6 +1254,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Postprocessing.Runtime.dll
     namespaceName: UnityEngine.Rendering.PostProcessing
     className: AmbientOcclusion
+  - hash:
+      serializedVersion: 2
+      Hash: 3415a55fc71229088549bd78b58d8b0b
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: BearSFX
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f

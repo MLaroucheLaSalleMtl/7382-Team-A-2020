@@ -117,11 +117,7 @@ public class AttackRange : MonoBehaviour
     }
     public void GetAttackRangeIgnoreObstaclesEnemies(int Range, Tile tile,EnemyAIBase currentenemy)
     {
-        #region ZachNotes
-        //this will treat all tiles the same
-        //this is usefull for attacks that disregard range
-      //  ClearTileAttackValues();
-        #endregion ZachNotes
+       
         for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
         {
         
@@ -146,7 +142,38 @@ public class AttackRange : MonoBehaviour
         }
        
     }
-  
+    public void GetAttackRangeIgnoreObstaclesEnemyHealer(int Range, Tile tile, EnemyAIBase currentenemy)
+    {
+        #region ZachNotes
+        //this will treat all tiles the same
+        //this is usefull for attacks that disregard range
+        //  ClearTileAttackValues();
+        #endregion ZachNotes
+        for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
+        {
+
+            int cal1 = Mathf.Abs((int)tile.Loc.x - i);
+            int diff = Mathf.Abs(cal1 - Range);
+            for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
+            {
+
+                GameObject thistile = tilemanager.GetTile(new Vector2(i, k));
+                if (thistile != null)
+                {
+                    thistile.GetComponent<Tile>().Attackvalue = 1;
+                    if (thistile.GetComponent<Tile>().IsEnemy && thistile.GetComponentInChildren<Bears>().IsAlive)
+                    {
+                        AttackTilePairings pairing = new AttackTilePairings();
+                        pairing.EnemyTile = tile;
+                        pairing.PlayerTile = thistile.GetComponent<Tile>();
+                        currentenemy.Pairs.Add(pairing);
+                    }
+                }
+            }
+        }
+
+    }
+
 
     private void AssignTileAttackRange(GameObject tile, int AttackRange)
     {
