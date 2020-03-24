@@ -2,61 +2,63 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealerEnemy : MonoBehaviour,IBear
+public class HealerEnemy : BearColor
 {
     // Start is called before the first frame update
-    #region UnitNotes
-    //basic melee Enemy for game
-    #endregion UnitNotes
+
+
     #region Stats
-    int hp = 70;
-    int totalHp = 70;
-    int defense = 6;
-    int attackStrength = 10;
-    int movement = 4;
-    int attackRange = 2;
-    Color bearRace = Color.white;
-    int countdown = 2;
+    public HealerEnemy()
+    {
+        Hp = 70;
+        TotalHp = 70;
+        Defense = 6;
+        AttackStrength = 10;
+        Movement = 4;
+        AttackRange = 2;
+        BearRace = Color.white;
+        Countdown = 2;
+    }
+
+    public override void Ability1(Bears target, int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void Ability2(Bears target, int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAbility1Desc(int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAbility1Name()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAbility2Desc(int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAbility2Name()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAttackDesc(int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAttackName()
+    {
+        throw new System.NotImplementedException();
+    }
     #endregion Stats
 
-    public static HealerEnemy instance = null;
-
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
-
-    public void MeleeAttack()
-    {
-
-    }
-
-    // Start is called before the first frame update
-
-
-    public void Ability1(Bears Target)
-    {
-
-    }
-
-    public void Ability2(Bears Target)
-    {
-
-    }
 }

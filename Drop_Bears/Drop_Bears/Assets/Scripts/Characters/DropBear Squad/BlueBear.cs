@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BlueBear : MonoBehaviour, IBear
+public class BlueBear : BearColor
 {
     #region UnitNotes
     //Speed Unit
@@ -16,57 +16,60 @@ public class BlueBear : MonoBehaviour, IBear
     //Special Ability
     //High Damaged Ranged Attack
     #endregion UnitNotes
-    #region Singleton
-    public static BlueBear instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-    #endregion Singleton
+
     #region BearFields
-    int hp = 100;
-    int totalHp = 100;
-    int defense = 7;
-    int attackStrength = 40;
-    int movement = 5;
-    int attackRange = 5;
-    Color bearRace = Color.blue;
-    int countdown = 2;
+    public BlueBear()
+    {
+        Hp = 100;
+        TotalHp = 100;
+        Defense = 7;
+        AttackStrength = 40;
+        Movement = 5;
+        AttackRange = 5;
+        BearRace = Color.blue;
+        Countdown = 2;
+        FirstAbility = new GottaGoQuick();
+        Special = new PowerStrike();
+    }
     #endregion BearFields
 
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
-
-    public void MeleeAttack()
+    public override string GetAttackName()
     {
-        
+        return "Blue Balls";
+    }
+    public override string GetAttackDesc(int attack)
+    {
+        return "Give em the balls:\nDamage = "+attack.ToString();
+    }
+    public override string GetAbility1Name()
+    {
+        return "Gotta Go Quick";
+    }
+    public override string GetAbility1Desc(int attack)
+    {
+        return "Give an ally +2\nMovement (One Turn)";
+    }
+    public override string GetAbility2Name()
+    {
+        return "Power Strike";
+    }
+    public override string GetAbility2Desc(int attack)
+    {
+        int damage = (int)(attack * 1.5);
+        return "It's stronger: \nDamage = "+damage;
     }
 
-   
 
-    public void Ability1(Bears Target)
+    public override void Ability1(Bears Target, int attack)
     {
         //Increases the Movement of A Target
         Target.Movement += 2;
         Target.themBuffs["buffMovement"] = 2;
     }
 
-    public void Ability2(Bears Target)
+    public override void Ability2(Bears Target,int attack)
     {
         //High Damage Range Attack
-        Target.Hp -= 50;
+        Target.Hp -= (int)(attack* 1.5);
     }
 }

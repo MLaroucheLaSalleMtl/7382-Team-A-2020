@@ -65,6 +65,8 @@ public class Tile : MonoBehaviour
     public int Attackvalue { get => attackvalue; set => attackvalue = value; }
     public Material AttackMat { get => attackMat; set => attackMat = value; }
     public bool IsEnemy { get => isEnemy; set => isEnemy = value; }
+    public Material ObstacleMat { get => obstacleMat; set => obstacleMat = value; }
+    public MeshRenderer Renderer { get => renderer; set => renderer = value; }
 
     void Awake()
     {
@@ -75,7 +77,7 @@ public class Tile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        renderer = GetComponent<MeshRenderer>();
+        Renderer = GetComponent<MeshRenderer>();
     }
 
     // Update is called once per frame
@@ -83,15 +85,15 @@ public class Tile : MonoBehaviour
     {
        if (IsSelected)
         {
-            renderer.material = selectedTile;
+            Renderer.material = selectedTile;
         }
        else if (IsObstacle )
         {
-            renderer.material = obstacleMat;
+            Renderer.material = ObstacleMat;
         }
        else if(/*(isPlayer||IsEnemy)*/ /*&&*/(movementvalue<=0&&attackvalue<=0))
         {
-            renderer.material = defaultmat;
+            Renderer.material = defaultmat;
         }
     
     

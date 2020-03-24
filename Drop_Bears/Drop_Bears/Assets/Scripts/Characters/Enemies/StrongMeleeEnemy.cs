@@ -2,56 +2,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StrongMeleeEnemy : MonoBehaviour,IBear
+public class StrongMeleeEnemy : BearColor
 {
     #region Stats
-    int hp = 140;
-    int totalHp = 140;
-    int defense = 9;
-    int attackStrength = 35;
-    int movement = 4;
-    int attackRange = 1;
-    Color bearRace = Color.white;
-    int countdown = 2;
+    public StrongMeleeEnemy()
+    {
+        Hp = 140;
+        TotalHp = 140;
+        Defense = 9;
+        AttackStrength = 35;
+        Movement = 4;
+        AttackRange = 1;
+        BearRace = Color.white;
+        Countdown = 2;
+    }
     #endregion Stats
 
-    public static StrongMeleeEnemy instance = null;
 
-    private void Awake()
+ 
+
+    public override void Ability1(Bears target, int attack)
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+        throw new System.NotImplementedException();
     }
 
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
+   
 
-    public void MeleeAttack()
+    public override void Ability2(Bears target, int attack)
     {
-
+        throw new System.NotImplementedException();
     }
 
-    
-    public void Ability1(Bears Target)
+  
+    public override string GetAbility1Desc(int attack)
     {
-
+        throw new System.NotImplementedException();
     }
 
-    public void Ability2(Bears Target)
+    public override string GetAbility1Name()
     {
-
+        throw new System.NotImplementedException();
     }
-    
+
+
+    public override string GetAbility2Desc(int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAbility2Name()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+    public override string GetAttackDesc(int attack)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override string GetAttackName()
+    {
+        throw new System.NotImplementedException();
+    }
 }

@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class EnemyAIBase : MonoBehaviour
 {
-
-   [SerializeField] private List<AttackTilePairings> pairs = new List<AttackTilePairings>();
+    #region Variables
+    [SerializeField] private List<AttackTilePairings> pairs = new List<AttackTilePairings>();
     protected bool getstats = false;
     protected GameManager code;
-    
     [SerializeField] protected int attackRange;
     [SerializeField] protected int x;
     [SerializeField] protected int y;
@@ -21,15 +20,24 @@ public class EnemyAIBase : MonoBehaviour
     //private List<Vector2> playerPositions;
     protected AttackRange atkRangeMethods;
     protected SquadSelection squadManager;
-   [SerializeField] protected Tile finalAttackTarget;
+    [SerializeField] protected Tile finalAttackTarget;
     [SerializeField] private Vector2 finalMoveTarget;
-   protected bool getvariables=false;
+    protected bool getvariables = false;
     protected Movement mover;
     [SerializeField] private bool turnCompleted = false;
     protected float timer;
     protected Bears stats;
-    private bool acting=false;
+    private bool acting = false;
     [SerializeField] private bool takeTurn = false;
+    protected int lowesthp;
+    protected Tile tileToAttack;
+    protected Tile tileToMoveTo;
+
+    #endregion Variables
+    //not really neccesary but i wanna learn how to use delegates so imma try that
+    protected delegate Vector2 WeakestOnMap(Vector2 playerPos, int lowestHp);
+    protected delegate void WeakestInRange(int lowesthp, Tile tileToAttack, Tile TileToMoveTo);
+    #region Properties
     public Dictionary<Vector2, Tile> PlayersInRange { get => playersInRange; set => playersInRange = value; }
     public bool TakeTurn { get => takeTurn; set => takeTurn = value; }
     public bool OnlyOnce { get => onlyOnce; set => onlyOnce = value; }
@@ -37,6 +45,7 @@ public class EnemyAIBase : MonoBehaviour
     public bool Acting { get => acting; set => acting = value; }
     public List<AttackTilePairings> Pairs { get => pairs; set => pairs = value; }
     protected Vector2 FinalMoveTarget { get => finalMoveTarget; set => finalMoveTarget = value; }
+    #endregion Properties
 
     protected void ClearArrays()
     {
@@ -51,38 +60,38 @@ public class EnemyAIBase : MonoBehaviour
         ClearArrays();
         Acting = false;
         TurnCompleted = true;
-     
+
     }
-    
-    protected IEnumerator EnemyHeal(float timer,Tile tileToHeal)
+
+    protected IEnumerator EnemyHeal(float timer, Tile tileToHeal)
     {
         yield return new WaitForSeconds(timer);
         if (tileToHeal.GetComponentInChildren<Bears>() != null)
         {
             Bears target = tileToHeal.GetComponentInChildren<Bears>();
             target.Hp += (int)(stats.AttackStrength * healMult);
-            if (target.Hp>target.TotalHP)
+            if (target.Hp > target.TotalHP)
             {
                 target.Hp = target.TotalHP;
             }
-                }
+        }
     }
     protected IEnumerator SelfHeal(float timer)
     {
         yield return new WaitForSeconds(timer);
         stats.Hp += (int)(stats.AttackStrength * healMult);
-        if(stats.Hp>stats.TotalHP)
+        if (stats.Hp > stats.TotalHP)
         {
             stats.Hp = stats.TotalHP;
         }
     }
-    protected IEnumerator EnemyAttack(float timer,Tile tileToAttack)
+    protected IEnumerator EnemyAttackEnum(float timer, Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
-        stats.Attack(tileToAttack);
+        stats.EnemyAttack(tileToAttack);
         //trigger for attack animations 
     }
-   protected void AssignEnemyAttackSpaces ()
+    protected void AssignEnemyAttackSpaces()
     {
         foreach (GameObject tile in tilesInMovementRange)
         {
@@ -96,7 +105,7 @@ public class EnemyAIBase : MonoBehaviour
             atkRangeMethods.GetAttackRangeIgnoreObstaclesEnemyHealer(stats.Range, tile.GetComponent<Tile>(), this);
         }
     }
-
+    
     protected void CheckForPlayersInRange()
     {
         foreach (GameObject playertile in squadManager.Squad)
@@ -104,7 +113,7 @@ public class EnemyAIBase : MonoBehaviour
             #region ZachNotes
             //this takes the players positions and cross refernces them with the enemies attack range
             #endregion ZachNotes
-            if (tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>().Attackvalue > 0&&tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponentInChildren<Bears>().IsAlive)
+            if (tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>().Attackvalue > 0 && tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponentInChildren<Bears>().IsAlive)
             {
                 PlayersInRange.Add(playertile.GetComponent<Movement>().Position, tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>());
             }
@@ -137,19 +146,19 @@ public class EnemyAIBase : MonoBehaviour
                 }
             }
         }
-        
+
     }
+    #region nondelegate
     protected Vector2 FindWeakestPlayerOnMap()
     {
         Vector2 playerPos = new Vector2();
         int lowestHp = -1;
-        //Im thinking of having the opponent rush down the player so move closest to player with lowest hp
         foreach (GameObject player in squadManager.Squad)
         {
             #region ZachNotes
             //checks all players for lowest hp takes that position
             #endregion ZachNotes
-            if (lowestHp == -1 &&player.GetComponent<Bears>().IsAlive)
+            if (lowestHp == -1 && player.GetComponent<Bears>().IsAlive)
             {
                 lowestHp = player.GetComponent<Bears>().Hp;
                 playerPos = player.GetComponent<Movement>().Position;
@@ -165,9 +174,11 @@ public class EnemyAIBase : MonoBehaviour
     }
     protected Vector2 FindWeakestEnemyOnMap()
     {
+        //this dont account for obstacles so its abit weird
+        //i would need to basically figure out a* to account for obstacles
         Vector2 playerPos = new Vector2();
         int lowestHp = -1;
-       
+
         foreach (GameObject enemy in EnemyManager.instance.Enemies)
         {
             #region ZachNotes
@@ -187,8 +198,97 @@ public class EnemyAIBase : MonoBehaviour
         }
         return playerPos;
     }
-    //this dont account for obstacles so its abit weird
-    //i would need to basically figure out a* to account for obstacles
+    #endregion nondelegate
+    #region delegateversion
+    protected Vector2 PlayerFind(Vector2 playerPos, int lowestHp)
+    {
+        foreach (GameObject player in squadManager.Squad)
+        {
+            #region ZachNotes
+            //checks all players for lowest hp takes that position
+            #endregion ZachNotes
+            if (lowestHp == -1 && player.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = player.GetComponent<Bears>().Hp;
+                playerPos = player.GetComponent<Movement>().Position;
+
+            }
+            else if (lowestHp > player.GetComponent<Bears>().Hp && player.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = player.GetComponent<Bears>().Hp;
+                playerPos = player.GetComponent<Movement>().Position;
+            }
+        }
+        return playerPos;
+    }
+    protected Vector2 EnemyFind(Vector2 playerPos, int lowestHp)
+    {
+        foreach (GameObject enemy in EnemyManager.instance.Enemies)
+        {
+            #region ZachNotes
+            //checks all players for lowest hp takes that position
+            #endregion ZachNotes
+            if (lowestHp == -1 && enemy.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = enemy.GetComponent<Bears>().Hp;
+                playerPos = enemy.GetComponent<Movement>().Position;
+
+            }
+            else if (lowestHp > enemy.GetComponent<Bears>().Hp && enemy.GetComponent<Bears>().IsAlive)
+            {
+                lowestHp = enemy.GetComponent<Bears>().Hp;
+                playerPos = enemy.GetComponent<Movement>().Position;
+            }
+        }
+        return playerPos;
+
+    }
+    protected Vector2 FindWeakestOnMap(WeakestOnMap typetofind)
+    {
+        
+        Vector2 playerPos = new Vector2();
+        int lowestHp = -1;
+        return (typetofind(playerPos,lowestHp));
+        
+    }
+  
+    #endregion delegateversion
+    protected void FindWeakestPlayerInRange()
+    {
+        if (pairs.Count <= 0)
+            return;
+         lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
+         tileToAttack = Pairs[0].PlayerTile;
+         tileToMoveTo = Pairs[0].EnemyTile;
+
+        foreach (AttackTilePairings attackpairs in Pairs)
+        {
+            if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
+            {
+                lowesthp = attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp;
+                tileToAttack = attackpairs.PlayerTile;
+                tileToMoveTo = attackpairs.EnemyTile;
+            }
+        }
+    }
+    protected void FindWeakestEnemyInRange()
+    {
+        if (pairs.Count <= 0)
+            return;
+        lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
+        tileToAttack = Pairs[0].PlayerTile;
+        tileToMoveTo = Pairs[0].EnemyTile;
+
+        foreach (AttackTilePairings attackpairs in Pairs)
+        {
+            if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
+            {
+                lowesthp = attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp;
+                tileToAttack = attackpairs.PlayerTile;
+                tileToMoveTo = attackpairs.EnemyTile;
+            }
+        }
+    }
     protected void FindTileNearWeakestPlayerOnMap(Vector2 playerPos,GameObject startingtile)
     {
 
@@ -324,10 +424,7 @@ public class EnemyAIBase : MonoBehaviour
         mover = GetComponent<Movement>();
         stats = GetComponent<Bears>();
     }
-    void Start()
-    {
-       // GetVariables();
-    }
+   
 
     // Update is called once per frame
    

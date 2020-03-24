@@ -9,6 +9,10 @@ public class TileSelector : MonoBehaviour
     [SerializeField] private TileManager tilemanager;
     [SerializeField] private GameManager code;
     [SerializeField] private SquadSelection squadManager;
+    [SerializeField] private int range;
+    private Tile currentTileShort;
+   private Bears currentPlayer;
+    public bool attackConf=false;
     private bool tilecheck = false;
     private GameObject currentTile;
     [SerializeField]private bool canBeSelected=true;
@@ -16,6 +20,9 @@ public class TileSelector : MonoBehaviour
     private int abilityToUse;
     public GameObject CurrentTile { get => currentTile; set => currentTile = value; }
     public int AbilityToUse { get => abilityToUse; set => abilityToUse = value; }
+    public int Range { get => range; set => range = value; }
+    public Tile CurrentTileShort { get => currentTileShort; set => currentTileShort = value; }
+
     public int x = 0;
     public int y = 0;
     private bool isSubmitted = false;
@@ -93,7 +100,34 @@ public class TileSelector : MonoBehaviour
         x = 0;
         y = 0;
     }
-
+    private void ReplaceTileMat(Tile tile)
+    {
+        if (tile.Movementvalue > 0)
+        {
+            tile.Renderer.material = tile.Movemat;
+        }
+        else if(tile.Attackvalue>0)
+        {
+            tile.Renderer.material = tile.AttackMat;
+        }
+        else if(tile.IsObstacle)
+        {
+            tile.Renderer.material = tile.ObstacleMat;
+        }
+        else
+        {
+            tile.Renderer.material = tile.Defaultmat;
+        }
+    }
+    public void SetAttackRangeJustOnceToFalse()
+    {
+        squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
+    }
+    public void ExecuteAttack()
+    {
+        currentPlayer.PlayerAttack(CurrentTileShort, abilityToUse);
+        currentPlayer.HasAttacked = true;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -104,6 +138,7 @@ public class TileSelector : MonoBehaviour
         //  if (code.CurrPhase==GameManager.Phase.attackPhase||code.CurrPhase==GameManager.Phase.movementPhase)
         if (!PauseMenu.isGamePaused)
         {
+           
             //canBeSelected is the variable that allows you to maneover the grid
             if (canBeSelected)
             {
@@ -118,7 +153,7 @@ public class TileSelector : MonoBehaviour
                     tilecheck = true;
 
                 }
-                Tile currentTileShort = CurrentTile.GetComponent<Tile>();
+                CurrentTileShort = CurrentTile.GetComponent<Tile>();
                 #region ZachNotes
                 //We can replace this with the new input system later
                 //Also maybe support mouse if you guys want
@@ -126,22 +161,30 @@ public class TileSelector : MonoBehaviour
                 if (/*Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0*/ x < 0 && /*Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical"))*/ Mathf.Abs(x) > Mathf.Abs(y))
                 {
                     //MoveTile Moves the selected tile it takes a x and y coordinate to move too
-                    MoveTile(new Vector2(currentTileShort.Loc.x - 1, currentTileShort.Loc.y), currentTileShort);
+                    Tile subTile = currentTileShort;
+                    ReplaceTileMat(subTile);
+                    MoveTile(new Vector2(CurrentTileShort.Loc.x - 1, CurrentTileShort.Loc.y), CurrentTileShort);
                     ClearValue();
                 }
                 else if (/*Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal")*/x > 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) > Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
                 {
-                    MoveTile(new Vector2(currentTileShort.Loc.x + 1, currentTileShort.Loc.y), currentTileShort);
+                    Tile subTile = currentTileShort;
+                    ReplaceTileMat(subTile);
+                    MoveTile(new Vector2(CurrentTileShort.Loc.x + 1, CurrentTileShort.Loc.y), CurrentTileShort);
                     ClearValue();
                 }
                 else if (/*Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical")*/y > 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) < Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
                 {
-                    MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y + 1), currentTileShort);
+                    Tile subTile = currentTileShort;
+                    ReplaceTileMat(subTile);
+                    MoveTile(new Vector2(CurrentTileShort.Loc.x, CurrentTileShort.Loc.y + 1), CurrentTileShort);
                     ClearValue();
                 }
                 else if (/*Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical")*/y < 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) < Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
                 {
-                    MoveTile(new Vector2(currentTileShort.Loc.x, currentTileShort.Loc.y - 1), currentTileShort);
+                    Tile subTile = currentTileShort;
+                    ReplaceTileMat(subTile);
+                    MoveTile(new Vector2(CurrentTileShort.Loc.x, CurrentTileShort.Loc.y - 1), CurrentTileShort);
                     ClearValue();
                 }
                 if (/*Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")*/isSubmitted)
@@ -150,23 +193,25 @@ public class TileSelector : MonoBehaviour
                     //so this will pass an to the player depending on what we want to do 
                     //currently we only pass it the move;
                     #endregion ZachNotes
-                    if (currentTileShort.Movementvalue > 0 && !currentTileShort.IsPlayer && !currentTileShort.IsEnemy)
+                    if (CurrentTileShort.Movementvalue > 0 && !CurrentTileShort.IsPlayer && !CurrentTileShort.IsEnemy)
                     {
                         squadManager.Squad[squadManager.Selected].GetComponent<Movement>().MoveDestination = CurrentTile;
                         squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
 
 
                     }
-                    if (currentTileShort.Attackvalue > 0 && (currentTileShort.IsPlayer || currentTileShort.IsEnemy) && /*code.AttackPhase */code.CurrPhase == GameManager.Phase.attackPhase)
+                    if (CurrentTileShort.Attackvalue > 0 && /*(currentTileShort.IsPlayer || currentTileShort.IsEnemy) &&*/ /*code.AttackPhase */code.CurrPhase == GameManager.Phase.attackPhase)
                     {
-                        squadManager.Squad[squadManager.Selected].GetComponent<Bears>().PlayerAttack(currentTileShort, abilityToUse);
-                        squadManager.Squad[squadManager.Selected].GetComponent<Bears>().HasAttacked = true;
-
+                        currentPlayer = squadManager.Squad[squadManager.Selected].GetComponent<Bears>();
+                        code.CurrPhase = GameManager.Phase.confPhase;
+                        
+             
+                     
 
                     }
                     
                 }
-                if (/*Input.GetButton("Back")*/isCancel)
+                if (/*Input.GetButton("Back")*/isCancel&&code.CurrPhase!=GameManager.Phase.confPhase)
                 {
                     Movement.ClearTileMovementValues();
                     AttackRange.ClearTileAttackValues();
@@ -178,7 +223,8 @@ public class TileSelector : MonoBehaviour
                 }
 
             }
-                if (code.CurrPhase == GameManager.Phase.attackPhase || code.CurrPhase == GameManager.Phase.movementPhase||code.CurrPhase==GameManager.Phase.mapPhase)
+          
+            if (code.CurrPhase == GameManager.Phase.attackPhase || code.CurrPhase == GameManager.Phase.movementPhase||code.CurrPhase==GameManager.Phase.mapPhase)
                 {
                 canBeSelected = true;
 
@@ -196,10 +242,21 @@ public class TileSelector : MonoBehaviour
                 if (CurrentTile != null)
                 {
                     CurrentTile.GetComponent<Tile>().IsSelected = false;
-                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().DisplayMovementRange();
+                  
                     CurrentTile = null;
                 }
 
+            }
+            if (code.CurrPhase == GameManager.Phase.confPhase)
+            {
+                if (isCancel)
+                {
+                    code.CurrPhase = GameManager.Phase.attackPhase;
+
+                    squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
+
+
+                }
             }
         }
         ResetXAndY();

@@ -19,13 +19,15 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion Singleton
-   public enum Phase { menuPhase,attackPhase,enemyPhase,movementPhase,mapPhase}
+   public enum Phase { menuPhase,attackPhase,enemyPhase,movementPhase,mapPhase,confPhase}
     [SerializeField]private Phase currPhase;
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private GameObject selectedPlayer;
     [SerializeField] private GameObject selectedTile;
     [SerializeField] private TileManager tilemanager;
+    [SerializeField] private GameObject confPanel;
     private TileSelector tileSelector;
+    private bool enteredConfPhase = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     //public delegate void switchToPlayerTurnDelegate();
@@ -215,25 +217,22 @@ public class GameManager : MonoBehaviour
                     break;
                     case Phase.attackPhase:
                     case Phase.movementPhase:
+                    case Phase.mapPhase:
                     interactionMenu.SetActive(false);
-                    statsText.gameObject.SetActive(false);
-                    break;
-                case Phase.mapPhase:
-                        interactionMenu.SetActive(false);
                     statsText.gameObject.SetActive(true);
-                    if(tileSelector.CurrentTile!=null)
+                    GetStatsText();
+                     confPanel.SetActive(false);
+            enteredConfPhase = false;
+
+                    break;
+                    case Phase.confPhase:
+                    confPanel.SetActive(true);
+                    if(!enteredConfPhase)
                     {
-                        //this is for the stats display
-                        Tile tileSelected = tileSelector.CurrentTile.GetComponent<Tile>();
-                        if (tileSelected.IsEnemy || tileSelected.IsPlayer)
-                        {
-                            Bears display = tileSelected.GetComponentInChildren<Bears>();
-                            statsText.text = display.ToString();
-                        }
-                        else
-                            statsText.text = "";
+                        AttackRange.ClearTileAttackValues();
+                        enteredConfPhase = true;
                     }
-                        break;
+                    break;
                     case Phase.enemyPhase:
                     substracted = false;
                         interactionMenu.SetActive(false);
@@ -274,40 +273,25 @@ public class GameManager : MonoBehaviour
         {
             losePanel.SetActive(true);
         }
+        if(currPhase!=Phase.confPhase)
+        {
+            confPanel.SetActive(false);
+            enteredConfPhase = false;
+          
+        }
     }
 
-
-    //[SerializeField] private GameObject[] supportCheck;
-    //[SerializeField] private GameObject[] specialCheck;
-    //private SquadSelection selectedSquad;
-    //void CheckAbilities()
-    //{
-    //    if (s == false)
-    //    {
-    //        supportCheck[squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        supportCheck[squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>().avatarNumber].SetActive(true);
-    //    }
-
-    //    if (Special == false)
-    //    {
-    //        specialCheck[squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        supportCheck[squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>().avatarNumber].SetActive(true);
-    //    }
-    //}
     void HighlightTileUnderSelectedPlayer(GameObject selectedplayer)
     {
-        foreach (GameObject player in squadSelector.Squad)
+        if (selectedPlayer != null)
         {
-            if (player == selectedplayer)
-                selectedplayer.GetComponentInParent<Tile>().IsSelected = true;
-            else
-                player.GetComponentInParent<Tile>().IsSelected = false;
+            foreach (GameObject player in squadSelector.Squad)
+            {
+                if (player == selectedplayer)
+                    selectedplayer.GetComponentInParent<Tile>().IsSelected = true;
+                else
+                    player.GetComponentInParent<Tile>().IsSelected = false;
+            }
         }
     }
     private void EnableAttackBtns()
@@ -332,29 +316,7 @@ public class GameManager : MonoBehaviour
         Ability2Btn.interactable = false;
         Ability2Btn.interactable = false;
     }
-    void CheckPlayerStatus(int totalPlayers)
-    {
-        selectedPlayer = squadSelector.Squad[squadSelector.Selected];
 
-        for (int i = 0; i < totalPlayers; i++)
-        {
-            //to see if selected character can play
-            //Dont know which script do the bears inherit from so it can be changed after
-            if (selectedPlayer.GetComponent<Bears>().IsAlive == true)
-            {
-                //Do the menu functions/actions
-
-                //EndTurn button for each character = -1 endturn
-
-            }
-            else if (selectedPlayer.GetComponent<Bears>().IsAlive == false)
-            {
-                //If a character is dead endturn will countdown already
-                //ex. if 4 are alive and 1 is dead, endturn will become 4
-                endTurn -= 1;
-            }
-        }
-    }
     IEnumerator CheckTurns()
     {
         bool check = false;
@@ -378,9 +340,9 @@ public class GameManager : MonoBehaviour
                 squadSelector.Squad[i].GetComponent<Movement>().Movementcheck = false;
 
                 //Reset Stats
-                squadSelector.Squad[i].GetComponent<Bears>().AttackStrength = squadSelector.Squad[i].GetComponent<Bears>().BearColor.AttackStrength;
-                squadSelector.Squad[i].GetComponent<Bears>().Defense = squadSelector.Squad[i].GetComponent<Bears>().BearColor.Defense;
-                squadSelector.Squad[i].GetComponent<Bears>().Movement = squadSelector.Squad[i].GetComponent<Bears>().BearColor.Movement;
+                squadSelector.Squad[i].GetComponent<Bears>().AttackStrength = squadSelector.Squad[i].GetComponent<Bears>().BearJob.AttackStrength;
+                squadSelector.Squad[i].GetComponent<Bears>().Defense = squadSelector.Squad[i].GetComponent<Bears>().BearJob.Defense;
+                squadSelector.Squad[i].GetComponent<Bears>().Movement = squadSelector.Squad[i].GetComponent<Bears>().BearJob.Movement;
                 squadSelector.Squad[i].GetComponent<Bears>().Invincible = false;
             }
             //EnemyPhase = true;
@@ -389,5 +351,20 @@ public class GameManager : MonoBehaviour
             Debug.Log(currPhase);
         }
         yield return new WaitForSeconds(.1f);
+    }
+    void GetStatsText()
+    {
+        if (tileSelector.CurrentTile != null)
+        {
+            //this is for the stats display
+            Tile tileSelected = tileSelector.CurrentTile.GetComponent<Tile>();
+            if (tileSelected.IsEnemy || tileSelected.IsPlayer)
+            {
+                Bears display = tileSelected.GetComponentInChildren<Bears>();
+                statsText.text = display.ToString();
+            }
+            else
+                statsText.text = "";
+        }
     }
 }

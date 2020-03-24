@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GreenBear : MonoBehaviour, IBear
+public class GreenBear : BearColor
 {
     #region UnitNotes
     //Deffensive Unit
@@ -17,61 +17,62 @@ public class GreenBear : MonoBehaviour, IBear
     //Special Ability
     //Nullifies Damage for 1 Turn
     #endregion UnitNotes
-    #region Singleton
-    public static GreenBear instance;
-    private void Awake()
+
+
+    public GreenBear()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
+        Hp = 150;
+        TotalHp = 150;
+        Defense = 10;
+        AttackStrength = 30;
+        Movement = 2;
+        AttackRange = 2;
+        BearRace = Color.green;
+        Countdown = 2;
+        FirstAbility = new HunkerDown();
+        Special = new Juggernaut();
     }
-    #endregion Singleton
 
-    #region BearFields
-    int hp = 150;
-    int totalHp = 150;
-    int defense = 10;
-    int attackStrength = 30;
-    int movement = 2;
-    int attackRange = 2;
-    Color bearRace = Color.green;
-    int countdown = 2;
-    #endregion BearFields
-
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
-
-    public void MeleeAttack()
+    public override string GetAttackName()
     {
-        
+        return "Skull Smash";
     }
-    
+    public override string GetAttackDesc(int attack)
+    {
+        return "I HATE SKULLS\nDamage = " + attack.ToString();
+    }
+    public override string GetAbility1Name()
+    {
+        return "Hunker Down";
+    }
+    public override string GetAbility1Desc(int attack)
+    {
+        return "Double Defence (One Turn)";
+    }
+    public override string GetAbility2Name()
+    {
+        return "Juggernaut";
+    }
+    public override string GetAbility2Desc(int attack)
+    {
+       
+        return "Im the juggernaut bitch\nBecome Immune (one turn) ";
+    }
 
- 
 
-    public void Ability1(Bears Target)
+
+    public override void Ability1(Bears Target,int attack)
     {
         //Increases Defense
         Target.Defense *= 2;
         Target.themBuffs["buffDefence"] = 2;
     }
 
-    public void Ability2(Bears Target)
+    public override void Ability2(Bears Target,int attack)
     {
         //Nullifies Damage For 1 Turn 
         Target.Invincible = true;
         Target.themBuffs["invincible"] = 2;
-        
+
     }
 }

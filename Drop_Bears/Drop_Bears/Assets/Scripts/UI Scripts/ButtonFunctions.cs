@@ -75,7 +75,15 @@ public class ButtonFunctions : MonoBehaviour
 
         }
     }
-
+    public void ConfirmAttack()
+    {
+        TileSelector.instance.attackConf = true;
+    }
+    public void CancelAttack()
+    {
+        AttackRange.ClearTileAttackValues();
+        GameManager.instance.CurrPhase = GameManager.Phase.attackPhase;
+    }
     public void EndTurn()
     {
         SquadSelection.instance.Squad[SquadSelection.instance.Selected].GetComponent<Bears>().TurnComplete = true;

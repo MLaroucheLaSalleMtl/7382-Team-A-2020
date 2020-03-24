@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BlackBear : MonoBehaviour, IBear
+public class BlackBear : BearColor
 {
     #region UnitNotes
     //Offensive Melee Unit 
@@ -16,58 +16,61 @@ public class BlackBear : MonoBehaviour, IBear
     //Special Ability
     //High Damage Melee Attack
     #endregion UnitNotes
-    #region Singleton
-    public static BlackBear instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-    #endregion Singleton
-    #region BearFields
-    int hp = 100;
-    int totalHp = 100;
-    int defense = 7;
-    int attackStrength = 40;
-    int movement = 3;
-    int attackRange = 3;
-    Color bearRace = Color.black;
-    int countdown = 2;
-    #endregion BearFields
-     
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
 
-    public void MeleeAttack()
+    public BlackBear()
     {
-
+        Hp = 100;
+        TotalHp = 100;
+        Defense = 7;
+        AttackStrength = 40;
+        Movement = 3;
+        AttackRange = 3;
+        BearRace = Color.black;
+        Countdown = 2;
+        FirstAbility = new BeefUp();
+        Special = new DriveBy();
     }
-    
+
+
+    public override string GetAttackName()
+    {
+        return "Black Lightning";
+    }
+    public override string GetAttackDesc(int attack)
+    {
+        return "As swift as they come: \nDamage = " + attack.ToString();
+    }
+    public override string GetAbility1Name()
+    {
+        return "Beef Up";
+    }
+    public override string GetAbility1Desc(int attack)
+    {
+        return "Eat Your Beans: \nAttack Up x1.5 (Two Turns)";
+    }
+    public override string GetAbility2Name()
+    {
+        return "Drive By";
+    }
+    public override string GetAbility2Desc(int attack)
+    {
+        int damage = (int)(attack * 1.5);
+        return "Load Up A SPECIAL bullet:\nDamage = " + damage;
+    }
+
 
     // Start is called before the first frame update
 
-    public void Ability1(Bears Target)
+    public override void Ability1(Bears Target,int attack)
     {
         //Increases Attack Damage of Target
-        Target.AttackStrength *= (int)1.5;
+        Target.AttackStrength = (int)(1.5*Target.AttackStrength);
         Target.themBuffs["buffAttack"] = 2;
     }
 
-    public void Ability2(Bears Target)
+    public override void Ability2(Bears Target,int attack)
     {
         //High Damage Melee Ability
-        Target.Hp -= 60;
+        Target.Hp -= (int)(attack * 1.5);
     }
 }

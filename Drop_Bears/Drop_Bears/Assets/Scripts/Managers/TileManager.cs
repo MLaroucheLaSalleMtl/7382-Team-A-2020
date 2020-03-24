@@ -50,8 +50,13 @@ public class TileManager : MonoBehaviour
         //GetTileDic takes the coordinates of a tile and will give you that gameobject (Not the tile script though)
         //so if you need to manipulate a specific tile use this
         #endregion ZachNotes
-        if (TileDic[coordinates] != null)
-            return TileDic[coordinates];
+        if (TileDic.ContainsKey(coordinates))
+        {
+            if (TileDic[coordinates] != null)
+                return TileDic[coordinates];
+            else
+                return null;
+        }
         else
             return null;
     }

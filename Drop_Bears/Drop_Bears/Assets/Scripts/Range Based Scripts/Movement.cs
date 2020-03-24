@@ -11,7 +11,7 @@ public class Movement : MonoBehaviour
    [SerializeField] private int y;
     [SerializeField] private Vector2 position;
     //here for testing purposes 
-
+    private bool onlyOnce=false;
     //navmesh stuff
     private NavMeshAgent agent;
 
@@ -26,6 +26,7 @@ public class Movement : MonoBehaviour
     private GameObject moveDestination;
     private float timer = 1f;
     private GameManager code;
+    private Animator anim;
    
     public int X { get => x; set => x = value; }
     public int Y { get => y; set => y = value; }
@@ -151,16 +152,7 @@ public class Movement : MonoBehaviour
         return;
 
     }
-    //public void TurnOffMovement()
-    //{
-    //    #region ZachNotes
-    //    //I need this for an invoke it just tells the game the player aint moving
-    //    #endregion ZachNotes
-    //    Moving = false;
-    //    code.MovementPhase = false;
-    //    code.MenuPhase = true;
 
-    //}
     public void TurnOffMovementEnum()
     {
         #region ZachNotes
@@ -168,6 +160,7 @@ public class Movement : MonoBehaviour
         #endregion ZachNotes
         Moving = false;
         code.CurrPhase = GameManager.Phase.menuPhase;
+        anim.SetBool("isMoving", false);
 
     }
     // VERY IMPORTANT ALSO CALL THIS METHOD WHENEVER SWITCHING CHARACTERS AND MOVEMENT RANGES HAVE BEEN GENERATED
@@ -297,7 +290,7 @@ public class Movement : MonoBehaviour
     }
     //So this lerp is weird needs work to get the player from point a to be
     //Smooth movement would need to be added  in this MoveToIndividualTile;
-
+    public Vector3 travelpoint;
     private IEnumerator MoveToIndividualTile(Vector2 tile, float time, TileManager tilemanager)
     {
         #region ZachNotes
@@ -308,22 +301,20 @@ public class Movement : MonoBehaviour
         yield return new WaitForSeconds(time);
         Debug.Log(tile);
         float timepassed = 0;
-        Vector3 travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
+        travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
         //while (this.transform.position != travelpoint)
         //{
         timepassed += Time.deltaTime;
         //this.transform.position = Vector3.Lerp(this.transform.position, travelpoint, timepassed/2);
-        //if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
-        //{
+        if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
+        {
             this.agent.destination = travelpoint;
-            //Anim.setbool("IsMove", true);
-        //}
-        //else
-        //{
-            //Anim.setbool("IsMove", false);
-        //}
-        //}
-        
+            anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            anim.SetBool("isMoving", false);
+        }
     }
     private Tile PathChecker(Tile tileshort,Tile nexttile,Stack<Vector2> moves)
     {
@@ -356,11 +347,11 @@ public class Movement : MonoBehaviour
             Tile tileshort = tile.GetComponent<Tile>();
             if (tileshort.Movementvalue > 0 && !tileshort.IsSelected)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().Movemat;
+                tileshort.Renderer.material = tileshort.Movemat;
             }
             else if (tileshort.Movementvalue == 0 && !tileshort.IsObstacle && !tileshort.IsSelected)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().Defaultmat;
+                tileshort.Renderer.material = tileshort.Defaultmat;
             }
         }
 
@@ -395,6 +386,7 @@ public class Movement : MonoBehaviour
         tilemanager = TileManager.instance;  
         code = GameManager.instance;
         agent = GetComponent<NavMeshAgent>();
+        anim = GetComponent<Animator>();
       
     }
 
@@ -408,8 +400,12 @@ public class Movement : MonoBehaviour
            // if(code.CurrPhase==GameManager.Phase.movementPhase&& GetComponent<Bears>().Selected)
             if (code.CurrPhase==GameManager.Phase.movementPhase && GetComponent<Bears>().Selected)
             {
-                if(tilemanager.TileDic!=null)
-                DisplayMovementRange();
+                if (tilemanager.TileDic != null)
+                    if (!onlyOnce)
+                    {
+                        DisplayMovementRange();
+                        onlyOnce = true;
+                    }
                 if (!Movementcheck && !Moving)
                 {
                     #region ZachFuckUps
@@ -422,6 +418,7 @@ public class Movement : MonoBehaviour
                     //starting tile
                     #endregion ZachFuckUps
                     GameObject startingtile = tilemanager.TileDic[new Vector2(this.X, this.Y)];
+                    
                     AssignTileMovementValue(startingtile, stats.Movement+1);
                     Movementcheck = true;
                     //AssignTileMovementValue(tiles[half],move+1);
@@ -447,9 +444,11 @@ public class Movement : MonoBehaviour
                     ClearTileMovementValues(tilemanager);
                     Invoke("TurnOffMovementEnum", movementTimer + .1f);
                     hasMoved = true;
-
+                    
                 }
             }
+            onlyOnce = false;
+        
         }
 
     }

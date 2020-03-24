@@ -33,6 +33,8 @@ ScriptsOnlyBuild:
     - Cinemachine.CinemachineFramingTransposer
     - Cinemachine.CinemachinePipeline
     - Cinemachine.CinemachineVirtualCamera
+    Unity.CollabProxy.Editor.dll:
+    - UnityEditor.CollabToolbarWindow
     Unity.InputSystem.dll:
     - UnityEngine.InputSystem.InputActionAsset
     - UnityEngine.InputSystem.InputSettings
@@ -136,75 +138,75 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12256}
     - Class: 114
-      Script: {instanceID: 12336}
+      Script: {instanceID: 12338}
     - Class: 114
-      Script: {instanceID: 12378}
+      Script: {instanceID: 12380}
     - Class: 114
-      Script: {instanceID: 12384}
+      Script: {instanceID: 12386}
     - Class: 114
-      Script: {instanceID: 12406}
+      Script: {instanceID: 12408}
     - Class: 114
-      Script: {instanceID: 12442}
+      Script: {instanceID: 12444}
     - Class: 114
-      Script: {instanceID: 12482}
+      Script: {instanceID: 12484}
     - Class: 114
-      Script: {instanceID: 12666}
+      Script: {instanceID: 12668}
     - Class: 114
-      Script: {instanceID: 12676}
+      Script: {instanceID: 12678}
     - Class: 114
-      Script: {instanceID: 12722}
+      Script: {instanceID: 12724}
     - Class: 114
-      Script: {instanceID: 12752}
+      Script: {instanceID: 12754}
     - Class: 114
-      Script: {instanceID: 12800}
+      Script: {instanceID: 12802}
     - Class: 114
-      Script: {instanceID: 12882}
+      Script: {instanceID: 12884}
     - Class: 114
-      Script: {instanceID: 12942}
+      Script: {instanceID: 12944}
     - Class: 114
-      Script: {instanceID: 12966}
+      Script: {instanceID: 12968}
     - Class: 114
-      Script: {instanceID: 13080}
+      Script: {instanceID: 13082}
     - Class: 114
-      Script: {instanceID: 13104}
+      Script: {instanceID: 13106}
     - Class: 114
-      Script: {instanceID: 13124}
+      Script: {instanceID: 13126}
     - Class: 114
-      Script: {instanceID: 13168}
+      Script: {instanceID: 13170}
     - Class: 114
-      Script: {instanceID: 13320}
+      Script: {instanceID: 13322}
     - Class: 114
-      Script: {instanceID: 13474}
+      Script: {instanceID: 13476}
     - Class: 114
-      Script: {instanceID: 13492}
+      Script: {instanceID: 13494}
     - Class: 114
-      Script: {instanceID: 13550}
+      Script: {instanceID: 13552}
     - Class: 114
-      Script: {instanceID: 13584}
+      Script: {instanceID: 13586}
     - Class: 114
-      Script: {instanceID: 13652}
+      Script: {instanceID: 13654}
     - Class: 114
-      Script: {instanceID: 13842}
+      Script: {instanceID: 13844}
     - Class: 114
-      Script: {instanceID: 13932}
+      Script: {instanceID: 13934}
     - Class: 114
-      Script: {instanceID: 13944}
+      Script: {instanceID: 13946}
     - Class: 114
-      Script: {instanceID: 13976}
+      Script: {instanceID: 13978}
     - Class: 114
-      Script: {instanceID: 14008}
+      Script: {instanceID: 14010}
     - Class: 114
-      Script: {instanceID: 14190}
+      Script: {instanceID: 14192}
     - Class: 114
-      Script: {instanceID: 14230}
+      Script: {instanceID: 14232}
     - Class: 114
-      Script: {instanceID: 14380}
+      Script: {instanceID: 14382}
     - Class: 114
-      Script: {instanceID: 14472}
+      Script: {instanceID: 14474}
     - Class: 114
-      Script: {instanceID: 14514}
+      Script: {instanceID: 14516}
     - Class: 114
-      Script: {instanceID: 17998}
+      Script: {instanceID: 18064}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -344,7 +346,7 @@ ScriptsOnlyBuild:
     className: TerrainGroup
   - hash:
       serializedVersion: 2
-      Hash: ecb9f96085c3dda08f89c8bc99a012b2
+      Hash: 75dae024ebcf0d9cb466cc959e08467b
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Bears
@@ -618,6 +620,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: EnemyAiAgressiveV2
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: HealerEnemy
   - hash:
       serializedVersion: 2
       Hash: 7e6ed836cbaa230e56d6a2bbae1b9bb5
@@ -1256,7 +1264,7 @@ ScriptsOnlyBuild:
     className: AmbientOcclusion
   - hash:
       serializedVersion: 2
-      Hash: 3415a55fc71229088549bd78b58d8b0b
+      Hash: c9e67847c2c49f875b10a79379955671
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: BearSFX

@@ -14,7 +14,7 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
     void Update()
     {
        //if(code.Phase=enemyPhase &&TakeTurn)
-        if (code.EnemyPhase && TakeTurn )
+        if (code.CurrPhase==GameManager.Phase.enemyPhase && TakeTurn )
         {
             if (!OnlyOnce && stats.IsAlive)
             {
@@ -25,42 +25,28 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 AssignTileMovementValue(startingTile, stats.Movement + 1);
                 AssignEnemyAttackSpaces();
 
-                if (Pairs.Count != 0)
+                if (Pairs.Count != 0 &&tilesInMovementRange.Count!=0)
                 {
-                    int lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
-                    Tile tileToAttack = Pairs[0].PlayerTile;
-                    Tile tileToMoveTo = Pairs[0].EnemyTile;
 
-                    foreach (AttackTilePairings attackpairs in Pairs)
-                    {
-                        if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
-                        {
-                            lowesthp = attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp;
-                            tileToAttack = attackpairs.PlayerTile;
-                            tileToMoveTo = attackpairs.EnemyTile;
-                        }
-                    }
-                    //if (tileToMoveTo != startingTile.GetComponent<Tile>())
-                    //    tileToMoveTo.IsEnemy = true;
+                    FindWeakestPlayerInRange();
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
-                   // stats.EnemyAttack(tileToAttack, timer);
-                    stats.Attack(tileToAttack);
+                   StartCoroutine( EnemyAttack(timer+.5f, tileToAttack));
+                    tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     AttackRange.ClearTileAttackValues(tileManager);
                     Movement.ClearTileMovementValues(tileManager);
-                    Invoke("EndTurn", timer);
+                    //this would need to be commented
+                    Invoke("EndTurn", timer+.5f);
                 }
                 else if (Pairs.Count==0 && stats.Movement > 0)
                 {
-                    Vector2 playerPos= FindWeakestPlayerOnMap();
-                    FindTileNearWeakestPlayerOnMap(playerPos,startingTile);
-                    //if (FinalMoveTarget != null)
-                   // tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
-                   
+                    Vector2 playerPos = FindWeakestOnMap(PlayerFind);
+                    FindTileNearWeakestPlayerOnMap(playerPos,startingTile);                
                     timer = mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingTile, TileManager.instance);
-                    AttackRange.ClearTileAttackValues(tileManager);
-                    Movement.ClearTileMovementValues(tileManager);
+                    tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     Invoke("EndTurn", timer);
                 }
+              
+               
 
             }
             else if (!stats.IsAlive)

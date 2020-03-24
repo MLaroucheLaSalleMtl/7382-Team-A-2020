@@ -3,10 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Shit to do neccesary
+//Menus finish and make em perty (may neeed like intermission menus depends on what we go for, ambitions)
+//story
+//voice lines finish them (just need pinky)
+//Levels
+//Animations
+//Boss Fight
+//enviroments
+
+//Shit to Do would be nice
+//Leveling system.
+//skill tree (would need to create a class abilities then assign them to an array for the bears)
+//menus inbetween levels to assign skills and stuff
+//cooler abilities aoe's poisons etc...
+//due date april 21st
+
+   //currnt Bugs 
+   //conf menu 
+   //and attack descs disapearing
 public class Bears : MonoBehaviour
 {
     //Stats
-    private IBear bearColor;
+   [SerializeField] private BearColor bearJob;
     [Header("Stats")]
     [SerializeField] private int hp;
     [SerializeField] private int totalHP;
@@ -15,10 +34,14 @@ public class Bears : MonoBehaviour
     [SerializeField] private int range;
     [SerializeField] private int movement;
     [SerializeField] private bool hasAttacked;
+    [SerializeField] private Ability basicAbility;
+    [SerializeField] private Ability specialAbility;
     private AudioSource audioS;
     private Color bearRace;
     [SerializeField] private bool turnComplete;
     [SerializeField] private int countDown;
+
+    //Sounds Clips
     [SerializeField] private AudioClip[] idleSounds;
     [SerializeField] private AudioClip[] attackSounds;
     [SerializeField] private AudioClip[] hurtSounds;
@@ -26,15 +49,16 @@ public class Bears : MonoBehaviour
     [SerializeField] private AudioClip[] ability1Sounds;
     [SerializeField] private AudioClip[] ability2Sounds;
     private BearSFX bearSFX;
+    private Animator anim;
 
     [Space()]
 
     [SerializeField] private bool selected;
 
     //Needed for turn system
-    [SerializeField] private bool isAlive=true;
+    [SerializeField] private bool isAlive = true;
 
-    public enum EnumColour { Green, Black, Blue, Pink, Red, MeleeEnemy,StrongMeleeEnemy,RangedEnemy };
+    public enum EnumColour { Green, Black, Blue, Pink, Red, MeleeEnemy, StrongMeleeEnemy, RangedEnemy };
     [SerializeField] private EnumColour color;
     //[Range(1, 6)] [Tooltip(" 1 = Green \n 2 = Black \n 3 = Blue \n 4 = Pink \n 5 = Red \n 6 = Melee Enemy")]
     //[SerializeField] private int colour;
@@ -43,16 +67,16 @@ public class Bears : MonoBehaviour
     public bool onlyOnce = true;
 
     public int counterSupport = 0;
-    
+
     public Dictionary<string, int> themBuffs = new Dictionary<string, int>();
 
-    public string[] buffNames = new string[] { "buffAttack", "buffMovement", "buffDefence","invincible", };
+    public string[] buffNames = new string[] { "buffAttack", "buffMovement", "buffDefence", "invincible", };
 
     //Ablilities
     private bool support; //Can be activated every "n" turns;
     private bool special; //Only Happens once every Battle
     private bool invincible;
-
+    #region Properties
     public int Hp { get => hp; set => hp = value; }
     public int TotalHP { get => totalHP; set => totalHP = value; }
     public int AttackStrength { get => attackStrength; set => attackStrength = value; }
@@ -62,46 +86,46 @@ public class Bears : MonoBehaviour
     public bool Special { get => special; set => special = value; }
     public bool Support { get => support; set => support = value; }
     public bool Selected { get => selected; set => selected = value; }
-    public bool IsAlive { get => (hp>0)?true:false; set => isAlive = value; }
+    public bool IsAlive { get => (hp > 0) ? true : false; set => isAlive = value; }
     public bool TurnComplete { get => turnComplete; set => turnComplete = value; }
     public Color BearRace { get => bearRace; set => bearRace = value; }
     public bool HasAttacked { get => hasAttacked; set => hasAttacked = value; }
     public bool Invincible { get => invincible; set => invincible = value; }
-    public IBear BearColor { get => bearColor; set => bearColor = value; }
+
     public int CountDown { get => countDown; set => countDown = value; }
     public AudioClip[] MoveSounds { get => moveSounds; }
     public AudioSource AudioS { get => audioS; }
-
+    public BearColor BearJob { get => bearJob; set => bearJob = value; }
+    public Ability BasicAbility { get => basicAbility; set => basicAbility = value; }
+    public Ability SpecialAbility { get => specialAbility; set => specialAbility = value; }
+    #endregion Properties
     public void DistributeStats()
     {
         this.isAlive = true;
-        this.hp = this.BearColor.Hp;
-        this.attackStrength = this.BearColor.AttackStrength;
-        this.totalHP = this.BearColor.TotalHP;       
-        this.defense = this.BearColor.Defense;
-        this.Movement = this.BearColor.Movement;
-        this.Range = this.BearColor.AttackRange;
-        this.BearRace = this.BearColor.BearRace;
-        this.CountDown = this.bearColor.CountDown;
-        //if (color != EnumColour.MeleeEnemy)
-        //{
-        //    this.Avatar = avatarCode.Avatar[avatarNumber];
-        //}
+        this.hp = this.bearJob.Hp;
+        this.attackStrength = this.bearJob.AttackStrength;
+        this.totalHP = this.bearJob.TotalHp;
+        this.defense = this.bearJob.Defense;
+        this.Movement = this.bearJob.Movement;
+        this.Range = this.bearJob.AttackRange;
+        this.BearRace = this.bearJob.BearRace;
+        this.CountDown = this.bearJob.Countdown;
+        
 
     }
     /// <summary>
     /// populates the bears idle sounds hurt sounds and attack sounds arrays
     /// </summary>
-    private void GetSoundFX ()
+    private void GetSoundFX()
     {
-        string type = color.ToString()+"IdleClips";
-        idleSounds=GetSpecificSoundClips(type);
+        string type = color.ToString() + "IdleClips";
+        idleSounds = GetSpecificSoundClips(type);
         type = color.ToString() + "AttackClips";
-        attackSounds=GetSpecificSoundClips(type);
+        attackSounds = GetSpecificSoundClips(type);
         type = color.ToString() + "MoveClips";
         moveSounds = GetSpecificSoundClips(type);
         type = color.ToString() + "HurtClips";
-        hurtSounds= GetSpecificSoundClips(type);
+        hurtSounds = GetSpecificSoundClips(type);
         type = color.ToString() + "Ability1Clips";
         ability1Sounds = GetSpecificSoundClips(type);
         type = color.ToString() + "Ability2Clips";
@@ -134,52 +158,62 @@ public class Bears : MonoBehaviour
         {
             case EnumColour.Green:
 
-                this.BearColor = GreenBear.instance;
+                bearJob = gameObject.AddComponent<GreenBear>();
+                BasicAbility = new HunkerDown();
+                SpecialAbility = new Juggernaut();
                 this.avatarNumber = 3;
                 break;
 
             case EnumColour.Black:
 
-                this.BearColor = BlackBear.instance;
+                this.bearJob = gameObject.AddComponent< BlackBear>();
+                BasicAbility = new BeefUp();
+                SpecialAbility = new DriveBy();
                 this.avatarNumber = 0;
                 break;
 
             case EnumColour.Blue:
 
-                this.BearColor = BlueBear.instance;
+                bearJob = gameObject.AddComponent<BlueBear>();
+                BasicAbility = new GottaGoQuick();
+                SpecialAbility = new PowerStrike();
                 this.avatarNumber = 1;
                 break;
 
             case EnumColour.Pink:
 
-                this.BearColor = PinkBear.instance;
+                bearJob = gameObject.AddComponent<PinkBear>();
+                BasicAbility = new Heal();
+                SpecialAbility = new Resurrect();
                 this.avatarNumber = 2;
                 break;
 
             case EnumColour.Red:
 
-                this.BearColor = RedBear.instance;
+                bearJob = gameObject.AddComponent<RedBear>();
                 this.avatarNumber = 4;
+                BasicAbility = new BodyFire();
+                SpecialAbility = new Energize();
                 break;
 
             case EnumColour.MeleeEnemy:
 
-                this.BearColor = MeleeEnemy.instance;
+                bearJob = gameObject.AddComponent<MeleeEnemy>();
                 break;
 
             case EnumColour.StrongMeleeEnemy:
 
-                this.BearColor = StrongMeleeEnemy.instance;
+                bearJob = gameObject.AddComponent<StrongMeleeEnemy>();
                 break;
 
             case EnumColour.RangedEnemy:
 
-                this.BearColor = RangedEnemy.instance;
+                bearJob = gameObject.AddComponent<RangedEnemy>();
                 break;
 
             default:
 
-                this.BearColor = RedBear.instance;
+                bearJob = gameObject.AddComponent<RedBear>(); ;
                 break;
         }
 
@@ -188,7 +222,7 @@ public class Bears : MonoBehaviour
     }
     public override string ToString()
     {
-        string info = "HP: " + totalHP.ToString() + "/" + Hp.ToString() + "\n" +
+        string info = "HP: " + Hp.ToString() + "/" + totalHP.ToString() + "\n" +
            "Attack: " + attackStrength.ToString() + "\n" +
            "Defense: " + defense.ToString() + "\n" +
            "Movement: " + movement + "\n" +
@@ -204,45 +238,51 @@ public class Bears : MonoBehaviour
     {
         Target = TileManager.instance.TileDic[selectedTile].GetComponentInChildren<Bears>();
     }
-  
+
 
     public void Attack(Tile tileToAttack)
     {
         if (Invincible == false)
         {
             GetTarget(tileToAttack);
-            Target.hp -= this.AttackStrength - Target.Defense;
-        
-            if (attackSounds.Length>0)
+            if (attackSounds != null)
+                if (attackSounds.Length > 0)
+                {
+                    int random = Random.Range(0, attackSounds.Length);
+                    AudioS.PlayOneShot(attackSounds[random]);
+                }
+            if (Target != null)
             {
-                int random = Random.Range(0, attackSounds.Length);
-                AudioS.PlayOneShot(attackSounds[random]);
-            }
-            if (Target.hp <= 0)
-            {
-                SquadSelection.instance.PlayersAlive--;
+                Target.hp -= this.AttackStrength - Target.Defense;
+              
+                if (Target.hp <= 0)
+                {
+                    EnemyManager.instance.EnemiesAlive--;
+                }
             }
         }
 
 
     }
-    public IEnumerator EnemyAttack(Tile tileToAttack, float timer)
+    public void EnemyAttack(Tile tileToAttack)
     {
-        yield return new WaitForSeconds(timer);
         if (Invincible == false)
         {
             GetTarget(tileToAttack);
-            if(Target.hurtSounds.Length>0)
-            {
-                int random = Random.Range(0, hurtSounds.Length);
-                Target.AudioS.PlayOneShot(hurtSounds[random]);
-            }
-            Target.hp -= this.AttackStrength - Target.Defense;
+            if (Target != null)
+                Target.hp -= this.AttackStrength - Target.Defense;
+            if (attackSounds != null)
+                if (attackSounds.Length > 0)
+                {
+                    int random = Random.Range(0, attackSounds.Length);
+                    AudioS.PlayOneShot(attackSounds[random]);
+                }
             if (Target.hp <= 0)
             {
                 SquadSelection.instance.PlayersAlive--;
             }
         }
+
     }
     public void PlayerAttack(Tile tileToAttack, int ability)
     {
@@ -258,6 +298,7 @@ public class Bears : MonoBehaviour
                 Ability2(tileToAttack);
                 break;
         }
+        if(Target!=null)
         if (Target.hp <= 0)
         {
             EnemyManager.instance.EnemiesAlive--;
@@ -280,14 +321,14 @@ public class Bears : MonoBehaviour
 
     public void Ability1(Tile selectedTile)
     {
-       
+
         GetTarget(selectedTile);
         if (ability1Sounds.Length > 0)
         {
             int random = Random.Range(0, ability1Sounds.Length);
             Target.AudioS.PlayOneShot(ability1Sounds[random]);
         }
-        this.BearColor.Ability1(Target);
+        BasicAbility.CastAbility(selectedTile, AttackStrength);
         support = false;
         counterSupport = CountDown;
     }
@@ -300,7 +341,7 @@ public class Bears : MonoBehaviour
             int random = Random.Range(0, ability1Sounds.Length);
             Target.AudioS.PlayOneShot(ability1Sounds[random]);
         }
-        this.BearColor.Ability1(Target); // it checks which bear instance is using ability and then executes it
+        this.bearJob.Ability1(Target,AttackStrength); // it checks which bear instance is using ability and then executes it
         support = false;
         counterSupport = CountDown;
     }
@@ -313,14 +354,14 @@ public class Bears : MonoBehaviour
             int random = Random.Range(0, ability2Sounds.Length);
             Target.AudioS.PlayOneShot(ability2Sounds[random]);
         }
-        this.BearColor.Ability2(Target);
+        SpecialAbility.CastAbility(selectedTile, AttackStrength);
         special = false;
     }
 
     public void Ability2(Vector2 selectedTile)
     {
         GetTarget(selectedTile); //Gets the player you want to use thew ability on
-        this.BearColor.Ability1(Target); // it checks which bear instance is using ability and then executes it        
+        this.bearJob.Ability1(Target,AttackStrength); // it checks which bear instance is using ability and then executes it        
         special = false;
     }
 
@@ -353,10 +394,11 @@ public class Bears : MonoBehaviour
         bearSFX = BearSFX.instance;
         audioS = GetComponent<AudioSource>();
         GetSoundFX();
-        for(int i = 0; i < buffNames.Length; i++)
+        for (int i = 0; i < buffNames.Length; i++)
         {
             themBuffs[buffNames[i]] = 0;
         }
+        anim = GetComponent<Animator>();
         
     }
 
@@ -370,19 +412,23 @@ public class Bears : MonoBehaviour
         else if (Hp <= 0)
         {
             IsAlive = false;
-            
+
             if (onlyOnce)
             {
                 onlyOnce = false;
-                    Die();
+                Die();
             }
-           
+
         }
-        if(counterSupport <= 0)
+        if (counterSupport <= 0)
         {
             support = true;
         }
-        
+        if (anim != null)
+        {
+
+        }
+
     }
 
     public void CheckThemBuffs()
@@ -394,13 +440,13 @@ public class Bears : MonoBehaviour
                 switch (i)
                 {
                     case 0:
-                        this.AttackStrength = this.bearColor.AttackStrength;
+                        this.AttackStrength = this.bearJob.AttackStrength;
                         break;
                     case 1:
-                        this.Movement = this.bearColor.Movement;
+                        this.Movement = this.bearJob.Movement;
                         break;
                     case 2:
-                        this.Defense = this.BearColor.Defense;
+                        this.Defense = this.bearJob.Defense;
                         break;
                     case 3:
                         this.Invincible = false;
@@ -418,8 +464,8 @@ public class Bears : MonoBehaviour
         }
     }
 
-   
 
-   
+
+
 
 }

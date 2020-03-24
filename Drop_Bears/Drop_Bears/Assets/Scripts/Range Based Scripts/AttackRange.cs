@@ -8,12 +8,15 @@ public class AttackRange : MonoBehaviour
     // Start is called before the first frame update4
    [SerializeField] TileManager tilemanager;
     float timer = .1f;
-    private bool justOnce;
+    private bool justOnce=false;
     [SerializeField]private bool melee;
     [SerializeField] private bool rangecheck;
-    [SerializeField] private int range=3;
+    [SerializeField] private int range;
     [SerializeField] private int x;
     [SerializeField] private int y;
+    private Bears stats;
+    private TileSelector tileselector;
+    private int abilitytouse;
     private GameManager code;
     //public Bears nerd;
 
@@ -26,6 +29,8 @@ public class AttackRange : MonoBehaviour
         tilemanager = TileManager.instance;
         //  InvokeRepeating("DisplayAttackRange", 0, timer);
         code = GameManager.instance;
+        tileselector = TileSelector.instance;
+        stats = GetComponent<Bears>();
     }
     //private void OnTriggerEnter(Collider other)
     //{
@@ -48,11 +53,11 @@ public class AttackRange : MonoBehaviour
             Tile tileshort = tile.GetComponent<Tile>();
             if (tileshort.Attackvalue > 0 && !tileshort.IsSelected&&!tileshort.IsObstacle)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().AttackMat;
+                tileshort.Renderer.material = tileshort.AttackMat;
             }
             else if (tileshort.Attackvalue == 0 && !tileshort.IsObstacle && !tileshort.IsSelected)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().Defaultmat;
+                tileshort.Renderer.material = tileshort.Defaultmat;
             }
         }
     }
@@ -67,11 +72,11 @@ public class AttackRange : MonoBehaviour
             Tile tileshort = tile.GetComponent<Tile>();
             if (tileshort.Attackvalue > 0 && !tileshort.IsSelected && !tileshort.IsObstacle)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().AttackMat;
+                tileshort.Renderer.material = tileshort.AttackMat;
             }
             else if (tileshort.Attackvalue == 0 && !tileshort.IsObstacle && !tileshort.IsSelected)
             {
-                tile.GetComponent<MeshRenderer>().material = tile.GetComponent<Tile>().Defaultmat;
+                tileshort.Renderer.material = tileshort.Defaultmat;
             }
         }
     }
@@ -95,12 +100,18 @@ public class AttackRange : MonoBehaviour
             }
         }
     }
+
     public void GetAttackRangeIgnoreObstacles(int Range, Tile tile)
     {
         #region ZachNotes
         //this will treat all tiles the same
         //this is usefull for attacks that disregard range
         #endregion ZachNotes
+        if(Range==0)
+        {
+            tile.Attackvalue = 1;
+            return;
+        }
         for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
         {
             int cal1 = Mathf.Abs(x - i);
@@ -346,19 +357,63 @@ public class AttackRange : MonoBehaviour
     }
     void Update()
     {
-            // if (code.AttackPhase&&GetComponent<Bears>().Selected)
-            if (code.CurrPhase == GameManager.Phase.attackPhase && GetComponent<Bears>().Selected)
+
+        if (code.CurrPhase == GameManager.Phase.attackPhase && GetComponent<Bears>().Selected)
+        {
+            abilitytouse = tileselector.AbilityToUse;
+            switch (abilitytouse)
             {
+                case 1:
+                    range = stats.Range;
+                    break;
+                case 2:
+                    range = stats.BasicAbility.CastRange;
+                    break;
+                case 3:
+                    range = stats.SpecialAbility.CastRange;
+                    break;
+            }
             this.x = GetComponent<Movement>().X;
             this.y = GetComponent<Movement>().Y;
-          
-                GameObject startingtile = tilemanager.TileDic[new Vector2(x, y)];
-                // AssignTileAttackRange(startingtile, range+1);
-                GetAttackRangeIgnoreObstacles(range,x,y);
-                JustOnce = true;
-            
-            DisplayAttackRange();
+
+            //  GameObject startingtile = tilemanager.TileDic[new Vector2(x, y)];
+            // AssignTileAttackRange(startingtile, range+1);
+            GetAttackRangeIgnoreObstacles(range, x, y);
+            if (!JustOnce)
+            {
+                DisplayAttackRange();
+                justOnce = true;
+            }
+
+
         }
+        else if (code.CurrPhase == GameManager.Phase.confPhase && GetComponent<Bears>().Selected)
+        {
+            switch (abilitytouse)
+            {
+                case 1:
+                    range = 0;
+                    break;
+                case 2:
+                    range = stats.BasicAbility.Aoe;
+                    break;
+                case 3:
+                    range = stats.SpecialAbility.Aoe;
+                    break;
+
+            }
+
+            GetAttackRangeIgnoreObstacles(range, tileselector.CurrentTileShort);
+            if (!JustOnce)
+            {
+                DisplayAttackRange();
+                justOnce = true;
+            }
+
+        }
+        else
+            justOnce = false;
+       
     }
 }
 

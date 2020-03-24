@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PinkBear : MonoBehaviour, IBear
+public class PinkBear : BearColor
 {
     #region UnitNotes
     //Support Ranged Unit (Healer)
@@ -16,70 +16,75 @@ public class PinkBear : MonoBehaviour, IBear
     //Special Abilities
     //Revive (Can Revive One Teammate per Battle)
     #endregion UnitNotes
-    #region Singleton
-    public static PinkBear instance;
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else if (instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
-    #endregion Singleton
+
     #region BearFields
-    int hp = 150;
-    int totalHp = 150;
-    int defense = 5;
-    int attackStrength = 30;
-    int movement = 3;
-    int attackRange = 4;
-    Color bearRace = Color.magenta ;
-    int countdown = 2;
+    public PinkBear()
+    {
+
+        Hp = 150;
+        TotalHp = 150;
+        Defense = 5;
+        AttackStrength = 30;
+        Movement = 3;
+        AttackRange = 4;
+        BearRace = Color.magenta;
+        Countdown = 2;
+        FirstAbility = new Heal();
+        Special = new Resurrect();
+    }
     #endregion BearFields
 
-    public int Hp { get => hp; set => hp = value; }
-    public int TotalHP { get => totalHp; set => totalHp = value; }
-    public int Defense { get => defense; set => defense = value; }
-    public int Movement { get => movement; set => movement = value; }
-    public int AttackRange { get => attackRange; set => attackRange = value; }
-    public int AttackStrength { get => attackStrength; set => attackStrength = value; }
-    public Color BearRace { get => bearRace; set => bearRace = value; }
-    public int CountDown { get => countdown; set => countdown = value; }
 
-    public void MeleeAttack()
+    public override string GetAttackName()
     {
-
+        return "Love Beam";
+    }
+    public override string GetAttackDesc(int attack)
+    {
+        return "OWWW Love Hurts: \nDamage = " + attack.ToString();
+    }
+    public override string GetAbility1Name()
+    {
+        return "Heal";
+    }
+    public override string GetAbility1Desc(int attack)
+    {
+        int number = (int)(attack * 1.334);
+        return "Well it heals: \nAlly/Own HP+ " + number.ToString();
+    }
+    public override string GetAbility2Name()
+    {
+        return "Resurrect";
+    }
+    public override string GetAbility2Desc(int attack)
+    {
+        return "Fully Heal \nor revive ally";
     }
 
-    
-  
 
-    public void Ability1(Bears Target)
+    public override void Ability1(Bears Target,int attack)
     {
+        int healamount = (int)(attack * 1.334);
         //Heals Target
         if (Target.IsAlive)
-        {            
-            Target.Hp += 40;
+        {
+            Target.Hp += healamount;
         }
     }
 
-    public void Ability2(Bears Target)
+    public override void Ability2(Bears Target, int attack)
     {
         //Revives Fallen Target
-        if(!Target.IsAlive)
+        if (!Target.IsAlive)
         {
-            Target.Hp = TotalHP;
+            Target.Hp = Target.TotalHP;
             Target.onlyOnce = true;
             Target.transform.Rotate(-90f, 0f, 0f);
             SquadSelection.instance.PlayersAlive++;
         }
         else
         {
-            Target.Hp = TotalHP;
+            Target.Hp = Target.TotalHP;
         }
     }
 }
