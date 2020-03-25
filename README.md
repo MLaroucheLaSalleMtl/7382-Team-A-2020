@@ -139,5 +139,9 @@ https://assetstore.unity.com/packages/2d/textures-materials/sky/8k-skybox-pack-f
 **CampFire Pack**
 DreamDev Studio
 https://assetstore.unity.com/packages/3d/environments/fantasy/campfire-pack-11256
+**PolyGon Knights Package**
+SynTy Studios
+https://assetstore.unity.com/packages/3d/environments/fantasy/polygon-knights-pack-83694
 
 Everything else used so far – Built in Unity Assets.
+Scripting help from unity resources
