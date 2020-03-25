@@ -132,16 +132,16 @@ Once you have finished with a character you must end their turn individually to 
 
 **Resources:**
 
-**Bear Model** - 3D cartoon bear by visnum - [https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541](https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541)
-**SkyBoxes**
-Unity Asset Store
-https://assetstore.unity.com/packages/2d/textures-materials/sky/8k-skybox-pack-free-150926
-**CampFire Pack**
-DreamDev Studio
-https://assetstore.unity.com/packages/3d/environments/fantasy/campfire-pack-11256
-**PolyGon Knights Package**
-SynTy Studios
-https://assetstore.unity.com/packages/3d/environments/fantasy/polygon-knights-pack-83694
+**Bear Model** - 3D cartoon bear by visnum - [https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541](https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541) -
+**SkyBoxes** -
+Unity Asset Store -
+https://assetstore.unity.com/packages/2d/textures-materials/sky/8k-skybox-pack-free-150926-
+**CampFire Pack** -
+DreamDev Studio -
+https://assetstore.unity.com/packages/3d/environments/fantasy/campfire-pack-11256-
+**PolyGon Knights Package** -
+SynTy Studios -
+https://assetstore.unity.com/packages/3d/environments/fantasy/polygon-knights-pack-83694 -
 
-Everything else used so far – Built in Unity Assets.
+Everything else used so far – Built in Unity Assets. -
 Scripting help from unity resources
