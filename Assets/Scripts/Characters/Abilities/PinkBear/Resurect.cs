@@ -21,6 +21,7 @@ public class Resurrect : Ability
             Target.onlyOnce = true;
             Target.transform.Rotate(-90f, 0f, 0f);
             SquadSelection.instance.PlayersAlive++;
+            Target.Anim.SetBool("isDead", false);
         }
         else
         {

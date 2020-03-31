@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Ability 
+public abstract class Ability:MonoBehaviour
 {
    private int id;
     private string name;
@@ -17,4 +17,6 @@ public abstract class Ability
     public abstract void CastAbility(Tile tileTooCastOn,int attack);
 
     public abstract string GetAbilityDesc(int damage);
+
+  
 }

@@ -68,13 +68,13 @@ public class Movement : MonoBehaviour
                         {
                             tileshort.Moveable = true;
                         }
-                        GameObject nexttile = tilemanager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
 
                     }
@@ -92,13 +92,13 @@ public class Movement : MonoBehaviour
                         {
                             tileshort.Moveable = true;
                         }
-                        GameObject nexttile = tilemanager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
 
                     }
@@ -132,13 +132,13 @@ public class Movement : MonoBehaviour
                     #region DicMethod(Broken)
                     
                     #endregion DicMethod(Broken)
-                    GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                    GameObject nexttile = tilemanager.GetTileDic(new Vector2(tile.X - 1, tile.Y));
                     AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X + 1, tile.Y));
                     AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y - 1));
                     AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y + 1));
                     AssignTileMovementValue(nexttile, tile.Movementvalue - 1);
 
                 }
@@ -223,13 +223,13 @@ public class Movement : MonoBehaviour
             #region ZachNotes
             //Creating the Stack
             #endregion ZachNotes
-            Tile nexttile = tilemanager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y)).GetComponent<Tile>();
+            Tile nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y)).GetComponent<Tile>();
             tileshort=PathChecker(tileshort, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tileshort.X +1, tileshort.Y)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X +1, tileshort.Y)).GetComponent<Tile>();
             tileshort = PathChecker(tileshort, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y-1)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y-1)).GetComponent<Tile>();
             tileshort = PathChecker(tileshort, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1)).GetComponent<Tile>();
             tileshort = PathChecker(tileshort, nexttile, moves);
         }
         float i = 0;
@@ -265,13 +265,13 @@ public class Movement : MonoBehaviour
             #region ZachNotes
             //Creating the Stack
             #endregion ZachNotes
-            Tile nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y)).GetComponent<Tile>();
+            Tile nexttile = tilemanager.GetTileDic(new Vector2(tile.X - 1, tile.Y)).GetComponent<Tile>();
             tile = PathChecker(tile, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tile.X + 1, tile.Y)).GetComponent<Tile>();
             tile = PathChecker(tile, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y - 1)).GetComponent<Tile>();
             tile = PathChecker(tile, nexttile, moves);
-            nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1)).GetComponent<Tile>();
+            nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y + 1)).GetComponent<Tile>();
             tile = PathChecker(tile, nexttile, moves);
         }
         float i = 0;
@@ -281,9 +281,9 @@ public class Movement : MonoBehaviour
             //So im using a coroutine to do the movement currently he just teleports to spots we will have 
             //to adjust that with animations later
             #endregion ZachNotes
-            StartCoroutine(MoveToIndividualTile(moves.Pop(), i, tilemanager));
-
-            i += .5f;
+            // StartCoroutine(MoveToIndividualTile(moves.Pop(), i, tilemanager));
+            MoveToIndividualTileV2(moves.Pop(), tilemanager);
+            i += .8f;
         }
         return i;
 
@@ -302,8 +302,6 @@ public class Movement : MonoBehaviour
         Debug.Log(tile);
         float timepassed = 0;
         travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
-        //while (this.transform.position != travelpoint)
-        //{
         timepassed += Time.deltaTime;
         //this.transform.position = Vector3.Lerp(this.transform.position, travelpoint, timepassed/2);
         if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
@@ -316,6 +314,22 @@ public class Movement : MonoBehaviour
         {
             if(anim!=null)
             anim.SetBool("isMoving", false);
+        }
+    }
+    private void MoveToIndividualTileV2(Vector2 tile, TileManager tilemanager)
+    {
+        Debug.Log(tile);
+        travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
+        if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
+        {
+            this.agent.nextPosition = travelpoint;
+            if (anim != null) ;
+            anim.SetBool("isMoving", true);
+        }
+        else
+        {
+            if (anim != null)
+                anim.SetBool("isMoving", false);
         }
     }
     private Tile PathChecker(Tile tileshort,Tile nexttile,Stack<Vector2> moves)
@@ -413,7 +427,7 @@ public class Movement : MonoBehaviour
                     #region ZachFuckUps
                     //GetMovementRange1();
                     //for (int i = 0; i < moveList.Count; i++)
-                    //    tiles.Add(tilemanager.GetTile(new Vector2(moveList[i].x, moveList[i].y)));
+                    //    tiles.Add(tilemanager.GetTileDic(new Vector2(moveList[i].x, moveList[i].y)));
 
                     //}
                     //int half = tiles.Count / 2;

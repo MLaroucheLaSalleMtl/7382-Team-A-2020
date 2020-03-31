@@ -831,7 +831,6 @@ GameObject:
   - component: {fileID: 173529618}
   - component: {fileID: 173529617}
   - component: {fileID: 173529616}
-  - component: {fileID: 173529619}
   m_Layer: 5
   m_Name: BtnOptions
   m_TagString: Untagged
@@ -949,18 +948,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 173529614}
   m_CullTransparentMesh: 0
---- !u!114 &173529619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 173529614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef4fddd1a3eb354898bb40b143292ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &204832951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1042,6 +1029,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922839396711181413, guid: 3200854d149e22f48992616b74beccca,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3200854d149e22f48992616b74beccca, type: 3}
@@ -1406,7 +1398,6 @@ GameObject:
   - component: {fileID: 431496645}
   - component: {fileID: 431496644}
   - component: {fileID: 431496643}
-  - component: {fileID: 431496646}
   m_Layer: 5
   m_Name: Btn Exit
   m_TagString: Untagged
@@ -1524,18 +1515,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431496641}
   m_CullTransparentMesh: 0
---- !u!114 &431496646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 431496641}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef4fddd1a3eb354898bb40b143292ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &490922354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1969,6 +1948,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 5922839396711181413, guid: 3200854d149e22f48992616b74beccca,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3200854d149e22f48992616b74beccca, type: 3}
 --- !u!1001 &596342443
@@ -2191,6 +2175,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5922839396711181413, guid: 3200854d149e22f48992616b74beccca,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3200854d149e22f48992616b74beccca, type: 3}
@@ -4177,7 +4166,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 13.3, y: 0.01, z: 0}
 --- !u!1 &1262255226
 GameObject:
@@ -4770,7 +4759,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 8289920522162967829, guid: 04dd7de0d7ea91d44aef7e9c9649904c,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: f3f272eec3af12445bf9711a10c0db67, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -5462,7 +5451,6 @@ GameObject:
   - component: {fileID: 1759321490}
   - component: {fileID: 1759321489}
   - component: {fileID: 1759321488}
-  - component: {fileID: 1759321491}
   m_Layer: 5
   m_Name: BtnLevelSelect
   m_TagString: Untagged
@@ -5580,18 +5568,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1759321486}
   m_CullTransparentMesh: 0
---- !u!114 &1759321491
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1759321486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef4fddd1a3eb354898bb40b143292ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1797869394
 GameObject:
   m_ObjectHideFlags: 0
@@ -6315,7 +6291,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

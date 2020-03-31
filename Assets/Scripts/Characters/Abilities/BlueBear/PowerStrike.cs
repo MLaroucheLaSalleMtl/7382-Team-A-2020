@@ -16,8 +16,11 @@ public class PowerStrike : Ability
     {
         //High Damage Range Attack
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();
-        if(Target.Invincible!=false)
-        Target.Hp -= (int)(attack * 1.75);
+        if (Target != null)
+        {
+            if (Target.Invincible == false)
+                Target.Hp -= (int)(attack * 1.75);
+        }
     }
 
     public override string GetAbilityDesc(int attack)

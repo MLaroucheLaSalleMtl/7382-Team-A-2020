@@ -58,7 +58,7 @@ using UnityEngine;
 //                    ///////SAME THING FOR TILE MOVEMENT VALUES WILL CAUSE CRASHES IF NOT
 //                    //FindAttackPosition();                 
 //                   timer= mover.MoveToFinalTile(FinalTile, startingtile.GetComponent<Tile>(), TileManager.instance);
-//                    finalAttackTarget = GetTileToAttack(FinalTile);
+//                    finalAttackTarget = GetTileDicToAttack(FinalTile);
 //                    //timer = mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingtile, TileManager.instance);
 //                    stats.Attack(finalAttackTarget);
 //                    AttackRange.ClearTileAttackValues(tileManager);

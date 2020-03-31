@@ -17,6 +17,7 @@ public class GottaGoQuick : Ability
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();
         Target.Movement += 2;
         Target.themBuffs["buffMovement"] = 2;
+        
     }
 
     public override string GetAbilityDesc(int damage)

@@ -43,48 +43,5 @@ public class PinkBear : BearColor
     {
         return "OWWW Love Hurts: \nDamage = " + attack.ToString();
     }
-    public override string GetAbility1Name()
-    {
-        return "Heal";
-    }
-    public override string GetAbility1Desc(int attack)
-    {
-        int number = (int)(attack * 1.334);
-        return "Well it heals: \nAlly/Own HP+ " + number.ToString();
-    }
-    public override string GetAbility2Name()
-    {
-        return "Resurrect";
-    }
-    public override string GetAbility2Desc(int attack)
-    {
-        return "Fully Heal \nor revive ally";
-    }
-
-
-    public override void Ability1(Bears Target,int attack)
-    {
-        int healamount = (int)(attack * 1.334);
-        //Heals Target
-        if (Target.IsAlive)
-        {
-            Target.Hp += healamount;
-        }
-    }
-
-    public override void Ability2(Bears Target, int attack)
-    {
-        //Revives Fallen Target
-        if (!Target.IsAlive)
-        {
-            Target.Hp = Target.TotalHP;
-            Target.onlyOnce = true;
-            Target.transform.Rotate(-90f, 0f, 0f);
-            SquadSelection.instance.PlayersAlive++;
-        }
-        else
-        {
-            Target.Hp = Target.TotalHP;
-        }
-    }
+ 
 }

@@ -50,13 +50,13 @@ public class EnemyAI : MonoBehaviour
                         tileshort.Moveable = true;
                     }
                
-                    GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                    GameObject nexttile = tileManager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                     AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                    nexttile = tileManager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                     AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                    nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                     AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                    nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                    nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                     AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
 
                 }

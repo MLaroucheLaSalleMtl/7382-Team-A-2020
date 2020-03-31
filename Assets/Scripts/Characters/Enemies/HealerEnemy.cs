@@ -18,36 +18,7 @@ public class HealerEnemy : BearColor
         AttackRange = 2;
         BearRace = Color.white;
         Countdown = 2;
-    }
-
-    public override void Ability1(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override void Ability2(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility1Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility1Name()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility2Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility2Name()
-    {
-        throw new System.NotImplementedException();
+        FirstAbility = new Heal();
     }
 
     public override string GetAttackDesc(int attack)
@@ -59,6 +30,8 @@ public class HealerEnemy : BearColor
     {
         throw new System.NotImplementedException();
     }
+
+
     #endregion Stats
 
 }

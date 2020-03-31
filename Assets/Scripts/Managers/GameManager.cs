@@ -26,12 +26,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject selectedTile;
     [SerializeField] private TileManager tilemanager;
     [SerializeField] private GameObject confPanel;
+    private bool enemySubtracted=false;
     private TileSelector tileSelector;
     private bool enteredConfPhase = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
-    //public delegate void switchToPlayerTurnDelegate();
-    //public switchToPlayerTurnDelegate playerTurnSwitch;
     #region Buttons
     [SerializeField] private GameObject interactionMenu;
     [SerializeField] private Button moveBtn;
@@ -46,19 +45,12 @@ public class GameManager : MonoBehaviour
     //For the turn system
     [SerializeField] private bool playerTurn;
     private bool onlyOnce = false;
-    
-
-    //Bears[] allBears;
-
-
     private int endTurn;
     private EnemyManager enemyManager;
-
     public GameObject InteractionMenu { get => interactionMenu; set => interactionMenu = value; }
     public bool PlayerTurn { get => playerTurn; set => playerTurn = value; }
     public Phase CurrPhase { get => currPhase; set => currPhase = value; }
     bool substracted = false;
-
     void Start()
     {
         squadSelector = SquadSelection.instance;
@@ -168,14 +160,13 @@ public class GameManager : MonoBehaviour
                 switch (CurrPhase)
                 {
                     case Phase.menuPhase:
-                    
+                        enemySubtracted = false;
                         StartCoroutine(CheckTurns());
                         selectedPlayer = squadSelector.Squad[squadSelector.Selected];
                         HighlightTileUnderSelectedPlayer(selectedPlayer);
                         interactionMenu.SetActive(true);
                         if (selectedPlayer.GetComponent<Bears>().HasAttacked)
                         {
-                       
                             DisableAttackButtons();
                         }
                         else
@@ -191,11 +182,6 @@ public class GameManager : MonoBehaviour
                         selectedPlayer.GetComponent<Bears>().TurnComplete = true;
 
                     }
-                    if (selectedPlayer.GetComponent<Movement>().HasMoved && selectedPlayer.GetComponent<Bears>().HasAttacked)
-                        {
-                            selectedPlayer.GetComponent<Bears>().TurnComplete = true;
-
-                        }
                         if (!onlyOnce)
                         {
                             enemyManager.Invoke("ResetEnemyTurns", .1f);
@@ -207,10 +193,15 @@ public class GameManager : MonoBehaviour
                         substracted = true;
                         for (int i = 0; i < squadSelector.Squad.Length; i++)
                         {
-                            squadSelector.Squad[i].GetComponent<Bears>().counterSupport--;
-                            squadSelector.Squad[i].GetComponent<Bears>().DeductThemBuffs();
-                            squadSelector.Squad[i].GetComponent<Bears>().CheckThemBuffs();
-                            Debug.Log(squadSelector.Squad[i].GetComponent<Bears>().themBuffs["buffAttack"]);
+                            Bears currentMember = squadSelector.Squad[i].GetComponent<Bears>(); 
+                            if (currentMember.themBuffs["stun"]>0)
+                            {
+                                currentMember.TurnComplete = true;
+                            }
+                            currentMember.counterSupport--;
+                            currentMember.DeductThemBuffs();
+                            currentMember.CheckThemBuffs();
+                           
                         }
                         
                     }
@@ -221,6 +212,7 @@ public class GameManager : MonoBehaviour
                     case Phase.mapPhase:
                     interactionMenu.SetActive(false);
                     statsText.gameObject.SetActive(true);
+                    if(statsText!=null)
                     GetStatsText();
                      confPanel.SetActive(false);
             enteredConfPhase = false;
@@ -255,14 +247,19 @@ public class GameManager : MonoBehaviour
                                 enemyManager.SwitchToPlayerTurnsEnum();
 
                             }
+                        if (!enemySubtracted)
+                        {
+                            enemySubtracted = true;
+                            for (int i = 0; i < enemyManager.Enemies.Length; i++)
+                            {
+                                enemyManager.Enemies[i].GetComponent<Bears>().counterSupport--;
+                                enemyManager.Enemies[i].GetComponent<Bears>().DeductThemBuffs();
+                                enemyManager.Enemies[i].GetComponent<Bears>().CheckThemBuffs();
+                            }
                         }
-                    
-                        
+                    }   
                     statsText.gameObject.SetActive(false) ;
                     break;
-                
-                
-              
             }
            
         }
@@ -281,7 +278,6 @@ public class GameManager : MonoBehaviour
           
         }
     }
-
     void HighlightTileUnderSelectedPlayer(GameObject selectedplayer)
     {
         if (selectedPlayer != null)
@@ -299,7 +295,8 @@ public class GameManager : MonoBehaviour
     {
         submenuBtn.interactable = true;
         attackBtn.interactable = true;
-        if (squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>().Support == true)
+        Bears selectedBear= squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>();
+        if (selectedBear.Support == true)
         {
             Ability1Btn.interactable = true;
         }
@@ -307,7 +304,10 @@ public class GameManager : MonoBehaviour
         {
             Ability1Btn.interactable = false;
         }
-        Ability2Btn.interactable = true;
+        if (selectedBear.Special == true)
+            Ability2Btn.interactable = true;
+        else
+            Ability2Btn.interactable = false; ;
     }
     private void DisableAttackButtons()
     {
@@ -315,9 +315,7 @@ public class GameManager : MonoBehaviour
         attackBtn.interactable = false;
         Ability1Btn.interactable = false;
         Ability2Btn.interactable = false;
-        Ability2Btn.interactable = false;
     }
-
     IEnumerator CheckTurns()
     {
         bool check = false;

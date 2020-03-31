@@ -47,7 +47,7 @@ public class TileManager : MonoBehaviour
     public GameObject GetTileDic(Vector2 coordinates)
     {
         #region ZachNotes
-        //GetTileDic takes the coordinates of a tile and will give you that gameobject (Not the tile script though)
+        //GetTileDicDic takes the coordinates of a tile and will give you that gameobject (Not the tile script though)
         //so if you need to manipulate a specific tile use this
         #endregion ZachNotes
         if (TileDic.ContainsKey(coordinates))
@@ -69,25 +69,6 @@ public class TileManager : MonoBehaviour
             return currenttile.gameObject;
     }
 
-    public GameObject GetTile(Vector2 coordinates)
-    {
-        #region ZachNotes
-        //This method is similar to the dictonary one but the dictionary one crashes if you pass it coordinates
-        //that dont exist so if you dont know if a tile exists use this over the dictonary method
-        #endregion ZachNotes
-        for (int i = 0; i < tilearray.Length; i++)
-        {
-            if (coordinates.x == tilearray[i].GetComponent<Tile>().X)
-            {
-                if (coordinates.y == tilearray[i].GetComponent<Tile>().Y)
-                {
-                    return tilearray[i];
-                }
-            }
-        }
-        return null;
 
-    }
-  
    
 }

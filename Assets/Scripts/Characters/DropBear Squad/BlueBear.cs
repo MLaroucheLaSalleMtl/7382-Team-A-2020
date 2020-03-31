@@ -41,35 +41,5 @@ public class BlueBear : BearColor
     {
         return "Give em the balls:\nDamage = "+attack.ToString();
     }
-    public override string GetAbility1Name()
-    {
-        return "Gotta Go Quick";
-    }
-    public override string GetAbility1Desc(int attack)
-    {
-        return "Give an ally +2\nMovement (One Turn)";
-    }
-    public override string GetAbility2Name()
-    {
-        return "Power Strike";
-    }
-    public override string GetAbility2Desc(int attack)
-    {
-        int damage = (int)(attack * 1.5);
-        return "It's stronger: \nDamage = "+damage;
-    }
-
-
-    public override void Ability1(Bears Target, int attack)
-    {
-        //Increases the Movement of A Target
-        Target.Movement += 2;
-        Target.themBuffs["buffMovement"] = 2;
-    }
-
-    public override void Ability2(Bears Target,int attack)
-    {
-        //High Damage Range Attack
-        Target.Hp -= (int)(attack* 1.5);
-    }
+   
 }

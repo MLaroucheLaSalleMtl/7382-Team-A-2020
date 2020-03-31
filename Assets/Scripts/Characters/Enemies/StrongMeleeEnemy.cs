@@ -18,43 +18,7 @@ public class StrongMeleeEnemy : BearColor
     }
     #endregion Stats
 
-
- 
-
-    public override void Ability1(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-   
-
-    public override void Ability2(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-  
-    public override string GetAbility1Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility1Name()
-    {
-        throw new System.NotImplementedException();
-    }
-
-
-    public override string GetAbility2Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility2Name()
-    {
-        throw new System.NotImplementedException();
-    }
-
+    
 
     public override string GetAttackDesc(int attack)
     {

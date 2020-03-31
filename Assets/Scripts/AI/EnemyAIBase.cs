@@ -91,6 +91,23 @@ public class EnemyAIBase : MonoBehaviour
         stats.EnemyAttack(tileToAttack);
         //trigger for attack animations 
     }
+  protected IEnumerator EnemyBasicAbility(float timer, Tile tileToAttack)
+    {
+        yield return new WaitForSeconds(timer);
+        stats.Ability1(tileToAttack);
+
+    }
+    protected IEnumerator EnemySpecialAbility(float timer, Tile tileToAttack)
+    {
+        yield return new WaitForSeconds(timer);
+        stats.Ability2(tileToAttack);
+
+    }
+    protected IEnumerator EnemyMeleeBossSpecial(float timer,Tile tileToAttack)
+    {
+        yield return new WaitForSeconds(timer);
+
+    }
     protected void AssignEnemyAttackSpaces()
     {
         foreach (GameObject tile in tilesInMovementRange)
@@ -346,13 +363,13 @@ public class EnemyAIBase : MonoBehaviour
                             tileshort.Moveable = true;
                         }
 
-                        GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        GameObject nexttile = tileManager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
 
                     }
@@ -371,13 +388,13 @@ public class EnemyAIBase : MonoBehaviour
                             tilesInMovementRange.Add(tile);
                             tileshort.Moveable = true;
                         }
-                        GameObject nexttile = tileManager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                        GameObject nexttile = tileManager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
-                        nexttile = tileManager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                        nexttile = tileManager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                         AssignTileMovementValue(nexttile, tileshort.Movementvalue - 1);
 
                     }

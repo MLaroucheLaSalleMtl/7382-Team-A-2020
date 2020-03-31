@@ -28,11 +28,5 @@ public abstract class BearColor:MonoBehaviour
 
     public abstract string GetAttackName();
     public abstract string GetAttackDesc(int attack);
-    public abstract void Ability1(Bears target,int attack);
-    public abstract string GetAbility1Name();
-    public abstract string GetAbility1Desc(int attack);
 
-    public abstract void Ability2(Bears target,int attack);
-    public abstract string GetAbility2Name();
-    public abstract string GetAbility2Desc(int attack);
 }

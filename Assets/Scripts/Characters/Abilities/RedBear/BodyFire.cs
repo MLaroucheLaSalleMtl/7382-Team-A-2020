@@ -43,7 +43,7 @@ public class BodyFire : Ability
     }
     public override string GetAbilityDesc(int attack)
     {
-        int damage = (int)(attack * 1.5);
+        int damage = (int)(attack * 1.67);
         return "DAMNIT IT BURNS:\n" +
             "Hit all adjacent targets\n" +
             "Self damage = 20\n" +

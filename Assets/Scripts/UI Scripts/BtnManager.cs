@@ -140,40 +140,6 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
         body.text = "";
         header.text = "";
     }
-    //public void DisableAbilityDescription()
-    //{
-    //    attackDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    supportDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    specialDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //}
-    //void AbilityDescriptions()
-    //{
-    //    if (info == 1 + "," + 1)
-    //    {
-    //        attackDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(true);
-    //        //Deactivates Other Panels
-    //        supportDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //        specialDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    }
-    //    else if (info == 1 + "," + 0)
-    //    {
-    //        supportDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(true);
-    //        //Deactivates Other Panels
-    //        attackDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //        specialDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    }
-    //    else if (info == 1 + "," + -1)
-    //    {
-    //        specialDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(true);
-    //        //Deactivates Other Panels
-    //        attackDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //        supportDes[selectedSquad.Squad[selectedSquad.Selected].GetComponent<Bears>().avatarNumber].SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        DisableAbilityDescription();
-    //    }
-    //}
   public  void AbilityDescriptionsDamageScaled()
     {
         
@@ -188,13 +154,13 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
         }
         else if (info == 1 + "," + 0)
         {
-            header.text = currentMember.BearJob.GetAbility1Name();
-            body.text = currentMember.BearJob.GetAbility1Desc(currentMember.AttackStrength);
+            header.text = currentMember.BasicAbility.Name;
+            body.text = currentMember.BasicAbility.GetAbilityDesc(currentMember.AttackStrength);
         }
         else if (info == 1 + "," + -1)
         {
-            header.text = currentMember.BearJob.GetAbility2Name();
-            body.text = currentMember.BearJob.GetAbility2Desc(currentMember.AttackStrength);
+            header.text = currentMember.SpecialAbility.Name;
+            body.text = currentMember.SpecialAbility.GetAbilityDesc(currentMember.AttackStrength);
         }
         else
         {
@@ -230,13 +196,13 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
         }
         else if (info == 1 + "," + 0)
         {
-            header.text = currentMember.BearJob.GetAbility1Name();
-            body.text = currentMember.BearJob.GetAbility1Desc(currentMember.AttackStrength);
+            header.text = currentMember.BasicAbility.Name;
+            body.text = currentMember.BasicAbility.GetAbilityDesc(currentMember.AttackStrength);
         }
         else if (info == 1 + "," + -1)
         {
-            header.text = currentMember.BearJob.GetAbility2Name();
-            body.text = currentMember.BearJob.GetAbility2Desc(currentMember.AttackStrength);
+            header.text = currentMember.SpecialAbility.Name;
+            body.text = currentMember.SpecialAbility.GetAbilityDesc(currentMember.AttackStrength);
         }
         else
         {

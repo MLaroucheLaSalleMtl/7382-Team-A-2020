@@ -26,40 +26,6 @@ public class MeleeEnemy : BearColor
     // Start is called before the first frame update
 
 
-
-
-    public override void Ability1(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    
-
-    public override void Ability2(Bears target, int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility1Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility1Name()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility2Desc(int attack)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public override string GetAbility2Name()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public override string GetAttackDesc(int attack)
     {
         throw new System.NotImplementedException();

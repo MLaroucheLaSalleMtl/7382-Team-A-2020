@@ -17,9 +17,7 @@ public class GreenBear : BearColor
     //Special Ability
     //Nullifies Damage for 1 Turn
     #endregion UnitNotes
-
-
-    public GreenBear()
+    private void Start()
     {
         Hp = 150;
         TotalHp = 150;
@@ -33,6 +31,20 @@ public class GreenBear : BearColor
         Special = new Juggernaut();
     }
 
+    public GreenBear()
+    {
+        Hp = 150;
+        TotalHp = 150;
+        Defense = 10;
+        AttackStrength = 30;
+        Movement = 2;
+        AttackRange = 2;
+        BearRace = Color.green;
+        Countdown = 2;
+        FirstAbility =new HunkerDown();
+        Special = new Juggernaut();
+    }
+
     public override string GetAttackName()
     {
         return "Skull Smash";
@@ -41,38 +53,5 @@ public class GreenBear : BearColor
     {
         return "I HATE SKULLS\nDamage = " + attack.ToString();
     }
-    public override string GetAbility1Name()
-    {
-        return "Hunker Down";
-    }
-    public override string GetAbility1Desc(int attack)
-    {
-        return "Double Defence (One Turn)";
-    }
-    public override string GetAbility2Name()
-    {
-        return "Juggernaut";
-    }
-    public override string GetAbility2Desc(int attack)
-    {
-       
-        return "Im the juggernaut bitch\nBecome Immune (one turn) ";
-    }
-
-
-
-    public override void Ability1(Bears Target,int attack)
-    {
-        //Increases Defense
-        Target.Defense *= 2;
-        Target.themBuffs["buffDefence"] = 2;
-    }
-
-    public override void Ability2(Bears Target,int attack)
-    {
-        //Nullifies Damage For 1 Turn 
-        Target.Invincible = true;
-        Target.themBuffs["invincible"] = 2;
-
-    }
+  
 }

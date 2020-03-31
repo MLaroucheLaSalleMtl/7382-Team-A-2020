@@ -93,7 +93,7 @@ public class AttackRange : MonoBehaviour
             int diff= Mathf.Abs(cal1 - Range);
             for (int k = y - diff; k <= y + diff; k++)
             {
-               GameObject thistile=tilemanager.GetTile(new Vector2(i,k));
+               GameObject thistile=tilemanager.GetTileDic(new Vector2(i,k));
                 if(thistile!=null)
                 {
                     thistile.GetComponent<Tile>().Attackvalue = 1;
@@ -119,7 +119,7 @@ public class AttackRange : MonoBehaviour
             int diff = Mathf.Abs(cal1 - Range);
             for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
             {
-                GameObject thistile = tilemanager.GetTile(new Vector2(i, k));
+                GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
                 if (thistile != null)
                 {
                     thistile.GetComponent<Tile>().Attackvalue = 1;
@@ -138,7 +138,7 @@ public class AttackRange : MonoBehaviour
             for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
             {
                 
-                GameObject thistile = tilemanager.GetTile(new Vector2(i, k));
+                GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
                 if (thistile != null)
                 {
                     thistile.GetComponent<Tile>().Attackvalue = 1;
@@ -169,7 +169,7 @@ public class AttackRange : MonoBehaviour
             for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
             {
 
-                GameObject thistile = tilemanager.GetTile(new Vector2(i, k));
+                GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
                 if (thistile != null)
                 {
                     thistile.GetComponent<Tile>().Attackvalue = 1;
@@ -203,13 +203,13 @@ public class AttackRange : MonoBehaviour
                 if (tileshort.Attackvalue >= 0 && tileshort.Attackvalue < AttackRange)
                 {
                     tileshort.Attackvalue = AttackRange;   
-                    GameObject nexttile = tilemanager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                    GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                     AssignTileAttackRange(nexttile, tileshort.Attackvalue - 1);
 
                 }
@@ -239,13 +239,13 @@ public class AttackRange : MonoBehaviour
                 if (tile.Attackvalue >= 0 && tile.Attackvalue < AttackRange)
                 {
                     tile.Attackvalue = AttackRange;
-                    GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                    GameObject nexttile = tilemanager.GetTileDic(new Vector2(tile.X - 1, tile.Y));
                     AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X + 1, tile.Y));
                     AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y - 1));
                     AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
-                    nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                    nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y + 1));
                     AssignTileAttackRange(nexttile, tile.Attackvalue - 1);
 
                 }
@@ -274,13 +274,13 @@ public class AttackRange : MonoBehaviour
             {
                 tileshort.Attackvalue = AttackRange;
       
-                GameObject nexttile = tilemanager.GetTile(new Vector2(tileshort.X - 1, tileshort.Y));
+                GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
                 AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tileshort.X + 1, tileshort.Y));
+                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
                 AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y - 1));
+                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
                 AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tileshort.X, tileshort.Y + 1));
+                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
                 AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
 
             }
@@ -306,13 +306,13 @@ public class AttackRange : MonoBehaviour
             if (tile.Attackvalue >= 0 && tile.Attackvalue < AttackRange)
             {
                 tile.Attackvalue = AttackRange;
-                GameObject nexttile = tilemanager.GetTile(new Vector2(tile.X - 1, tile.Y));
+                GameObject nexttile = tilemanager.GetTileDic(new Vector2(tile.X - 1, tile.Y));
                 AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tile.X + 1, tile.Y));
+                nexttile = tilemanager.GetTileDic(new Vector2(tile.X + 1, tile.Y));
                 AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y - 1));
+                nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y - 1));
                 AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
-                nexttile = tilemanager.GetTile(new Vector2(tile.X, tile.Y + 1));
+                nexttile = tilemanager.GetTileDic(new Vector2(tile.X, tile.Y + 1));
                 AssignDescendingTileAttackRange(nexttile, tile.Attackvalue - 1);
 
             }
