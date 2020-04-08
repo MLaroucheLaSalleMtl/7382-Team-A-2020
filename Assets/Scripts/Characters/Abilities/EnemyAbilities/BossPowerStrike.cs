@@ -20,10 +20,12 @@ public class BossPowerStrike :Ability
         if (tileToBurn != null&&tileToBurn.GetComponent<Tile>()!=GetComponentInParent<Tile>())
         {
             Bears target = tileToBurn.GetComponentInChildren<Bears>();
-            if (target)
+            if (target!=null)
             {
                 if (target.Invincible == false)
-                    tileToBurn.GetComponentInChildren<Bears>().Hp -= damage;
+                    GetComponent<Bears>().DealDamage(damage, target);
+                else
+                    GetComponent<Bears>().DealDamage(0, target);
             }
         }
         

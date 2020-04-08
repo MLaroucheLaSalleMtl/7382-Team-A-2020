@@ -11,15 +11,20 @@ public class PowerStrike : Ability
         Name = "Power Strike";
         CastRange = 1;
         Aoe = 0;
+        Alt = false;
     }
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
-        //High Damage Range Attack
+       
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();
+        int damage;
         if (Target != null)
         {
             if (Target.Invincible == false)
-                Target.Hp -= (int)(attack * 1.75);
+                damage = (int)(attack * 1.75);
+            else
+                damage = 0;
+            GetComponent<Bears>().DealDamage(damage, Target);
         }
     }
 

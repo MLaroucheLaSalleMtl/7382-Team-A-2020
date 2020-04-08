@@ -10,13 +10,18 @@ public class DriveBy :Ability
         Name = "Drive By";
         CastRange = 4;
         Aoe = 0;
+        Alt = false;
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();
-        if(Target.Invincible==false)
-        Target.Hp -= (int)(attack * 1.5);
+        int damage;
+        if (!Target.Invincible)
+            damage = (int)(attack * 1.5);
+        else
+            damage = 0;
+        GetComponent<Bears>().DealDamage(damage, Target);
     }
 
     public override string GetAbilityDesc(int attack)

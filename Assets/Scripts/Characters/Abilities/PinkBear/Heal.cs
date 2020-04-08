@@ -11,6 +11,7 @@ public class Heal : Ability
         Name = "Heal";
         CastRange = 3;
         Aoe = 0;
+        Alt = false;
     }
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {

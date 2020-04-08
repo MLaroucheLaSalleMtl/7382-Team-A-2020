@@ -21,12 +21,12 @@ public class PinkBear : BearColor
     public PinkBear()
     {
 
-        Hp = 150;
-        TotalHp = 150;
+        Hp = 100;
+        TotalHp = 100;
         Defense = 5;
         AttackStrength = 30;
         Movement = 3;
-        AttackRange = 4;
+        AttackRange = 1;
         BearRace = Color.magenta;
         Countdown = 2;
         FirstAbility = new Heal();

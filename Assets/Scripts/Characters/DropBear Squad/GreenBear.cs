@@ -36,9 +36,9 @@ public class GreenBear : BearColor
         Hp = 150;
         TotalHp = 150;
         Defense = 10;
-        AttackStrength = 30;
-        Movement = 2;
-        AttackRange = 2;
+        AttackStrength = 45;
+        Movement = 3;
+        AttackRange = 1;
         BearRace = Color.green;
         Countdown = 2;
         FirstAbility =new HunkerDown();

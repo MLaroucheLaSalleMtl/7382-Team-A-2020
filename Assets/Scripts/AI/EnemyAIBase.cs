@@ -189,6 +189,7 @@ public class EnemyAIBase : MonoBehaviour
         }
         return playerPos;
     }
+
     protected Vector2 FindWeakestEnemyOnMap()
     {
         //this dont account for obstacles so its abit weird
@@ -277,14 +278,18 @@ public class EnemyAIBase : MonoBehaviour
          lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
          tileToAttack = Pairs[0].PlayerTile;
          tileToMoveTo = Pairs[0].EnemyTile;
-
+        Debug.Log("Tile To Move To: " + tileToMoveTo.X + " " + tileToMoveTo.Y);
+        Debug.Log("Tile To Attack: " + tileToAttack.X + " " + tileToAttack.Y);
         foreach (AttackTilePairings attackpairs in Pairs)
         {
             if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
             {
                 lowesthp = attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp;
+             
                 tileToAttack = attackpairs.PlayerTile;
                 tileToMoveTo = attackpairs.EnemyTile;
+                Debug.Log("Tile To Move To: " + tileToMoveTo.X + " " + tileToMoveTo.Y);
+                Debug.Log("Tile To Attack: " + tileToAttack.X + " " + tileToAttack.Y);
             }
         }
     }
@@ -322,6 +327,43 @@ public class EnemyAIBase : MonoBehaviour
                 //I then so go to the closest tile
                 #endregion ZachNotes
                 int distance = ((int)Mathf.Abs(tileshort.X - playerPos.x)) + ((int)Mathf.Abs(tileshort.Y - playerPos.y));
+                if (lowestdistance == -1)
+                {
+                    lowestdistance = distance;
+                    FinalMoveTarget = tileshort.Loc;
+                }
+                else if (lowestdistance > distance)
+                {
+                    lowestdistance = distance;
+                    FinalMoveTarget = tileshort.Loc;
+                }
+            }
+        }
+    }
+    protected void FindTileNearWeakestPlayerOnMapAccountForObstacles(Vector2 playerPos, GameObject startingtile)
+    {
+        //I kinda cheat it a little bit for the account for obstacles
+        int lowestdistance = -1;
+        Vector2 finalMoveTarget = startingtile.GetComponent<Tile>().Loc;
+        foreach (GameObject tile in tilesInMovementRange)
+        {
+            Tile tileshort = tile.GetComponent<Tile>();
+            if (!tileshort.IsEnemy && !tileshort.IsPlayer)
+            {
+            
+                int distance = ((int)Mathf.Abs(tileshort.X - playerPos.x)) + ((int)Mathf.Abs(tileshort.Y - playerPos.y));
+                Tile adjacentTile = tileManager.GetAdjacentTile(1, tileshort);
+                if (adjacentTile.IsObstacle)
+                    distance += 1;
+                adjacentTile = tileManager.GetAdjacentTile(2, tileshort);
+                if (adjacentTile.IsObstacle)
+                    distance += 1;
+                adjacentTile = tileManager.GetAdjacentTile(3, tileshort);
+                if (adjacentTile.IsObstacle)
+                    distance += 1;
+                adjacentTile = tileManager.GetAdjacentTile(4, tileshort);
+                if (adjacentTile.IsObstacle)
+                    distance += 1;
                 if (lowestdistance == -1)
                 {
                     lowestdistance = distance;

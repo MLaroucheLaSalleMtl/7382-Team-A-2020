@@ -35,7 +35,7 @@ public class BlackBear : BearColor
         TotalHp = 100;
         Defense = 7;
         AttackStrength = 40;
-        Movement = 3;
+        Movement = 2;
         AttackRange = 3;
         BearRace = Color.black;
         Countdown = 2;

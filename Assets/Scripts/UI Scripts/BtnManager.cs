@@ -259,7 +259,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
                 {
                     y = -2;
                 }
-                Debug.Log(x + ", " + y);
+            
             }
         }
     }

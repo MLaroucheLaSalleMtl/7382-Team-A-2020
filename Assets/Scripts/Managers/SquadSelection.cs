@@ -119,7 +119,7 @@ public class SquadSelection : MonoBehaviour
                     else
                         Selected--;
                 } while (!Squad[selected].GetComponent<Bears>().IsAlive || squad[selected].GetComponent<Bears>().TurnComplete);
-                Debug.Log("Selected = " + Selected);
+               // Debug.Log("Selected = " + Selected);
                 x = 0;
             }
             if (!Squad[selected].GetComponent<Bears>().IsAlive)
@@ -139,58 +139,8 @@ public class SquadSelection : MonoBehaviour
             //it tells the bear script that it is selected
             HighlightCharacter(Squad.Length, Selected);
 
-            //Enables the highlight depending on the index.
-            //We can add the different menus for the character and such to the code later
-            #region Highlights
-
-            //if (selected == 0)
-            //{
-            //    //Debug.Log("Selected = 0");
-            //    squad[0].GetComponent<Light>().enabled = true;
-            //    squad[1].GetComponent<Light>().enabled = false;
-            //    squad[2].GetComponent<Light>().enabled = false;
-            //    squad[3].GetComponent<Light>().enabled = false;
-            //    squad[4].GetComponent<Light>().enabled = false;
-
-
-            //}
-            //if (selected == 1)
-            //{
-            //   // Debug.Log("Selected = 1");
-            //    squad[0].GetComponent<Light>().enabled = false;
-            //    squad[1].GetComponent<Light>().enabled = true;
-            //    squad[2].GetComponent<Light>().enabled = false;
-            //    squad[3].GetComponent<Light>().enabled = false;
-            //    squad[4].GetComponent<Light>().enabled = false;
-            //}
-            //if (selected == 2)
-            //{
-            //    //Debug.Log("Selected = 2");
-            //    squad[0].GetComponent<Light>().enabled = false;
-            //    squad[1].GetComponent<Light>().enabled = false;
-            //    squad[2].GetComponent<Light>().enabled = true;
-            //    squad[3].GetComponent<Light>().enabled = false;
-            //    squad[4].GetComponent<Light>().enabled = false;
-            //}
-            //if (selected == 3)
-            //{
-            //    //Debug.Log("Selected = 3");
-            //    squad[0].GetComponent<Light>().enabled = false;
-            //    squad[1].GetComponent<Light>().enabled = false;
-            //    squad[2].GetComponent<Light>().enabled = false;
-            //    squad[3].GetComponent<Light>().enabled = true;
-            //    squad[4].GetComponent<Light>().enabled = false;
-            //}
-            //if (selected == 4)
-            //{
-            //    //Debug.Log("Selected = 4");
-            //    squad[0].GetComponent<Light>().enabled = false;
-            //    squad[1].GetComponent<Light>().enabled = false;
-            //    squad[2].GetComponent<Light>().enabled = false;
-            //    squad[3].GetComponent<Light>().enabled = false;
-            //    squad[4].GetComponent<Light>().enabled = true;
-            //}
-            #endregion Highlights
+           
+   
         }
         else if (playerTurn && code.CurrPhase==GameManager.Phase.menuPhase && PlayersAlive > 0 && PauseMenu.isGamePaused)
         {

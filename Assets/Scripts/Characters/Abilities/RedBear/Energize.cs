@@ -10,6 +10,7 @@ public class Energize : Ability
         Name = "Energize";
         CastRange = 3;
         Aoe = 0;
+        Alt = false;
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)

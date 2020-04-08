@@ -141,22 +141,7 @@ public class EnemyAI : MonoBehaviour
                         PlayersInRange.Add(playertile.GetComponent<Movement>().Position, tileManager.TileDic[playertile.GetComponent<Movement>().Position].GetComponent<Tile>());
                     }
                 }
-                #region LessEfficient
-                //           foreach (GameObject tile in tileManager.Tilearray)
-                //           {
-                //               Tile tileshort = tile.GetComponent<Tile>();
-                //               if (tileshort.IsPlayer && tileshort.Attackvalue > 0)
-                //               {
-                //                   #region ZachNotes
-                //                   //then from here it checks if there is a player on a tile an enemy can hit
-                //                   #endregion ZachNotes
-                ////                   if(playersInRange[tileshort.Loc]==null)
-                //                   PlayersInRange.Add(tileshort.Loc, tileshort);
-
-                //                   Debug.Log(tileshort.Loc);
-                //               }
-                //           }
-                #endregion LessEfficient
+      
                 if (playersInRange.Count > 0)//only executes if there were players in range
                 {
                     int lowesthp = -1;

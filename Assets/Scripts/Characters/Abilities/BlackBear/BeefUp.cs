@@ -10,10 +10,12 @@ public class BeefUp : Ability
         Id = 3;
         CastRange = 3;
         Aoe = 0;
+        Alt = false;
     }
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
-        Bears Target = tileToCastOn.GetComponentInChildren<Bears>();
+        
+        Bears Target = tileToCastOn.GetComponentInChildren<Bears>();       
         Target.AttackStrength = (int)(1.5 * Target.AttackStrength);
         Target.themBuffs["buffAttack"] = 2;
        

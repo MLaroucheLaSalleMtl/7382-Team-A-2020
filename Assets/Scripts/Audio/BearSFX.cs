@@ -16,7 +16,9 @@ public class BearSFX : MonoBehaviour
         [SerializeField] private AudioClip[] greenHurtClips;
     [SerializeField] private AudioClip[] greenMoveClips;
     [SerializeField] private AudioClip[] greenAbility1Clips;
+    [SerializeField] private AudioClip[] greenAbility1AltClips;
     [SerializeField] private AudioClip[] greenAbility2Clips;
+    [SerializeField] private AudioClip[] greenAbility2AltClips;
 
     [Header("BlueBearClips")]
     [SerializeField] private AudioClip[] blueAttackClips;
@@ -24,7 +26,9 @@ public class BearSFX : MonoBehaviour
         [SerializeField] private AudioClip[] blueHurtClips;
     [SerializeField] private AudioClip[] blueMoveClips;
     [SerializeField] private AudioClip[] blueAbility1Clips;
+    [SerializeField] private AudioClip[] blueAbility1AltClips;
     [SerializeField] private AudioClip[] blueAbility2Clips;
+    [SerializeField] private AudioClip[] blueAbility2AltClips;
 
     [Header("PinkBearClips")]
     [SerializeField] private AudioClip[] pinkAttackClips;
@@ -32,7 +36,9 @@ public class BearSFX : MonoBehaviour
         [SerializeField] private AudioClip[] pinkHurtClips;
     [SerializeField] private AudioClip[] pinkMoveClips;
     [SerializeField] private AudioClip[] pinkAbility1Clips;
+    [SerializeField] private AudioClip[] pinkAbility1AltClips;
     [SerializeField] private AudioClip[] pinkAbility2Clips;
+    [SerializeField] private AudioClip[] pinkAbility2AltClips;
 
     [Header("BlackBearClips")]
     [SerializeField] private AudioClip[] blackAttackClips;
@@ -40,7 +46,9 @@ public class BearSFX : MonoBehaviour
         [SerializeField] private AudioClip[] blackHurtClips;
     [SerializeField] private AudioClip[] blackMoveClips;
     [SerializeField] private AudioClip[] blackAbility1Clips;
+    [SerializeField] private AudioClip[] blackAbility1AltClips;
     [SerializeField] private AudioClip[] blackAbility2Clips;
+    [SerializeField] private AudioClip[] blackAbility2AltClips;
 
     [Header("RedBearClips")]
     [SerializeField] private AudioClip[] redAttackClips;
@@ -48,12 +56,14 @@ public class BearSFX : MonoBehaviour
         [SerializeField] private AudioClip[] redHurtClips;
     [SerializeField] private AudioClip[] redMoveClips;
     [SerializeField] private AudioClip[] redAbility1Clips;
+    [SerializeField] private AudioClip[] redAbility1AltClips;
     [SerializeField] private AudioClip[] redAbility2Clips;
+    [SerializeField] private AudioClip[] redAbility2AltClips;
 
 
-   
+
     #region properties
-    
+
     public AudioClip[] GreenAttackClips { get => greenAttackClips;  }
     public AudioClip[] GreenIdleClips { get => greenIdleClips; }
     public AudioClip[] GreenHurtClips { get => greenHurtClips;  }

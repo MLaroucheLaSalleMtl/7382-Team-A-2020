@@ -254,11 +254,14 @@ public class Movement : MonoBehaviour
        
         moves.Push(tile.Loc);
         this.Moving = true;
-        if(stats.MoveSounds!=null)
-        if (stats.MoveSounds.Length > 0)
+        if (stats.MoveSounds != null)
         {
-            int random = Random.Range(0, stats.MoveSounds.Length);
-            stats.AudioS.PlayOneShot(stats.MoveSounds[random]);
+            int random = Random.Range(0, 5);
+            if (stats.MoveSounds.Length > 0&&random<=3)
+            {
+                random = Random.Range(0, stats.MoveSounds.Length);
+                stats.AudioS.PlayOneShot(stats.MoveSounds[random]);
+            }
         }
         while (tile.X != playertile.X || tile.Y != playertile.Y)
         {
@@ -282,8 +285,8 @@ public class Movement : MonoBehaviour
             //to adjust that with animations later
             #endregion ZachNotes
             // StartCoroutine(MoveToIndividualTile(moves.Pop(), i, tilemanager));
-            MoveToIndividualTileV2(moves.Pop(), tilemanager);
-            i += .8f;
+            StartCoroutine(MoveToIndividualTile(moves.Pop(), i, tilemanager));
+            i += .5f;
         }
         return i;
 
@@ -299,7 +302,7 @@ public class Movement : MonoBehaviour
         //but its abit broken currently. (Works but is ugly)
         #endregion ZachNotes
         yield return new WaitForSeconds(time);
-        Debug.Log(tile);
+  
         float timepassed = 0;
         travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
         timepassed += Time.deltaTime;
@@ -307,7 +310,7 @@ public class Movement : MonoBehaviour
         if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
         {
             this.agent.destination = travelpoint;
-            if (anim != null) ;
+            if (anim != null)
             anim.SetBool("isMoving", true);
         }
         else
@@ -318,12 +321,12 @@ public class Movement : MonoBehaviour
     }
     private void MoveToIndividualTileV2(Vector2 tile, TileManager tilemanager)
     {
-        Debug.Log(tile);
+
         travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
         if (Vector3.Distance(this.transform.position, travelpoint) > 0.1f)
         {
             this.agent.nextPosition = travelpoint;
-            if (anim != null) ;
+            if (anim != null) 
             anim.SetBool("isMoving", true);
         }
         else

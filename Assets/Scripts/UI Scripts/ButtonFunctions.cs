@@ -65,6 +65,11 @@ public class ButtonFunctions : MonoBehaviour
 
         }
     }
+    public void LevelComplete()
+    {
+        GameManager.levelsComplete++;
+
+    }
     public void BtnLoadScene()
     {
         if (async == null)

@@ -141,13 +141,17 @@ public class AttackRange : MonoBehaviour
                 GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
                 if (thistile != null)
                 {
-                    thistile.GetComponent<Tile>().Attackvalue = 1;
-                    if (thistile.GetComponent<Tile>().IsPlayer&&thistile.GetComponentInChildren<Bears>().IsAlive)
+                    Tile tileShort = thistile.GetComponent<Tile>();
+                    if (tileShort != null)
                     {
-                        AttackTilePairings pairing=new AttackTilePairings();
-                        pairing.EnemyTile = tile;
-                        pairing.PlayerTile = thistile.GetComponent<Tile>();
-                        currentenemy.Pairs.Add(pairing);
+                        tileShort.Attackvalue = 1;
+                        if (tileShort.IsPlayer && thistile.GetComponentInChildren<Bears>().IsAlive)
+                        {
+                            AttackTilePairings pairing = new AttackTilePairings();
+                            pairing.EnemyTile = tile;
+                            pairing.PlayerTile = tileShort;
+                            currentenemy.Pairs.Add(pairing);
+                        }
                     }
                 }
             }

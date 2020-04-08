@@ -10,6 +10,7 @@ public class HunkerDown : Ability
         Name = "Hunker Down";
         CastRange = 1;
         Aoe = 0;
+        Alt = false;
     }
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
@@ -20,6 +21,6 @@ public class HunkerDown : Ability
 
     public override string GetAbilityDesc(int damage)
     {
-        return "Double Defence (One Turn)";
+        return "Double Defence (Two Turns)";
     }
 }

@@ -16,9 +16,10 @@ public class BossThrowIceChunk :Ability
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         Bears target = tileToCastOn.GetComponentInChildren<Bears>();
+        int damage= (int)(attack * 1.25);
         if (target != null)
         {
-            target.Hp -= (int)(attack * 1.25);
+            GetComponent<Bears>().DealDamage(damage, target);
             target.themBuffs["stun"] = 1;
                 }
     }

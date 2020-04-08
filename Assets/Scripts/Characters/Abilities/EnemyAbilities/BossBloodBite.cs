@@ -14,20 +14,7 @@ public class BossBloodBite :Ability
 
 
 
-    private void AttackSquare(Vector2 tile, TileManager tilemanager, int damage)
-    {
-        GameObject tileToBurn = tilemanager.GetTileDic(tile);
-        if (tileToBurn != null && tileToBurn != GetComponentInParent<Tile>())
-        {
-            Bears target = tileToBurn.GetComponentInChildren<Bears>();
-            if (target)
-            {
-                if (target.Invincible == false)
-                    tileToBurn.GetComponentInChildren<Bears>().Hp -= damage;
-            }
-        }
 
-    }
     public override string GetAbilityDesc(int damage)
     {
         int number = (int)(damage * 1.75);
@@ -47,9 +34,9 @@ public class BossBloodBite :Ability
 
         if(!target.Invincible)
         {
-            target.Hp -= damage;
-
+            hostbear.DealDamage(damage, target);
         }
-
+        else
+            hostbear.DealDamage(0, target);
     }
 }

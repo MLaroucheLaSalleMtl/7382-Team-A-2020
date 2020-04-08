@@ -68,6 +68,23 @@ public class TileManager : MonoBehaviour
         else
             return currenttile.gameObject;
     }
+    public Tile GetAdjacentTile(int situation,Tile currentTile)
+    {
+        switch (situation)
+        {
+            case 1:
+                return GetTileDic(new Vector2(currentTile.X - 1, currentTile.Y)).GetComponent<Tile>();
+            case 2:
+                return GetTileDic(new Vector2(currentTile.X +1, currentTile.Y)).GetComponent<Tile>();
+            case 3:
+                return GetTileDic(new Vector2(currentTile.X, currentTile.Y-1)).GetComponent<Tile>();
+            case 4:
+                return GetTileDic(new Vector2(currentTile.X, currentTile.Y + 1)).GetComponent<Tile>();
+            default:
+                return null;
+        }
+
+    }
 
 
    

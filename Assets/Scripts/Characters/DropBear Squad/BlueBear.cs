@@ -25,7 +25,7 @@ public class BlueBear : BearColor
         Defense = 7;
         AttackStrength = 40;
         Movement = 5;
-        AttackRange = 5;
+        AttackRange = 1;
         BearRace = Color.blue;
         Countdown = 2;
         FirstAbility = new GottaGoQuick();

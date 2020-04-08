@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject selectedTile;
     [SerializeField] private TileManager tilemanager;
     [SerializeField] private GameObject confPanel;
+    [SerializeField] public Canvas txtDamage;
+    public static int levelsComplete = 0;
     private bool enemySubtracted=false;
     private TileSelector tileSelector;
     private bool enteredConfPhase = false;
@@ -66,92 +68,6 @@ public class GameManager : MonoBehaviour
         //movementPhase = false;
         #endregion oldnonenum
     }
-    #region ZachFuckUpsOldNonEnum
-    // Update is called once per frame
-    //void Update()
-    //{
-    //    if (enemyManager.EnemiesAlive > 0 &&squadSelector.PlayersAlive>0)
-    //         {
-    //        if (PlayerTurn == true)
-    //        {
-
-    //            if (menuPhase)
-    //            {
-    //                //Resets every turn
-    //                //endTurn = squadSelector.Squad.Length ;
-    //                //CheckPlayerStatus(5);
-    //                StartCoroutine(CheckTurns());
-    //                selectedPlayer = squadSelector.Squad[squadSelector.Selected];
-    //                HighlightTileUnderSelectedPlayer(selectedPlayer);
-    //                interactionMenu.SetActive(true);
-    //                attackPhase = false;
-    //                movementPhase = false;
-    //                //this is where btn Move 
-    //                if (selectedPlayer.GetComponent<Bears>().HasAttacked)
-    //                {
-    //                    DisableAttackButtons();
-    //                }
-    //                else
-    //                {
-    //                    EnableAttackBtns();
-    //                }
-    //                if (selectedPlayer.GetComponent<Movement>().HasMoved)
-    //                    moveBtn.interactable = false;
-    //                else
-    //                    moveBtn.interactable = true;
-    //                if(selectedPlayer.GetComponent<Movement>().HasMoved&& selectedPlayer.GetComponent<Bears>().HasAttacked)
-    //                {
-    //                    selectedPlayer.GetComponent<Bears>().TurnComplete = true;
-
-    //                }
-    //            }
-    //            else if (attackPhase|| MovementPhase)
-    //            {
-    //                interactionMenu.SetActive(false);
-    //            }
-    //            if (!onlyOnce)
-    //            {
-    //                enemyManager.Invoke("ResetEnemyTurns", .1f);
-    //                onlyOnce = true;
-    //            }
-    //        }
-    //        else if (enemyPhase == true)
-    //        {
-
-    //            interactionMenu.SetActive(false);
-    //            MovementPhase = false;
-    //            AttackPhase = false;
-    //            MenuPhase = false;
-    //            if (enemyManager.Enemies != null)
-    //            {
-    //                for (int i = 0; i < enemyManager.Enemies.Length; i++)
-    //                {
-    //                    if (enemyManager.Enemies[i].GetComponent<Bears>().IsAlive && enemyManager.FirstEnemyHasActed == false)
-    //                    {
-    //                        enemyManager.Enemies[i].GetComponent<EnemyAIBase>().TakeTurn = true;
-    //                        enemyManager.FirstEnemyHasActed = true;
-    //                    }
-    //                }
-    //                StartCoroutine(enemyManager.WaitForTurn());
-    //                if (enemyManager.Enemies[enemyManager.Enemies.Length - 1].GetComponent<EnemyAIBase>().TurnCompleted)
-    //                {
-    //                    onlyOnce = false;
-    //                    enemyManager.SwitchToPlayerTurns();
-
-    //                }
-    //            }
-    //        }
-    //    }
-    //    else if(enemyManager.EnemiesAlive<=0)
-    //    {
-    //        winPanel.SetActive(true);
-    //    }
-    //    else if (squadSelector.PlayersAlive<=0)
-    //    {
-    //        losePanel.SetActive(true);
-    //    }
-    //}
-    #endregion ZachFuckUpsOldNonEnum
     void Update()
     {
         if (enemyManager.EnemiesAlive > 0 && squadSelector.PlayersAlive > 0)
@@ -215,7 +131,7 @@ public class GameManager : MonoBehaviour
                     if(statsText!=null)
                     GetStatsText();
                      confPanel.SetActive(false);
-            enteredConfPhase = false;
+                     enteredConfPhase = false;
 
                     break;
                     case Phase.confPhase:
@@ -243,7 +159,6 @@ public class GameManager : MonoBehaviour
                             if (enemyManager.Enemies[enemyManager.Enemies.Length - 1].GetComponent<EnemyAIBase>().TurnCompleted)
                             {
                                 onlyOnce = false;
-                                //enemyManager.SwitchToPlayerTurns();
                                 enemyManager.SwitchToPlayerTurnsEnum();
 
                             }
@@ -280,7 +195,7 @@ public class GameManager : MonoBehaviour
     }
     void HighlightTileUnderSelectedPlayer(GameObject selectedplayer)
     {
-        if (selectedPlayer != null)
+        if (selectedPlayer != null &&squadSelector.Squad!=null)
         {
             foreach (GameObject player in squadSelector.Squad)
             {
@@ -352,13 +267,15 @@ public class GameManager : MonoBehaviour
         {
             //this is for the stats display
             Tile tileSelected = tileSelector.CurrentTile.GetComponent<Tile>();
-            if (tileSelected.IsEnemy || tileSelected.IsPlayer)
-            {
-                Bears display = tileSelected.GetComponentInChildren<Bears>();
-                statsText.text = display.ToString();
-            }
-            else
-                statsText.text = "";
+          
+                if (tileSelected.IsEnemy || tileSelected.IsPlayer)
+                {
+                    Bears display = tileSelected.GetComponentInChildren<Bears>();
+                    statsText.text = display.ToString();
+                }
+                else
+                    statsText.text = "";
+            
         }
     }
 }

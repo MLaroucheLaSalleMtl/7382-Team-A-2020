@@ -29,6 +29,7 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 {
 
                     FindWeakestPlayerInRange();
+                    Debug.Log("Final Tile: "+tileToMoveTo.X+ tileToMoveTo.Y);
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
                    StartCoroutine( EnemyAttackEnum(timer+.5f, tileToAttack));
                     tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
@@ -40,7 +41,7 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 else if (Pairs.Count==0 && stats.Movement > 0)
                 {
                     Vector2 playerPos = FindWeakestOnMap(PlayerFind);
-                    FindTileNearWeakestPlayerOnMap(playerPos,startingTile);                
+                    FindTileNearWeakestPlayerOnMapAccountForObstacles(playerPos,startingTile);                
                     timer = mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingTile, TileManager.instance);
                     tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     Invoke("EndTurn", timer);

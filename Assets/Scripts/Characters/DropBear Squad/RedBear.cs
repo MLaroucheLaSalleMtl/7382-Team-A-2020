@@ -21,9 +21,9 @@ public class RedBear : BearColor
         Hp = 100;
         TotalHp = 100;
         Defense = 7;
-        AttackStrength = 30;
+        AttackStrength = 35;
         Movement = 3;
-        AttackRange = 3;
+        AttackRange = 2;
         BearRace = Color.red;
         Countdown = 2;
         FirstAbility = new BodyFire();

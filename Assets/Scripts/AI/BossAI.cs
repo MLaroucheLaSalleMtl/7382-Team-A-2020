@@ -47,7 +47,7 @@ public class BossAI : EnemyAIBase
                 else if (Pairs.Count == 0 && stats.Movement > 0)
                 {
                     Vector2 playerPos = FindWeakestOnMap(PlayerFind);
-                    FindTileNearWeakestPlayerOnMap(playerPos, startingTile);
+                    FindTileNearWeakestPlayerOnMapAccountForObstacles(playerPos, startingTile);
                     timer = mover.MoveToFinalTile(tileManager.TileDic[FinalMoveTarget], startingTile, TileManager.instance);
                     tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
                     Invoke("EndTurn", timer);

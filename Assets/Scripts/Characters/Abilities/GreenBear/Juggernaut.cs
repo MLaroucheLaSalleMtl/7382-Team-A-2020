@@ -10,6 +10,7 @@ public class Juggernaut :Ability
         Name = "Juggernaut";
         CastRange = 2;
         Aoe = 0;
+        Alt = false;
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)

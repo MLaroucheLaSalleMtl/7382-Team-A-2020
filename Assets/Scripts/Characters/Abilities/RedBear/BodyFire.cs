@@ -11,6 +11,7 @@ public class BodyFire : Ability
         Name = "Body Fire";
         CastRange = 0;
         Aoe = 1;
+        Alt = false;
     }
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
@@ -36,8 +37,8 @@ public class BodyFire : Ability
             Bears target = tileToBurn.GetComponentInChildren<Bears>();
             if (target)
             {
-                if(target.Invincible==false)
-                tileToBurn.GetComponentInChildren<Bears>().Hp -= damage;
+                if(target!=null)
+                GetComponent<Bears>().DealDamage(damage, target);
             }
         }
     }
