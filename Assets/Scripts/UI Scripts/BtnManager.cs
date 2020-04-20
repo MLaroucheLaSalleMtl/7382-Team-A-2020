@@ -61,19 +61,36 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
 
     public void OnClickAttack()
     {
-        if (AttackIsSelected == false)
+        if (/*!AttackIsSelected*/code.CurrPhase != GameManager.Phase.attackSelectionPhase)
         {
             onlyOnce = true;
             AttackIsSelected = true;
+            code.CurrPhase = GameManager.Phase.attackSelectionPhase;
         }
-        else if (AttackIsSelected == true)
+        else if (/*AttackIsSelected*/code.CurrPhase == GameManager.Phase.attackSelectionPhase)
         {
             onlyOnce = true;
             AttackIsSelected = false;
+            Invoke("ChangePhase", 0.1f);
         }
-        if (onlyOnce)
+
+    }
+
+    public void ChangePhase()
+    {
+        code.CurrPhase = GameManager.Phase.menuPhase;
+    }
+
+    public void OnClickAttack(InputAction.CallbackContext context)
+    {
+        if (context.started)
         {
-            DisplaySubMenu();
+            if (/*AttackIsSelected*/ code.CurrPhase == GameManager.Phase.attackSelectionPhase)
+            {
+                AttackIsSelected = false;
+                Invoke("ChangePhase", 0.1f);
+                DisplaySubMenu();
+            }
         }
 
     }
@@ -85,7 +102,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     // Update is called once per frame
     void Update()
     {
-        if (PauseMenu.isGamePaused == false&&code.CurrPhase==GameManager.Phase.menuPhase)
+        if (code.CurrPhase != GameManager.Phase.pausePhase && (code.CurrPhase==GameManager.Phase.menuPhase ||code.CurrPhase==GameManager.Phase.attackSelectionPhase))
         {
 
             //Debug.Log(x + "," + y);
@@ -98,10 +115,12 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
             {
                 DisplaySubMenu();
             }
-            if (Input.GetButtonDown("Back") && AttackIsSelected)
+            if (onlyOnce && AttackIsSelected)
             {
                 OnClickAttack();
             }
+          
+           
         }
         else if(code.CurrPhase==GameManager.Phase.confPhase)
         {
@@ -216,6 +235,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
         text.color = Color.white;
         if (AttackIsSelected)
         {
+            code.CurrPhase = GameManager.Phase.attackSelectionPhase;
             SubMenu.SetActive(true);
             buttons["1,1"].Select();
             x = 1;
@@ -242,7 +262,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     {
         if (context.started)
         {
-            if (code.CurrPhase == GameManager.Phase.menuPhase || code.CurrPhase == GameManager.Phase.confPhase)
+            if (code.CurrPhase == GameManager.Phase.menuPhase || code.CurrPhase == GameManager.Phase.confPhase||code.CurrPhase==GameManager.Phase.attackSelectionPhase)
             {
                 Vector2 navigate = context.ReadValue<Vector2>();
                 if (code.CurrPhase == GameManager.Phase.confPhase)
@@ -253,7 +273,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
                     if (x < 2)
                         x = 2;
                 }
-                if (code.CurrPhase == GameManager.Phase.menuPhase)
+                if (code.CurrPhase == GameManager.Phase.menuPhase || code.CurrPhase == GameManager.Phase.attackSelectionPhase)
                     y = y + (int)navigate.y;
                 if (y == 2)
                 {

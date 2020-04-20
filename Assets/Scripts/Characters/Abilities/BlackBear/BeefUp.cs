@@ -7,11 +7,17 @@ public class BeefUp : Ability
     public BeefUp()
     {
         Name = "Beef Up";
-        Id = 3;
+        AltRange = false;
         CastRange = 3;
         Aoe = 0;
         Alt = false;
     }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         

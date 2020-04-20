@@ -190,7 +190,7 @@ public class Tutorial : MonoBehaviour
                 break;
 
         }
-        Debug.Log(section);
+       
         Debug.Log(code.CurrPhase); 
     }
 }

@@ -19,8 +19,9 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion Singleton
-   public enum Phase { menuPhase,attackPhase,enemyPhase,movementPhase,mapPhase,confPhase}
+   public enum Phase { menuPhase,attackPhase,enemyPhase,movementPhase,mapPhase,confPhase,winLosePhase,tutorial,pausePhase,attackSelectionPhase}
     [SerializeField]private Phase currPhase;
+  
     [SerializeField] private TextMeshProUGUI statsText;
     [SerializeField] private GameObject selectedPlayer;
     [SerializeField] private GameObject selectedTile;
@@ -33,6 +34,7 @@ public class GameManager : MonoBehaviour
     private bool enteredConfPhase = false;
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
+    [SerializeField] private GameObject pauseMenuUI;
     #region Buttons
     [SerializeField] private GameObject interactionMenu;
     [SerializeField] private Button moveBtn;
@@ -49,10 +51,13 @@ public class GameManager : MonoBehaviour
     private bool onlyOnce = false;
     private int endTurn;
     private EnemyManager enemyManager;
+   [SerializeField] private Button btnWin;
+    [SerializeField] private Button btnLose;
     public GameObject InteractionMenu { get => interactionMenu; set => interactionMenu = value; }
     public bool PlayerTurn { get => playerTurn; set => playerTurn = value; }
     public Phase CurrPhase { get => currPhase; set => currPhase = value; }
     bool substracted = false;
+    public Phase savedPhase;
     void Start()
     {
         squadSelector = SquadSelection.instance;
@@ -76,7 +81,8 @@ public class GameManager : MonoBehaviour
                 switch (CurrPhase)
                 {
                     case Phase.menuPhase:
-                        enemySubtracted = false;
+                case Phase.attackSelectionPhase:
+                    enemySubtracted = false;
                         StartCoroutine(CheckTurns());
                         selectedPlayer = squadSelector.Squad[squadSelector.Selected];
                         HighlightTileUnderSelectedPlayer(selectedPlayer);
@@ -101,6 +107,7 @@ public class GameManager : MonoBehaviour
                         if (!onlyOnce)
                         {
                             enemyManager.Invoke("ResetEnemyTurns", .1f);
+                        tilemanager.Invoke("DeSelectAllTiles", .25f);
                             onlyOnce = true;
                         }
                     statsText.gameObject.SetActive(false) ;
@@ -114,14 +121,12 @@ public class GameManager : MonoBehaviour
                             {
                                 currentMember.TurnComplete = true;
                             }
-                            currentMember.counterSupport--;
-                            currentMember.DeductThemBuffs();
-                            currentMember.CheckThemBuffs();
-                           
+                            EndTurnAllBuff(currentMember);
+                          
                         }
                         
                     }
-
+                    Debug.Log(selectedPlayer.GetComponent<Movement>().ExecuteMovement);
                     break;
                     case Phase.attackPhase:
                     case Phase.movementPhase:
@@ -167,31 +172,45 @@ public class GameManager : MonoBehaviour
                             enemySubtracted = true;
                             for (int i = 0; i < enemyManager.Enemies.Length; i++)
                             {
-                                enemyManager.Enemies[i].GetComponent<Bears>().counterSupport--;
-                                enemyManager.Enemies[i].GetComponent<Bears>().DeductThemBuffs();
-                                enemyManager.Enemies[i].GetComponent<Bears>().CheckThemBuffs();
+                                EndTurnAllBuff(enemyManager.Enemies[i].GetComponent<Bears>());
                             }
                         }
                     }   
-                    statsText.gameObject.SetActive(false) ;
+                        
+                   statsText.gameObject.SetActive(false) ;
                     break;
-            }
+                case Phase.pausePhase:
+                    if (currPhase == Phase.menuPhase || currPhase == Phase.enemyPhase)
+                    {
+                        savedPhase = CurrPhase;
+                        pauseMenuUI.SetActive(true);
+                        Time.timeScale = 0f;
+                    }
+
+                    break;
+              
+
+                }
            
         }
         else if (enemyManager.EnemiesAlive <= 0)
         {
             winPanel.SetActive(true);
+            btnWin.Select();
+            currPhase = Phase.winLosePhase;
         }
         else if (squadSelector.PlayersAlive <= 0)
         {
             losePanel.SetActive(true);
+            btnLose.Select();
+            currPhase = Phase.winLosePhase;
         }
         if(currPhase!=Phase.confPhase)
         {
             confPanel.SetActive(false);
-            enteredConfPhase = false;
-          
+            enteredConfPhase = false;         
         }
+        Debug.Log(currPhase);
     }
     void HighlightTileUnderSelectedPlayer(GameObject selectedplayer)
     {
@@ -200,9 +219,15 @@ public class GameManager : MonoBehaviour
             foreach (GameObject player in squadSelector.Squad)
             {
                 if (player == selectedplayer)
-                    selectedplayer.GetComponentInParent<Tile>().IsSelected = true;
+                {
+                    if (selectedplayer.GetComponentInParent<Tile>())
+                        selectedplayer.GetComponentInParent<Tile>().IsSelected = true;
+                }
                 else
+                {
+                   if (selectedplayer.GetComponentInParent<Tile>())
                     player.GetComponentInParent<Tile>().IsSelected = false;
+                }
             }
         }
     }
@@ -210,19 +235,23 @@ public class GameManager : MonoBehaviour
     {
         submenuBtn.interactable = true;
         attackBtn.interactable = true;
-        Bears selectedBear= squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>();
-        if (selectedBear.Support == true)
+        if (Tutorial.instance == null || (Tutorial.instance.Section != 2 && Tutorial.instance.Section != 3))
         {
-            Ability1Btn.interactable = true;
+      
+            Bears selectedBear = squadSelector.Squad[squadSelector.Selected].GetComponent<Bears>();
+            if (selectedBear.Support == true)
+            {
+                Ability1Btn.interactable = true;
+            }
+            else
+            {
+                Ability1Btn.interactable = false;
+            }
+            if (selectedBear.Special == true)
+                Ability2Btn.interactable = true;
+            else
+                Ability2Btn.interactable = false;
         }
-        else
-        {
-            Ability1Btn.interactable = false;
-        }
-        if (selectedBear.Special == true)
-            Ability2Btn.interactable = true;
-        else
-            Ability2Btn.interactable = false; ;
     }
     private void DisableAttackButtons()
     {
@@ -257,7 +286,7 @@ public class GameManager : MonoBehaviour
             //EnemyPhase = true;
             CurrPhase = Phase.enemyPhase;
 
-            Debug.Log(currPhase);
+           
         }
         yield return new WaitForSeconds(.1f);
     }
@@ -265,17 +294,25 @@ public class GameManager : MonoBehaviour
     {
         if (tileSelector.CurrentTile != null)
         {
-            //this is for the stats display
             Tile tileSelected = tileSelector.CurrentTile.GetComponent<Tile>();
           
                 if (tileSelected.IsEnemy || tileSelected.IsPlayer)
                 {
                     Bears display = tileSelected.GetComponentInChildren<Bears>();
+                if(statsText!=null &&display!=null)
                     statsText.text = display.ToString();
                 }
                 else
-                    statsText.text = "";
+                   statsText.text = "";
             
         }
+    }
+    private void EndTurnAllBuff(Bears currentMember)
+    {
+        currentMember.TakeDot();
+        currentMember.GetHot();
+        currentMember.counterSupport--;
+        currentMember.DeductThemBuffs();
+        currentMember.CheckThemBuffs();
     }
 }

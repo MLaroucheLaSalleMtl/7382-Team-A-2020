@@ -279,7 +279,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1808042961067429877}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -35.63513, y: 36.779114, z: 18.42}
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_Children:
@@ -321,9 +321,9 @@ Rigidbody:
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!136 &7653472189460420292
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -555,6 +555,7 @@ MonoBehaviour:
   tilemanager: {fileID: 0}
   movementcheck: 0
   moving: 0
+  executeMovement: 0
   travelpoint: {x: 0, y: 0, z: 0}
 --- !u!114 &7653472189460420288
 MonoBehaviour:
@@ -589,9 +590,9 @@ NavMeshAgent:
   avoidancePriority: 50
   m_AngularSpeed: 620
   m_StoppingDistance: 1
-  m_AutoTraverseOffMeshLink: 1
+  m_AutoTraverseOffMeshLink: 0
   m_AutoBraking: 1
-  m_AutoRepath: 1
+  m_AutoRepath: 0
   m_Height: 0.05
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
@@ -995,7 +996,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3835738381832626289}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0, z: 0.078}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3408148111880044006}

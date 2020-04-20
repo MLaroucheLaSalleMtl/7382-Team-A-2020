@@ -4,27 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 //Shit to do neccesary
-//Menus make em perty (derek)
-//put in the models (dereks on that)
-//story (We can just do the mission debrief)
-//voice lines finish them (just need extra skills and maybe enemies)
-//Levels (with the level select) //pretty much done
-//Animations (Nians on that)
-//enviroments
-//Write up
-//music (derek)
-
-//Shit to Do would be nice
-//Leveling system.
-//cooler abilities aoe's poisons etc...
-//due date april 21st
-
-//Done
-//Boss Fight
-//menus inbetween levels to assign skills and stuff//this is mostly done
-//damage numbers
-//make a level prefab thing with the game manager and all the neccesary shit
-//currnt Bugs 
+//LEVEL COMPLETE SYSTEM
+//end turn only after enemy has attacked
+//pause selection bug
 
 public class Bears : MonoBehaviour
 {
@@ -45,6 +27,8 @@ public class Bears : MonoBehaviour
     [SerializeField] private bool turnComplete;
     [SerializeField] private int countDown;
 
+    [SerializeField] private Image abilityIcon;
+    [SerializeField] private Image SpecialIcon;
     //Sounds Clips
     [SerializeField] private AudioClip[] idleSounds;
     [SerializeField] private AudioClip[] attackSounds;
@@ -55,6 +39,7 @@ public class Bears : MonoBehaviour
     private BearSFX bearSFX;
     private Animator anim;
     private Canvas txtDamage;
+    private Color iconcolor;
     [Space()]
 
     [SerializeField] private bool selected;
@@ -62,7 +47,7 @@ public class Bears : MonoBehaviour
     //Needed for turn system
     [SerializeField] private bool isAlive = true;
     //If we do enemy soundclips I will have to add alot of enumtypes
-    public enum EnumColour { Green, Black, Blue, Pink, Red, MeleeEnemy, StrongMeleeEnemy, RangedEnemy, MeleeBoss,SupportBoss};
+    public enum EnumColour { Green, Black, Blue, Pink, Red, MeleeEnemy, StrongMeleeEnemy, RangedEnemy, MeleeBoss,SupportBoss,SupportEnemy};
     [SerializeField] private EnumColour color;
     //[Range(1, 6)] [Tooltip(" 1 = Green \n 2 = Black \n 3 = Blue \n 4 = Pink \n 5 = Red \n 6 = Melee Enemy")]
     //[SerializeField] private int colour;
@@ -134,15 +119,21 @@ public class Bears : MonoBehaviour
         moveSounds = GetSpecificSoundClips(type);
         type = color.ToString() + "HurtClips";
         hurtSounds = GetSpecificSoundClips(type);
-        if(!BasicAbility.Alt)
-        type = color.ToString() + "Ability1Clips";
-        else
-            type = color.ToString() + "Ability1AltClips";
+        if (basicAbility != null)
+        {
+            if (!BasicAbility.Alt)
+                type = color.ToString() + "Ability1Clips";
+            else
+                type = color.ToString() + "Ability1AltClips";
+        }
         ability1Sounds = GetSpecificSoundClips(type);
-        if(!SpecialAbility.Alt)
-        type = color.ToString() + "Ability2Clips";
-        else
-            type = color.ToString() + "Ability2AltClips";
+        if (SpecialAbility != null)
+        {
+            if (!SpecialAbility.Alt)
+                type = color.ToString() + "Ability2Clips";
+            else
+                type = color.ToString() + "Ability2AltClips";
+        }
         ability2Sounds = GetSpecificSoundClips(type);
 
     }
@@ -160,12 +151,17 @@ public class Bears : MonoBehaviour
         //as long as the string will match the name of the variable in the bearsfx script
         //as long as the audio clips exist in the audio manager
         #endregion ZachWin
-        if (bearSFX.GetType().GetProperty(typeofclip) != null)
+        if (bearSFX)
         {
-            return (AudioClip[])bearSFX.GetType().GetProperty(typeofclip).GetValue(bearSFX);
+            if (bearSFX.GetType().GetProperty(typeofclip) != null)
+            {
+                return (AudioClip[])bearSFX.GetType().GetProperty(typeofclip).GetValue(bearSFX);
+            }
+            else return null;
         }
         else return null;
     }
+ 
     private void GiveColour(EnumColour colour)
     {
         //k so this looks complex now but essentially i had to figure out a way to dynamically allocate the abilities for the ability tree
@@ -181,6 +177,7 @@ public class Bears : MonoBehaviour
                 System.Type sAbility = GreenBearAbilities.specialAbility.GetType();
                 specialAbility = (Ability)gameObject.AddComponent(sAbility);
                 basicAbility = (Ability)gameObject.AddComponent(bAbility);
+                iconcolor = Color.green;
                 this.avatarNumber = 3;
                 break;
             case EnumColour.Black:
@@ -190,6 +187,7 @@ public class Bears : MonoBehaviour
                bAbility = BlackBearAbilities.basicAbility.GetType();
                sAbility = BlackBearAbilities.specialAbility.GetType();
                 specialAbility = (Ability)gameObject.AddComponent(sAbility);
+                iconcolor = Color.gray;
                 basicAbility = (Ability)gameObject.AddComponent(bAbility);
                 this.avatarNumber = 0;
                 break;
@@ -199,6 +197,7 @@ public class Bears : MonoBehaviour
                     new BlueBearAbilities(true);
                 bAbility = BlueBearAbilities.basicAbility.GetType();
                 sAbility = BlueBearAbilities.specialAbility.GetType();
+                iconcolor = Color.blue;
                 specialAbility = (Ability)gameObject.AddComponent(sAbility);
                 basicAbility = (Ability)gameObject.AddComponent(bAbility);
                 this.avatarNumber = 1;
@@ -211,6 +210,7 @@ public class Bears : MonoBehaviour
                 sAbility = PinkBearAbilities.specialAbility.GetType();
                 specialAbility = (Ability)gameObject.AddComponent(sAbility);
                 basicAbility = (Ability)gameObject.AddComponent(bAbility);
+                iconcolor = Color.magenta;
                 this.avatarNumber = 2;
                 break;
 
@@ -224,6 +224,7 @@ public class Bears : MonoBehaviour
                 sAbility = RedBearAbilities.specialAbility.GetType();
                 specialAbility = (Ability)gameObject.AddComponent(sAbility);
                 basicAbility = (Ability)gameObject.AddComponent(bAbility);
+                iconcolor = Color.red;
                 break;
 
             case EnumColour.MeleeEnemy:
@@ -249,6 +250,9 @@ public class Bears : MonoBehaviour
                 BearJob = gameObject.AddComponent<SupportBoss>();
                 basicAbility = gameObject.AddComponent<BossHeal>();
                 specialAbility = gameObject.AddComponent<BossThrowIceChunk>();
+                break;
+            case EnumColour.SupportEnemy:
+                BearJob = gameObject.AddComponent<SupportEnemy>();
                 break;
             default:
 
@@ -282,25 +286,28 @@ public class Bears : MonoBehaviour
     {
         GetTarget(tileToAttack);
         anim.SetTrigger("Attacking");
-        if (Target.Invincible == false)
+        if (Target != null)
         {
-           
-            if (attackSounds != null)
-                if (attackSounds.Length > 0)
-                {
-                    int random = Random.Range(0, attackSounds.Length);
-                    AudioS.PlayOneShot(attackSounds[random]);
-                }
-            if (Target != null)
+            if (Target.Invincible == false)
             {
-                DealDamage(attackStrength, Target);
+
+                if (attackSounds != null)
+                    if (attackSounds.Length > 0)
+                    {
+                        int random = Random.Range(0, attackSounds.Length);
+                        AudioS.PlayOneShot(attackSounds[random]);
+                    }
+                if (Target != null)
+                {
+                    DealDamage(attackStrength, Target);
+                }
             }
         }
-
 
     }
     public void EnemyAttack(Tile tileToAttack)
     {
+        this.transform.LookAt(tileToAttack.GetComponent<Transform>().position);
         GetTarget(tileToAttack);
         if (Target.Invincible == false &&Target!=null)
         {
@@ -313,15 +320,19 @@ public class Bears : MonoBehaviour
                     int random = Random.Range(0, attackSounds.Length);
                     AudioS.PlayOneShot(attackSounds[random]);
                 }
+
             //if (Target.hp <= 0)
             //{
             //    SquadSelection.instance.PlayersAlive--;
             //}
+            if(Target.Anim!=null)
+           Target.anim.SetTrigger("GettingAttacked");
         }
 
     }
     public void PlayerAttack(Tile tileToAttack, int ability)
     {
+        this.transform.LookAt(tileToAttack.GetComponent<Transform>().position);
         GetTarget(tileToAttack);
         switch (ability)
         {
@@ -353,6 +364,7 @@ public class Bears : MonoBehaviour
         if (Invincible == false)
         {
             GetTarget(tileToAttack);
+            Target.anim.SetTrigger("GettingAttacked");
             Target.hp -= this.AttackStrength - Target.Defense;
         }
 
@@ -367,6 +379,8 @@ public class Bears : MonoBehaviour
             {
                 int random = Random.Range(0, ability1Sounds.Length);
                 Target.AudioS.PlayOneShot(ability1Sounds[random]);
+                if(Target.anim!=null)
+                Target.anim.SetTrigger("GettingAttacked");
             }
         }
         BasicAbility.CastAbility(selectedTile, AttackStrength);
@@ -382,6 +396,8 @@ public class Bears : MonoBehaviour
             {
                 int random = Random.Range(0, ability2Sounds.Length);
                 AudioS.PlayOneShot(ability2Sounds[random]);
+                if(Target!=null && Target.anim!=null)
+                Target.anim.SetTrigger("GettingAttacked");
             }
         }
         SpecialAbility.CastAbility(selectedTile, AttackStrength);
@@ -391,25 +407,41 @@ public class Bears : MonoBehaviour
 
     public void Die()
     {
+        if(this.anim)
         this.anim.SetBool("isDead", true);
-        this.gameObject.transform.Rotate(90f, 0f, 0f);
+       // this.gameObject.transform.Rotate(90f, 0f, 0f);
         if (this.color == EnumColour.MeleeEnemy || this.color == EnumColour.RangedEnemy || this.color == EnumColour.StrongMeleeEnemy||this.color==EnumColour.MeleeBoss)
         {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<CapsuleCollider>().enabled = false;
 
+            Vector3 scale = gameObject.transform.localScale;
+            float scaler;
+            InvokeRepeating("Shrink",.5f,.01f);
             GetComponentInParent<Tile>().IsEnemy = false;
             Invoke("Gone", 4f);
             this.GetComponentInChildren<Canvas>().enabled = false;
-
+            
         }
     }
-
+    private void Shrink()
+    {
+       
+        Vector3 scale = gameObject.transform.localScale;
+        float scaler;
+            scale = gameObject.transform.localScale;
+            scaler = (scale.x * .99f);
+            gameObject.transform.localScale = new Vector3(scaler, scaler, scaler);
+     
+    }
     public void Gone()
     {
-        this.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        //this.gameObject.GetComponent<MeshRenderer>().enabled = false;
+        //this.gameObject.GetComponent<Light>().enabled = false;
+        CancelInvoke("Shrink");
+        this.gameObject.GetComponent<CapsuleCollider>().enabled = false; ;
         this.gameObject.GetComponent<Light>().enabled = false;
-
+        
     }
     private void Start()
     {
@@ -418,12 +450,13 @@ public class Bears : MonoBehaviour
         bearSFX = BearSFX.instance;
         audioS = GetComponent<AudioSource>();
         GetSoundFX();
-        buffNames = new string[] { "buffAttack", "buffMovement", "buffDefence", "invincible", "stun" };
+        buffNames = new string[] { "buffAttack", "buffMovement", "buffDefence", "invincible", "stun", "burn", "heal", "venom"};
         for (int i = 0; i < buffNames.Length; i++)
         {
             themBuffs[buffNames[i]] = 0;
         }
         anim = GetComponent<Animator>();
+        if(GameManager.instance)
         txtDamage = GameManager.instance.txtDamage;
  
     }
@@ -450,16 +483,40 @@ public class Bears : MonoBehaviour
         {
             support = true;
         }
-        if (anim != null)
+        if(special==true &&SpecialIcon!=null)
         {
-
+            SpecialIcon.color = iconcolor;
         }
-        if(GameManager.instance.CurrPhase==GameManager.Phase.menuPhase)
+        else if(special == false && SpecialIcon != null)
         {
-            GetComponent<Rigidbody>().freezeRotation=true;
+            SpecialIcon.color = Color.white;
         }
-        else
-            GetComponent<Rigidbody>().freezeRotation = false;
+        if(support==true && abilityIcon != null)
+        {
+            abilityIcon.color = iconcolor;
+        }
+        if (support == false && abilityIcon != null)
+        {
+            abilityIcon.color = Color.white;
+        }
+        if (GameManager.instance)
+        {
+            if (gameObject.tag == "Player")
+            {
+                if (GameManager.instance.CurrPhase == GameManager.Phase.menuPhase)
+                {
+                    GetComponent<Rigidbody>().freezeRotation = true;
+                }
+                else
+                    GetComponent<Rigidbody>().freezeRotation = false;
+            }
+           else if(gameObject.tag=="Enemy" && GetComponent<Movement>().Moving == false && GameManager.instance.CurrPhase==GameManager.Phase.enemyPhase)
+            {
+                GetComponent<Rigidbody>().freezeRotation = false;
+            }
+            else
+                GetComponent<Rigidbody>().freezeRotation = true;
+        }
     }
 
     public void CheckThemBuffs()
@@ -484,9 +541,31 @@ public class Bears : MonoBehaviour
                         break;
                 }
             }
+            
         }
     }
-
+    //TAKE DOT 
+    public void TakeDot()
+    {
+        if(themBuffs["burn"]>0)
+        {
+            hp -=(int) (totalHP * .1f);
+        }
+        else if (themBuffs["venom"] > 0)
+        {
+            hp -= (int)(totalHP * .1f);
+        }
+    }
+    public void GetHot()
+    {
+        if (themBuffs["heal"] > 0)
+        {
+            if (hp != TotalHP)
+            {
+                hp += (int)(totalHP * .1f);
+            }
+        }
+    }
     public void DeductThemBuffs()
     {
         for (int i = 0; i < buffNames.Length; i++)

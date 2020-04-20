@@ -6,7 +6,7 @@ public class BossPowerStrike :Ability
 {
     public BossPowerStrike()
     {
-        Id = 11;
+        AltRange = false;
         Name = "BIG DAMAGE";
         CastRange = 1;
         Aoe = 1;
@@ -39,6 +39,7 @@ public class BossPowerStrike :Ability
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         int damage = (int)(attack * (1.5));
+        this.transform.LookAt(tileToCastOn.GetComponent<Transform>().position);
         TileManager tilemanager = TileManager.instance;
         if (tileToCastOn.GetComponentInChildren<Bears>() != null)
             tileToCastOn.GetComponentInChildren<Bears>().Hp -= damage;
@@ -52,5 +53,10 @@ public class BossPowerStrike :Ability
         AttackSquare(attackCoordinate, tilemanager, damage);
         
 
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 }

@@ -7,7 +7,7 @@ public class BodyFire : Ability
     
     public BodyFire()
     {
-        Id = 1;
+        AltRange = false;
         Name = "Body Fire";
         CastRange = 0;
         Aoe = 1;
@@ -17,11 +17,14 @@ public class BodyFire : Ability
     {
         int damage= (int)(attack * (1.67));
         TileManager tilemanager = TileManager.instance;
+        Bears currentBear = GetComponent<Bears>();
         if(tileToCastOn.GetComponentInChildren<Bears>()!=null)
             tileToCastOn.GetComponentInChildren<Bears>().Hp -= 20;
+        //AoeAttack(tileToCastOn, currentBear, damage);
+        //tileToCastOn.GetComponentInChildren<Bears>().Hp += 45;
         Vector2 attackCoordinate = new Vector2(tileToCastOn.X - 1, tileToCastOn.Y);
         BurnSquare(attackCoordinate, tilemanager, damage);
-        attackCoordinate =new Vector2 (tileToCastOn.X + 1, tileToCastOn.Y);
+        attackCoordinate = new Vector2(tileToCastOn.X + 1, tileToCastOn.Y);
         BurnSquare(attackCoordinate, tilemanager, damage);
         attackCoordinate = new Vector2(tileToCastOn.X, tileToCastOn.Y + 1);
         BurnSquare(attackCoordinate, tilemanager, damage);
@@ -49,5 +52,10 @@ public class BodyFire : Ability
             "Hit all adjacent targets\n" +
             "Self damage = 20\n" +
             "Damage = " + damage.ToString();
+    }
+
+    public override void AltAttackRange(TileSelector tileselector,Tile tiletocaston)
+    {
+        throw new System.NotImplementedException();
     }
 }

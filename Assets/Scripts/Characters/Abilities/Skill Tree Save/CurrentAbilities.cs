@@ -40,7 +40,10 @@ public class BlueBearAbilities:CurrentAbilities
         {
             basicAbility = new GottaGoQuick();
             specialAbility = new PowerStrike();
-            
+            notEquippedBasicAbility = new SnortAPixieStick();
+            notEquippedSpecialAbility = new ShockWave();
+
+            started = true;
         }
     }
     public override void SwapSpecialAbility()
@@ -69,6 +72,11 @@ public class BlackBearAbilities :CurrentAbilities
         {
             basicAbility = new BeefUp();
             specialAbility = new DriveBy();
+            notEquippedBasicAbility = new VenomBreath();
+            notEquippedSpecialAbility = new FiftyFifty();
+
+
+            started = true;
         }
     }
     public override void SwapSpecialAbility()
@@ -97,6 +105,9 @@ public class PinkBearAbilities:CurrentAbilities
         {
             basicAbility = new Heal();
             specialAbility = new Resurrect();
+            notEquippedBasicAbility = new SweetKisses();
+            notEquippedSpecialAbility = new FriendlyHug();
+            started = true;
         }
     }
     public override void SwapSpecialAbility()
@@ -119,17 +130,17 @@ public class GreenBearAbilities:CurrentAbilities
     public static new Ability notEquippedBasicAbility;
     public static new Ability notEquippedSpecialAbility;
     public static bool started;
-    public void Awake()
-    {
-        basicAbility = new HunkerDown();
-        specialAbility = new Juggernaut();
-    }
+    
     public GreenBearAbilities(bool reinstate)
     {
         if (reinstate)
         {
             basicAbility = new HunkerDown();
             specialAbility = new Juggernaut();
+            notEquippedBasicAbility = new YourSlow();
+            notEquippedSpecialAbility = new IMadeAnOuchie();
+
+            started = true;
         }
     }
     public override void SwapBasicAbility()
@@ -161,8 +172,8 @@ public class RedBearAbilities:CurrentAbilities
             basicAbility = new BodyFire();
             specialAbility = new Energize();
             //testing reasons
-            notEquippedBasicAbility = new HunkerDown();
-            notEquippedSpecialAbility = new Juggernaut();
+            notEquippedBasicAbility = new Burn();
+            notEquippedSpecialAbility = new SeeYouInHell();
             started = true;
         }
     }

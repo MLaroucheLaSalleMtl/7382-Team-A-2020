@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class LookAtCamera : MonoBehaviour
 {
-    public Camera mainCamera;
+    private Camera mainCamera;
     // Start is called before the first frame update
-   
+    private void Start()
+    {
+        mainCamera = Camera.main;// switched to this cuz i got too lazy to add the camera to the script everytime
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -6,11 +6,16 @@ public class DriveBy :Ability
 {
    public DriveBy()
     {
-        Id = 4;
+        AltRange = false;
         Name = "Drive By";
         CastRange = 4;
         Aoe = 0;
         Alt = false;
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)
@@ -18,7 +23,7 @@ public class DriveBy :Ability
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();
         int damage;
         if (!Target.Invincible)
-            damage = (int)(attack * 1.5);
+            damage = (int)(attack * 2);
         else
             damage = 0;
         GetComponent<Bears>().DealDamage(damage, Target);
@@ -26,7 +31,7 @@ public class DriveBy :Ability
 
     public override string GetAbilityDesc(int attack)
     {
-        int damage = (int)(attack * 1.5);
+        int damage = (int)(attack * 2);
         return "Load Up A SPECIAL bullet:\nDamage = " + damage;
     }
 }

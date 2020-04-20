@@ -30,7 +30,7 @@ public class BossAI : EnemyAIBase
                 {
                     FindWeakestPlayerInRange();
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
-                    tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
+                    tileToMoveTo.IsEnemy = true;
                     if((stats.Hp<((stats.TotalHP/2)))&&stats.Special==true)
                     {
                         StartCoroutine(EnemySpecialAbility(timer + .5f, tileToAttack));

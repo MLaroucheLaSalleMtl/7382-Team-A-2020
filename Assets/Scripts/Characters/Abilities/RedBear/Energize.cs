@@ -6,11 +6,17 @@ public class Energize : Ability
 {
     public Energize()
     {
-        Id = 2;
+        AltRange = false;
         Name = "Energize";
         CastRange = 3;
         Aoe = 0;
         Alt = false;
+    }
+
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)

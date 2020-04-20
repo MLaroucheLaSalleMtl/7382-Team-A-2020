@@ -12,6 +12,10 @@ public class HealthDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(Hp == null)
+        {
+            Hp = GetComponentInParent<Bears>();
+        }
         Health = GetComponent<Image>();
         initialColor = Health.color;
     }

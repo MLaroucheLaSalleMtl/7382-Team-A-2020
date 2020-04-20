@@ -73,19 +73,40 @@ public class TileManager : MonoBehaviour
         switch (situation)
         {
             case 1:
-                return GetTileDic(new Vector2(currentTile.X - 1, currentTile.Y)).GetComponent<Tile>();
+                GameObject tile = GetTileDic(new Vector2(currentTile.X - 1, currentTile.Y));
+                if (tile != null)
+                    return GetTileDic(new Vector2(currentTile.X - 1, currentTile.Y)).GetComponent<Tile>();
+                else return null;
             case 2:
-                return GetTileDic(new Vector2(currentTile.X +1, currentTile.Y)).GetComponent<Tile>();
+                tile = GetTileDic(new Vector2(currentTile.X + 1, currentTile.Y));
+                if (tile != null)
+                {
+                    return tile.GetComponent<Tile>();
+                }
+                else return null;       
             case 3:
-                return GetTileDic(new Vector2(currentTile.X, currentTile.Y-1)).GetComponent<Tile>();
+                tile = GetTileDic(new Vector2(currentTile.X, currentTile.Y - 1));
+                if (tile != null)
+                    return tile.GetComponent<Tile>();
+                else return null;
             case 4:
-                return GetTileDic(new Vector2(currentTile.X, currentTile.Y + 1)).GetComponent<Tile>();
+                tile = GetTileDic(new Vector2(currentTile.X, currentTile.Y + 1));
+                if (tile != null)
+                    return tile.GetComponent<Tile>();
+                else return null;
+               
             default:
                 return null;
         }
 
     }
-
+    public void DeSelectAllTiles()
+    {
+        foreach(GameObject tile in tilearray)
+        {
+            tile.GetComponent<Tile>().IsSelected = false;
+        }
+    }
 
    
 }

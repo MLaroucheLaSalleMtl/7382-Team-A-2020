@@ -87,16 +87,21 @@ public class AttackRange : MonoBehaviour
         //this will treat all tiles the same
         //this is usefull for attacks that disregard range
         #endregion ZachNotes
-        for (int i = x - Range; i <= x + Range; i++)
+        if (Tutorial.instance == null || !Tutorial.instance.LockAttack)
         {
-            int cal1 = Mathf.Abs(x - i);
-            int diff= Mathf.Abs(cal1 - Range);
-            for (int k = y - diff; k <= y + diff; k++)
+            if (x == 0 && y == 0)
+                return;
+            for (int i = x - Range; i <= x + Range; i++)
             {
-               GameObject thistile=tilemanager.GetTileDic(new Vector2(i,k));
-                if(thistile!=null)
+                int cal1 = Mathf.Abs(x - i);
+                int diff = Mathf.Abs(cal1 - Range);
+                for (int k = y - diff; k <= y + diff; k++)
                 {
-                    thistile.GetComponent<Tile>().Attackvalue = 1;
+                    GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
+                    if (thistile != null)
+                    {
+                        thistile.GetComponent<Tile>().Attackvalue = 1;
+                    }
                 }
             }
         }
@@ -113,16 +118,47 @@ public class AttackRange : MonoBehaviour
             tile.Attackvalue = 1;
             return;
         }
-        for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
+        if (Tutorial.instance == null || !Tutorial.instance.LockAttack)
         {
-            int cal1 = Mathf.Abs(x - i);
-            int diff = Mathf.Abs(cal1 - Range);
-            for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
+            for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
             {
-                GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
-                if (thistile != null)
+                int cal1 = Mathf.Abs(x - i);
+                int diff = Mathf.Abs(cal1 - Range);
+                for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
                 {
-                    thistile.GetComponent<Tile>().Attackvalue = 1;
+                    GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
+                    if (thistile != null)
+                    {
+                        thistile.GetComponent<Tile>().Attackvalue = 1;
+                    }
+                }
+            }
+        }
+    }
+    public void AoeAttack(int Aoe, Tile tile,Bears currentBear,int damage)
+    {
+        #region ZachNotes
+        //this will treat all tiles the same
+        //this is usefull for attacks that disregard range
+        #endregion ZachNotes
+        if (Range == 0)
+        {
+            return;
+        }
+        if (Tutorial.instance == null || !Tutorial.instance.LockAttack)
+        {
+            for (int i = (int)tile.Loc.x - Range; i <= (int)tile.Loc.x + Range; i++)
+            {
+                int cal1 = Mathf.Abs(x - i);
+                int diff = Mathf.Abs(cal1 - Range);
+                for (int k = (int)tile.Loc.y - diff; k <= (int)tile.Loc.y + diff; k++)
+                {
+                    GameObject thistile = tilemanager.GetTileDic(new Vector2(i, k));
+                    if (thistile != null)
+                    {
+                        Bears target = thistile.GetComponent<Bears>();
+                        currentBear.DealDamage(damage, target);
+                    }
                 }
             }
         }
@@ -189,7 +225,7 @@ public class AttackRange : MonoBehaviour
         }
 
     }
-
+   
 
     private void AssignTileAttackRange(GameObject tile, int AttackRange)
     {
@@ -273,25 +309,25 @@ public class AttackRange : MonoBehaviour
         {
 
             Tile tileshort = tile.GetComponent<Tile>();
+           
+                if (tileshort.Attackvalue >= 0 && tileshort.Attackvalue < AttackRange)
+                {
+                    tileshort.Attackvalue = AttackRange;
 
-            if (tileshort.Attackvalue >= 0 && tileshort.Attackvalue < AttackRange)
-            {
-                tileshort.Attackvalue = AttackRange;
-      
-                GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
-                AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
-                AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
-                AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
-                nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
-                AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
+                    GameObject nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X - 1, tileshort.Y));
+                    AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X + 1, tileshort.Y));
+                    AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y - 1));
+                    AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
+                    nexttile = tilemanager.GetTileDic(new Vector2(tileshort.X, tileshort.Y + 1));
+                    AssignDescendingTileAttackRange(nexttile, tileshort.Attackvalue - 1);
 
-            }
+                }
 
 
+            
         }
-
         return;
 
     }
@@ -370,12 +406,15 @@ public class AttackRange : MonoBehaviour
             {
                 case 1:
                     range = stats.Range;
+                    GetAttackRangeIgnoreObstacles(range, x, y);
                     break;
                 case 2:
                     range = stats.BasicAbility.CastRange;
+                    GetAttackRangeIgnoreObstacles(range, x, y);
                     break;
                 case 3:
                     range = stats.SpecialAbility.CastRange;
+                    GetAttackRangeIgnoreObstacles(range, x, y);
                     break;
             }
             this.x = GetComponent<Movement>().X;
@@ -383,7 +422,7 @@ public class AttackRange : MonoBehaviour
 
             //  GameObject startingtile = tilemanager.TileDic[new Vector2(x, y)];
             // AssignTileAttackRange(startingtile, range+1);
-            GetAttackRangeIgnoreObstacles(range, x, y);
+            DisplayAttackRange();
             if (!JustOnce)
             {
                 DisplayAttackRange();
@@ -399,17 +438,34 @@ public class AttackRange : MonoBehaviour
             {
                 case 1:
                     range = 0;
+                    GetAttackRangeIgnoreObstacles(range, tileselector.CurrentTileShort);
                     break;
                 case 2:
-                    range = stats.BasicAbility.Aoe;
+                    if (stats.BasicAbility.AltRange==false)
+                    {
+                        range = stats.BasicAbility.Aoe;
+                        GetAttackRangeIgnoreObstacles(range, tileselector.CurrentTileShort);
+                    }
+                    else
+                    {
+                        stats.BasicAbility.AltAttackRange(tileselector, tileselector.CurrentTileShort);
+                    }
                     break;
                 case 3:
-                    range = stats.SpecialAbility.Aoe;
+                    if (stats.SpecialAbility.AltRange==false)
+                    {
+                        range = stats.SpecialAbility.Aoe;
+                        GetAttackRangeIgnoreObstacles(range, tileselector.CurrentTileShort);
+                    }
+                    else
+                    {
+                        stats.SpecialAbility.AltAttackRange(tileselector, tileselector.CurrentTileShort);
+                    }
                     break;
 
             }
 
-            GetAttackRangeIgnoreObstacles(range, tileselector.CurrentTileShort);
+            
             //if (!onlyonce)
             //{
                 DisplayAttackRange();

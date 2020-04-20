@@ -26,7 +26,7 @@ public class EnemyAIHealer : EnemyAIBase
                 {
 
                     FindWeakestEnemyInRange();
-                    if (tileToAttack.GetComponentInChildren<EnemyAI>() == null)
+                    if (tileToAttack.GetComponentInChildren<EnemyAIBase>() == null)
                     {
                         healself = true;
                     }
@@ -38,7 +38,7 @@ public class EnemyAIHealer : EnemyAIBase
                         StartCoroutine(SelfHeal(timer + .5f));
                         healself = false;
                     }
-                        tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
+                    tileToMoveTo.IsEnemy = true;
                         Invoke("EndTurn", timer + .5f);  
                 }
                 else 

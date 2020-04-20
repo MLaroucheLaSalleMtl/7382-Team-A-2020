@@ -60,14 +60,24 @@ public class ButtonFunctions : MonoBehaviour
         if (async == null)
         {
            
-            async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex+1);
+            async = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
             async.allowSceneActivation = true;
 
         }
     }
-    public void LevelComplete()
+    public void SheepLevelComplete()
     {
-        GameManager.levelsComplete++;
+        MissionSelectionPnl.levelsComplete[0] = true;
+
+    }
+    public void BuckLevelComplete()
+    {
+        MissionSelectionPnl.levelsComplete[1] = true;
+
+    }
+    public void LionLevelComplete()
+    {
+        MissionSelectionPnl.levelsComplete[2] = true;
 
     }
     public void BtnLoadScene()

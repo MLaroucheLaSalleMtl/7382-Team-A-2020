@@ -6,11 +6,16 @@ public class Juggernaut :Ability
 {
   public Juggernaut()
     {
-        Id = 10;
+        AltRange = false;
         Name = "Juggernaut";
         CastRange = 2;
         Aoe = 0;
         Alt = false;
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)

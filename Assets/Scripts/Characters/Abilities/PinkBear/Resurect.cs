@@ -7,12 +7,18 @@ public class Resurrect : Ability
 
     public Resurrect()
     {
-        Id = 6;
+        AltRange = false;
         Name = "Resurrect";
         CastRange = 3;
         Aoe = 0;
         Alt = false;
     }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();

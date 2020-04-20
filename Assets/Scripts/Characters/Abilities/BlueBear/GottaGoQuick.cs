@@ -6,11 +6,16 @@ public class GottaGoQuick : Ability
 {
  public GottaGoQuick()
     {
-        Id = 7;
+        AltRange = false;
         Name = "Gotta Go Quick";
         CastRange = 3;
         Aoe = 0;
         Alt = false;
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void CastAbility(Tile tileTooCastOn, int attack)

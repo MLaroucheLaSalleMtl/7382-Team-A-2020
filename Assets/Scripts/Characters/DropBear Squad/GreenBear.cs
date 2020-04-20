@@ -17,19 +17,6 @@ public class GreenBear : BearColor
     //Special Ability
     //Nullifies Damage for 1 Turn
     #endregion UnitNotes
-    private void Start()
-    {
-        Hp = 150;
-        TotalHp = 150;
-        Defense = 10;
-        AttackStrength = 30;
-        Movement = 2;
-        AttackRange = 2;
-        BearRace = Color.green;
-        Countdown = 2;
-        FirstAbility = new HunkerDown();
-        Special = new Juggernaut();
-    }
 
     public GreenBear()
     {

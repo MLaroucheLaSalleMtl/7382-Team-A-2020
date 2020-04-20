@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.UI;
 public class PauseMenu : MonoBehaviour
 {
     //public static PauseMenu instance;
@@ -17,42 +17,51 @@ public class PauseMenu : MonoBehaviour
     //        Destroy(gameObject);
     //    }
     //}
-    public static bool isGamePaused = false;
+
+    private GameManager manager;
 
     public GameObject PauseMenuUI;
-
+    [SerializeField] private GameObject pnlOptions;
     float saveTimeScale;
+    [SerializeField] private Button btnBack;
+    [SerializeField] private Button btnPause;
+    private bool activeOptions;
 
-    private bool onlyOnce = false;
-
-    
-
-    private AsyncOperation async; //<--For future Shit
-
+    //private AsyncOperation async; //<--For future Shit // nvm
+    private void Start()
+    {
+        manager = GameManager.instance;
+        activeOptions = false;
+    }
 
     public void OnPause(InputAction.CallbackContext context)
     {
-        if(context.started)
+        if(context.started && (manager.CurrPhase == GameManager.Phase.menuPhase || manager.CurrPhase == GameManager.Phase.enemyPhase || manager.CurrPhase == GameManager.Phase.pausePhase))
         {
-            if(isGamePaused)
+            if(manager.CurrPhase == GameManager.Phase.pausePhase&&!activeOptions)
             {
+        
                 Resume();
-                isGamePaused = false;
             }
-            else if (!isGamePaused)
+            else if(manager.CurrPhase == GameManager.Phase.pausePhase && activeOptions)
             {
-                Pause();
-                isGamePaused = true;
+                Options();
             }
-            onlyOnce = true;
-            Debug.Log("poop");
+            else if (manager.CurrPhase == GameManager.Phase.menuPhase || manager.CurrPhase == GameManager.Phase.enemyPhase)
+            {
+                manager.savedPhase = manager.CurrPhase;
+                manager.CurrPhase = GameManager.Phase.pausePhase;
+                Pause();
+                btnPause.Select();
+            }
+       
       
         }
     }
     // Update is called once per frame
     void Update()
     {
-
+        #region OldStyleForMenu
         //if (onlyOnce)
         //{
         //    if (isGamePaused)
@@ -64,36 +73,53 @@ public class PauseMenu : MonoBehaviour
         //        Pause();
         //    }
         //}
+        #endregion OldStyleForMenu
 
     }
 
     public void Resume()
     {
+        manager.CurrPhase = manager.savedPhase;
         PauseMenuUI.SetActive(false);
-        Time.timeScale = saveTimeScale;
-        isGamePaused = false;
-        onlyOnce = false;
+        Time.timeScale = 1f;
+        
     }
     void Pause()
     {
         saveTimeScale = Time.timeScale;
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        
-        isGamePaused = true;
-        onlyOnce = false;
+    }
+   public void Options()
+    {
+        if(!activeOptions)
+        {
+            activeOptions = true;
+            pnlOptions.SetActive(true);
+            PauseMenuUI.SetActive(false);
+            btnBack.Select();
+        }
+        else
+        {
+            activeOptions = false;
+            pnlOptions.SetActive(false);
+            PauseMenuUI.SetActive(true);
+            btnPause.Select();
+        }
     }
 
     public void Quit()
     {
-        Debug.Log("Quit");
+        
         Application.Quit();
-        //#region QuitFromEditor
-        //#if UNITY_EDITOR
-        //UnityEditor.EditorApplication.isPlaying = false;
-        //#else
-        //Application.Quit()
-        //#endif
-        //#endregion QuitFromEditor
+//        #region NianMistakes
+//        //#region QuitFromEditor
+//        //#if UNITY_EDITOR
+//        //        UnityEditor.EditorApplication.isPlaying = false;
+//        //#else
+//        Application.Quit();
+////#endif
+//        //#endregion QuitFromEditor
+//        #endregion NianMistakes
     }
 }

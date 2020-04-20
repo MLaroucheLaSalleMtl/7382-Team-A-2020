@@ -47,6 +47,15 @@ public class LoadScene : MonoBehaviour
             async.allowSceneActivation = true;//you can change it to false to allow for loading in cut scenes and menus and stuff
         }
     }
+    public void EnterLoadingScreen()
+    {
+        if (async == null)
+        {
+
+            async = SceneManager.LoadSceneAsync("LoadingScreen");//load next scene
+            async.allowSceneActivation = true;//you can change it to false to allow for loading in cut scenes and menus and stuff
+        }
+    }
     void Start()
     {
         code = GameManager.instance;

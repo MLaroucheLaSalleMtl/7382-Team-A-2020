@@ -21,6 +21,7 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 Acting = true;
                GameObject startingTile;
                 OnlyOnce = true;
+             
                 startingTile = tileManager.TileDic[new Vector2(position.x, position.y)];
                 AssignTileMovementValue(startingTile, stats.Movement + 1);
                 AssignEnemyAttackSpaces();
@@ -29,10 +30,11 @@ public class EnemyAiAgressiveV2 : EnemyAIBase
                 {
 
                     FindWeakestPlayerInRange();
-                    Debug.Log("Final Tile: "+tileToMoveTo.X+ tileToMoveTo.Y);
+                  
                     timer = mover.MoveToFinalTile(tileToMoveTo, startingTile.GetComponent<Tile>(), TileManager.instance);
                    StartCoroutine( EnemyAttackEnum(timer+.5f, tileToAttack));
-                    tileManager.TileDic[FinalMoveTarget].GetComponent<Tile>().IsEnemy = true;
+                   
+                    tileToMoveTo.IsEnemy = true;
                     AttackRange.ClearTileAttackValues(tileManager);
                     Movement.ClearTileMovementValues(tileManager);
                     //this would need to be commented

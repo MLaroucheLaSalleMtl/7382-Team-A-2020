@@ -16,19 +16,7 @@ public class BlackBear : BearColor
     //Special Ability
     //High Damage Melee Attack
     #endregion UnitNotes
-    private void Start()
-    {
-        Hp = 100;
-        TotalHp = 100;
-        Defense = 7;
-        AttackStrength = 40;
-        Movement = 3;
-        AttackRange = 3;
-        BearRace = Color.black;
-        Countdown = 2;
-        FirstAbility = new BeefUp();
-        Special = new DriveBy();
-    }
+  
     public BlackBear()
     {
         Hp = 100;

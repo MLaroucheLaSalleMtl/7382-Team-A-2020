@@ -47,6 +47,11 @@ public class EnemyAIBase : MonoBehaviour
     protected Vector2 FinalMoveTarget { get => finalMoveTarget; set => finalMoveTarget = value; }
     #endregion Properties
 
+
+    private void Start()
+    {
+    }
+
     protected void ClearArrays()
     {
         tilesInMovementRange.Clear();
@@ -60,7 +65,7 @@ public class EnemyAIBase : MonoBehaviour
         ClearArrays();
         Acting = false;
         TurnCompleted = true;
-
+        mover.Anim.SetBool("isMoving", false);
     }
 
     protected IEnumerator EnemyHeal(float timer, Tile tileToHeal)
@@ -68,8 +73,10 @@ public class EnemyAIBase : MonoBehaviour
         yield return new WaitForSeconds(timer);
         if (tileToHeal.GetComponentInChildren<Bears>() != null)
         {
+            mover.Anim.SetTrigger("Attacking");
             Bears target = tileToHeal.GetComponentInChildren<Bears>();
             target.Hp += (int)(stats.AttackStrength * healMult);
+            target.Anim.SetTrigger("GettingAttacked");
             if (target.Hp > target.TotalHP)
             {
                 target.Hp = target.TotalHP;
@@ -79,6 +86,7 @@ public class EnemyAIBase : MonoBehaviour
     protected IEnumerator SelfHeal(float timer)
     {
         yield return new WaitForSeconds(timer);
+        mover.Anim.SetTrigger("Attacking");
         stats.Hp += (int)(stats.AttackStrength * healMult);
         if (stats.Hp > stats.TotalHP)
         {
@@ -88,24 +96,29 @@ public class EnemyAIBase : MonoBehaviour
     protected IEnumerator EnemyAttackEnum(float timer, Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
+        mover.Anim.SetTrigger("Attacking");
         stats.EnemyAttack(tileToAttack);
+        
         //trigger for attack animations 
     }
   protected IEnumerator EnemyBasicAbility(float timer, Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
+        mover.Anim.SetTrigger("Attacking");
         stats.Ability1(tileToAttack);
 
     }
     protected IEnumerator EnemySpecialAbility(float timer, Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
+        mover.Anim.SetTrigger("Attacking");
         stats.Ability2(tileToAttack);
 
     }
     protected IEnumerator EnemyMeleeBossSpecial(float timer,Tile tileToAttack)
     {
         yield return new WaitForSeconds(timer);
+        mover.Anim.SetTrigger("Attacking");
 
     }
     protected void AssignEnemyAttackSpaces()
@@ -278,8 +291,7 @@ public class EnemyAIBase : MonoBehaviour
          lowesthp = Pairs[0].PlayerTile.GetComponentInChildren<Bears>().Hp;
          tileToAttack = Pairs[0].PlayerTile;
          tileToMoveTo = Pairs[0].EnemyTile;
-        Debug.Log("Tile To Move To: " + tileToMoveTo.X + " " + tileToMoveTo.Y);
-        Debug.Log("Tile To Attack: " + tileToAttack.X + " " + tileToAttack.Y);
+       
         foreach (AttackTilePairings attackpairs in Pairs)
         {
             if (lowesthp > attackpairs.PlayerTile.GetComponentInChildren<Bears>().Hp)
@@ -288,8 +300,7 @@ public class EnemyAIBase : MonoBehaviour
              
                 tileToAttack = attackpairs.PlayerTile;
                 tileToMoveTo = attackpairs.EnemyTile;
-                Debug.Log("Tile To Move To: " + tileToMoveTo.X + " " + tileToMoveTo.Y);
-                Debug.Log("Tile To Attack: " + tileToAttack.X + " " + tileToAttack.Y);
+               
             }
         }
     }
@@ -353,16 +364,16 @@ public class EnemyAIBase : MonoBehaviour
             
                 int distance = ((int)Mathf.Abs(tileshort.X - playerPos.x)) + ((int)Mathf.Abs(tileshort.Y - playerPos.y));
                 Tile adjacentTile = tileManager.GetAdjacentTile(1, tileshort);
-                if (adjacentTile.IsObstacle)
+                if (adjacentTile != null && adjacentTile.IsObstacle)
                     distance += 1;
                 adjacentTile = tileManager.GetAdjacentTile(2, tileshort);
-                if (adjacentTile.IsObstacle)
+                if (adjacentTile != null && adjacentTile.IsObstacle)
                     distance += 1;
                 adjacentTile = tileManager.GetAdjacentTile(3, tileshort);
-                if (adjacentTile.IsObstacle)
+                if (adjacentTile != null && adjacentTile.IsObstacle)
                     distance += 1;
                 adjacentTile = tileManager.GetAdjacentTile(4, tileshort);
-                if (adjacentTile.IsObstacle)
+                if (adjacentTile!=null &&adjacentTile.IsObstacle)
                     distance += 1;
                 if (lowestdistance == -1)
                 {
@@ -456,7 +467,7 @@ public class EnemyAIBase : MonoBehaviour
     {
         atkRangeMethods.AssignDescendingTileAttackRange(currentTile, atkRange);
     }
-    protected void OnTriggerEnter(Collider other)
+    protected void OnTriggerStay(Collider other)
     {
         if (other.tag == "Tile")
         {
@@ -469,7 +480,13 @@ public class EnemyAIBase : MonoBehaviour
             transform.parent = other.transform;
         }
     }
-  
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Tile")
+        {
+            other.GetComponent<Tile>().IsSelected = false;
+        }
+    }
     // Start is called before the first frame update
 
     protected void GetVariables()

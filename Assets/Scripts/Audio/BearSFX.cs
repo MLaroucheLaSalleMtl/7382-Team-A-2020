@@ -94,6 +94,16 @@ public class BearSFX : MonoBehaviour
     public AudioClip[] PinkMoveClips { get => pinkMoveClips; set => pinkMoveClips = value; }
     public AudioClip[] BlueMoveClips { get => blueMoveClips; set => blueMoveClips = value; }
     public AudioClip[] GreenMoveClips { get => greenMoveClips; set => greenMoveClips = value; }
+    public AudioClip[] RedAbility2AltClips { get => redAbility2AltClips; set => redAbility2AltClips = value; }
+    public AudioClip[] RedAbility1AltClips { get => redAbility1AltClips; set => redAbility1AltClips = value; }
+    public AudioClip[] BlackAbility2AltClips { get => blackAbility2AltClips; set => blackAbility2AltClips = value; }
+    public AudioClip[] BlackAbility1AltClips { get => blackAbility1AltClips; set => blackAbility1AltClips = value; }
+    public AudioClip[] PinkAbility2AltClips { get => pinkAbility2AltClips; set => pinkAbility2AltClips = value; }
+    public AudioClip[] PinkAbility1AltClips { get => pinkAbility1AltClips; set => pinkAbility1AltClips = value; }
+    public AudioClip[] BlueAbility2AltClips { get => blueAbility2AltClips; set => blueAbility2AltClips = value; }
+    public AudioClip[] BlueAbility1AltClips { get => blueAbility1AltClips; set => blueAbility1AltClips = value; }
+    public AudioClip[] GreenAbility2AltClips { get => greenAbility2AltClips; set => greenAbility2AltClips = value; }
+    public AudioClip[] GreenAbility1AltClips { get => greenAbility1AltClips; set => greenAbility1AltClips = value; }
     #endregion properties
     private void Awake()
     {

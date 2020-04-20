@@ -14,7 +14,7 @@ public class Tile : MonoBehaviour
     #region zachnotes
     //this is zach testing something that may account for obstacles
     [SerializeField]private int movementvalue;
-    [SerializeField]private bool moveable=false;
+    [SerializeField]public bool moveable=false;
     [SerializeField] private Material movemat;
     [SerializeField] private Material defaultmat;
     [SerializeField] private Material selectedTile;
@@ -57,7 +57,7 @@ public class Tile : MonoBehaviour
     public bool IsObstacle { get => isObstacle; set => isObstacle = value; }
     public bool IsPlayer { get => isPlayer; set => isPlayer = value; }
     public int Movementvalue { get => movementvalue; set => movementvalue = value; }
-    public bool Moveable { get => (movementvalue >= 0) ? true:false; set => moveable = value; }
+    public bool Moveable { get => (movementvalue >= 1) ? true:false; set => moveable = value; }
     public Vector2 Loc { get => loc; set => loc = value; }
     public Material Movemat { get => movemat; set => movemat = value; }
     public Material Defaultmat { get => defaultmat; set => defaultmat = value; }
@@ -67,6 +67,7 @@ public class Tile : MonoBehaviour
     public bool IsEnemy { get => isEnemy; set => isEnemy = value; }
     public Material ObstacleMat { get => obstacleMat; set => obstacleMat = value; }
     public MeshRenderer Renderer { get => renderer; set => renderer = value; }
+    public Material SelectedTile { get => selectedTile; set => selectedTile = value; }
 
     void Awake()
     {
@@ -85,7 +86,7 @@ public class Tile : MonoBehaviour
     {
        if (IsSelected)
         {
-            Renderer.material = selectedTile;
+            Renderer.material = SelectedTile;
         }
        else if (IsObstacle )
         {

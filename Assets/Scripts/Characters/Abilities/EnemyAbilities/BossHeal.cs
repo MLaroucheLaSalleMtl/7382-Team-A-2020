@@ -6,15 +6,22 @@ public class BossHeal :Ability
 {
     public BossHeal()
     {
-        Id = 14;
+        AltRange = false;
         Name = "Heal The bad bears";
         CastRange = 3;
         Aoe = 1;
     }
 
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         Bears target = tileToCastOn.GetComponentInChildren<Bears>();
+        this.transform.LookAt(tileToCastOn.GetComponent<Transform>().position);
+
         if (target != null)
         {
             target.Hp += (int)(attack * 2);

@@ -4,20 +4,28 @@ using UnityEngine;
 
 public class BossThrowIceChunk :Ability
 {
-    // Start is called before the first frame update
+   
     public BossThrowIceChunk()
     {
-        Id = 13;
+        AltRange = false;
         Name = "Stuns and does damage";
         CastRange = 3;
         Aoe = 1;
+        DamageMod = 1.25f;
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         Bears target = tileToCastOn.GetComponentInChildren<Bears>();
-        int damage= (int)(attack * 1.25);
-        if (target != null)
+        this.transform.LookAt(tileToCastOn.GetComponent<Transform>().position);
+
+        int damage = (int)(attack * DamageMod);
+        if (target != null&&target.IsAlive)
         {
             GetComponent<Bears>().DealDamage(damage, target);
             target.themBuffs["stun"] = 1;
@@ -29,6 +37,6 @@ public class BossThrowIceChunk :Ability
         return "Throws big ice you no move 1 turn";
     }
 
-    // Update is called once per frame
+  
 
 }

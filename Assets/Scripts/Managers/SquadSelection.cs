@@ -54,8 +54,10 @@ public class SquadSelection : MonoBehaviour
         {
             PlayersAlive++;
         }
+        DisableHighLights(Squad.Length);
         code = GameManager.instance;
-        DisableHighLights(Squad.Length);       
+
+       
     }
 
    void HighlightCharacter(int totalPlayers,int selectedPlayer)
@@ -86,14 +88,22 @@ public class SquadSelection : MonoBehaviour
         }
         
     }
-
+    public void FindTeam()
+    {
+        Squad = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in Squad)
+        {
+            PlayersAlive++;
+        }
+        DisableHighLights(Squad.Length);
+    }
     void Update()
     {
         
         //also ya you can only swap selection during the menu phase
         if(code.CurrPhase==GameManager.Phase.menuPhase && !BtnManager.instance.AttackIsSelected)
         {
-            if (/*Input.GetAxisRaw("Horizontal") > 0 && Input.GetButtonDown("Horizontal")*/x > 0 && !PauseMenu.isGamePaused)
+            if (/*Input.GetAxisRaw("Horizontal") > 0 && Input.GetButtonDown("Horizontal")*/x > 0 && code.CurrPhase != GameManager.Phase.pausePhase)
             {
                 do
                 {
@@ -107,7 +117,7 @@ public class SquadSelection : MonoBehaviour
                 Debug.Log("Selected = " + Selected);
                 x = 0;
             }
-            if (/*Input.GetAxisRaw("Horizontal") < 0 && Input.GetButtonDown("Horizontal")*/x < 0 && !PauseMenu.isGamePaused)
+            if (/*Input.GetAxisRaw("Horizontal") < 0 && Input.GetButtonDown("Horizontal")*/x < 0 && code.CurrPhase != GameManager.Phase.pausePhase)
             {
 
                 do
@@ -119,20 +129,21 @@ public class SquadSelection : MonoBehaviour
                     else
                         Selected--;
                 } while (!Squad[selected].GetComponent<Bears>().IsAlive || squad[selected].GetComponent<Bears>().TurnComplete);
-               // Debug.Log("Selected = " + Selected);
+             
                 x = 0;
             }
             if (!Squad[selected].GetComponent<Bears>().IsAlive)
             {
                 do
                 {
+                    selected++;
                     if (selected >= squad.Length)
                     {
                         selected = 0;
                     }
-                    selected++;
+                   
 
-                } while (squad[selected].GetComponent<Bears>().IsAlive);
+                } while (!squad[selected].GetComponent<Bears>().IsAlive);
             }
 
             //I changed your if statements to the loop function it works the same I also added so that 
@@ -142,7 +153,7 @@ public class SquadSelection : MonoBehaviour
            
    
         }
-        else if (playerTurn && code.CurrPhase==GameManager.Phase.menuPhase && PlayersAlive > 0 && PauseMenu.isGamePaused)
+        else if (playerTurn && code.CurrPhase==GameManager.Phase.menuPhase && PlayersAlive > 0 && code.CurrPhase != GameManager.Phase.pausePhase)
         {
             if (squad[selected].GetComponent<Bears>().TurnComplete)
             {

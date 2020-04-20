@@ -4,26 +4,27 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
+using TMPro;
 public class Loading : MonoBehaviour
 {
     private AsyncOperation async;
     [SerializeField] private Image loadingbar;
-    [SerializeField] private Text txtPercent;
+    [SerializeField] private TextMeshProUGUI txtPercent;
     [SerializeField] private Image image;
     private bool ready = false;
     private float speed = .7f;//for the fill speed of the image
-    [SerializeField]private Text confTxt;
+    [SerializeField]private TextMeshProUGUI confTxt;
     [SerializeField] public static int sceneToLoad = -1; //so static allows other scripts to access this variable and change it, god damnit
     private bool activated = false;
     [SerializeField] private bool waitForUserInput = true;//If true, the user has to press a key
-    [SerializeField] private Text txtTips;
+    [SerializeField] private TextMeshProUGUI txtTips;
     public static int nextLevel;
     // Start is called before the first frame update
     void Start()
     {
         if (image)
         image.fillAmount = 0;
-        confTxt.GetComponent<Text>().enabled = false;
+        confTxt.GetComponent<TextMeshProUGUI>().enabled = false;
         Time.timeScale = 1;//Reset timescale
         Input.ResetInputAxes();//Reset the input (for 1 frame)
         System.GC.Collect();//Call the garbage collector
@@ -63,14 +64,14 @@ public class Loading : MonoBehaviour
         ready = true;
     }
    
-    public IEnumerator BlinkyText(Text txt)
+    public IEnumerator BlinkyText(TextMeshProUGUI txt)
     {
         while (true)//infinite loop 
         {
             yield return new WaitForSeconds(.5f);
-            txt.GetComponent<Text>().enabled = true;
+            txt.GetComponent<TextMeshProUGUI>().enabled = true;
             yield return new WaitForSeconds(.5f);
-            txt.GetComponent<Text>().enabled = false;
+            txt.GetComponent<TextMeshProUGUI>().enabled = false;
            
         }
     }

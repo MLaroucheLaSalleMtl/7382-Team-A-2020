@@ -23,28 +23,28 @@ public class BearPanel : MonoBehaviour
         {
             case 0:
                 currentBear = gameObject.AddComponent<RedBearAbilities>();
-                originalSkills[0].GetComponentInChildren<Text>().text = RedBearAbilities.basicAbility.Name;
-                originalSkills[1].GetComponentInChildren<Text>().text = RedBearAbilities.specialAbility.Name;
+                originalSkills[0].GetComponentInChildren<TextMeshProUGUI>().text = RedBearAbilities.basicAbility.Name;
+                originalSkills[1].GetComponentInChildren<TextMeshProUGUI>().text = RedBearAbilities.specialAbility.Name;
                 break;
             case 1:
                 currentBear = gameObject.AddComponent<BlueBearAbilities>();
-                originalSkills[0].GetComponentInChildren<Text>().text = BlueBearAbilities.basicAbility.Name;
-                originalSkills[1].GetComponentInChildren<Text>().text = BlueBearAbilities.specialAbility.Name;
+                originalSkills[0].GetComponentInChildren<TextMeshProUGUI>().text = BlueBearAbilities.basicAbility.Name;
+                originalSkills[1].GetComponentInChildren<TextMeshProUGUI>().text = BlueBearAbilities.specialAbility.Name;
                 break;
             case 2:
                 currentBear = gameObject.AddComponent<BlackBearAbilities>();
-                originalSkills[0].GetComponentInChildren<Text>().text = BlackBearAbilities.basicAbility.Name;
-                originalSkills[1].GetComponentInChildren<Text>().text = BlackBearAbilities.specialAbility.Name;
+                originalSkills[0].GetComponentInChildren<TextMeshProUGUI>().text = BlackBearAbilities.basicAbility.Name;
+                originalSkills[1].GetComponentInChildren<TextMeshProUGUI>().text = BlackBearAbilities.specialAbility.Name;
                 break;
             case 3:
                 currentBear = gameObject.AddComponent<PinkBearAbilities>();
-                originalSkills[0].GetComponentInChildren<Text>().text = PinkBearAbilities.basicAbility.Name;
-                originalSkills[1].GetComponentInChildren<Text>().text = PinkBearAbilities.specialAbility.Name;
+                originalSkills[0].GetComponentInChildren<TextMeshProUGUI>().text = PinkBearAbilities.basicAbility.Name;
+                originalSkills[1].GetComponentInChildren<TextMeshProUGUI>().text = PinkBearAbilities.specialAbility.Name;
                 break;
             case 4:
                 currentBear = gameObject.AddComponent<GreenBearAbilities>();
-                originalSkills[0].GetComponentInChildren<Text>().text = GreenBearAbilities.basicAbility.Name;
-                originalSkills[1].GetComponentInChildren<Text>().text = GreenBearAbilities.specialAbility.Name;
+                originalSkills[0].GetComponentInChildren<TextMeshProUGUI>().text = GreenBearAbilities.basicAbility.Name;
+                originalSkills[1].GetComponentInChildren<TextMeshProUGUI>().text = GreenBearAbilities.specialAbility.Name;
                 break;
         }
         subPanel.SetActive(false);
@@ -62,7 +62,7 @@ public class BearPanel : MonoBehaviour
             case 0:
                 newAbilityName.text = RedBearAbilities.notEquippedBasicAbility.Name;
                 newAbilityDesc.text = RedBearAbilities.notEquippedBasicAbility.GetAbilityDesc(new RedBear().AttackStrength);
-                Debug.Log(RedBearAbilities.notEquippedBasicAbility);
+              
                 break;
             case 1:
                 newAbilityName.text = BlueBearAbilities.notEquippedBasicAbility.Name;

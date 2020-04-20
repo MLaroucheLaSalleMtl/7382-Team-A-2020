@@ -7,12 +7,19 @@ public class PowerStrike : Ability
 
     public PowerStrike()
     {
-        Id = 8;
+        AltRange = false;
         Name = "Power Strike";
         CastRange = 1;
         Aoe = 0;
         Alt = false;
+        DamageMod = 2f;
     }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
        
@@ -21,7 +28,7 @@ public class PowerStrike : Ability
         if (Target != null)
         {
             if (Target.Invincible == false)
-                damage = (int)(attack * 1.75);
+                damage = (int)(attack * DamageMod);
             else
                 damage = 0;
             GetComponent<Bears>().DealDamage(damage, Target);
@@ -30,7 +37,7 @@ public class PowerStrike : Ability
 
     public override string GetAbilityDesc(int attack)
     {
-        int damage = (int)(attack * 1.75);
+        int damage = (int)(attack * DamageMod);
         return "It's stronger: \nDamage = " + damage;
     }
 }

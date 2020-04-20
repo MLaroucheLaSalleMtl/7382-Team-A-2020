@@ -81,6 +81,7 @@ public class TileSelector : MonoBehaviour
         tilemanager = tilemanager.GetComponent<TileManager>();
       code= GameManager.instance;
         squadManager = SquadSelection.instance;
+        tilecheck = false;
     }
     private void MoveTile(Vector2 tilecoordinates,Tile currentTileShort)
     {
@@ -137,7 +138,7 @@ public class TileSelector : MonoBehaviour
         //a movement phase I would think
         #endregion ZachNotes
         //  if (code.CurrPhase==GameManager.Phase.attackPhase||code.CurrPhase==GameManager.Phase.movementPhase)
-        if (!PauseMenu.isGamePaused)
+        if (code.CurrPhase != GameManager.Phase.pausePhase)
         {
            
             //canBeSelected is the variable that allows you to maneover the grid
@@ -150,16 +151,24 @@ public class TileSelector : MonoBehaviour
                     //needs to be sent from an outside script the one that switches to movement phase
                     CurrentTile = tilemanager.GetTileDic(squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Position);
                     #endregion ZachNotes
+                    if(CurrentTile)
                     CurrentTile.GetComponent<Tile>().IsSelected = true;
                     tilecheck = true;
 
                 }
+                if (currentTile == null)
+                {
+                    CurrentTile = tilemanager.GetTileDic(squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Position);
+                    if(currentTile!=null &&currentTile.GetComponent<Tile>())
+                    CurrentTile.GetComponent<Tile>().IsSelected = true;
+                }
+                if(currentTile!=null)
                 CurrentTileShort = CurrentTile.GetComponent<Tile>();
                 #region ZachNotes
                 //We can replace this with the new input system later
                 //Also maybe support mouse if you guys want
                 #endregion ZachNotes
-                if (/*Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal") < 0*/ x < 0 && /*Mathf.Abs(Input.GetAxisRaw("Horizontal")) > Mathf.Abs(Input.GetAxisRaw("Vertical"))*/ Mathf.Abs(x) > Mathf.Abs(y))
+                if ( x < 0 && Mathf.Abs(x) > Mathf.Abs(y))
                 {
                     //MoveTile Moves the selected tile it takes a x and y coordinate to move too
                     Tile subTile = currentTileShort;
@@ -167,55 +176,65 @@ public class TileSelector : MonoBehaviour
                     MoveTile(new Vector2(CurrentTileShort.Loc.x - 1, CurrentTileShort.Loc.y), CurrentTileShort);
                     ClearValue();
                 }
-                else if (/*Input.GetButtonDown("Horizontal") && Input.GetAxisRaw("Horizontal")*/x > 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) > Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
+                else if (x > 0 && Mathf.Abs(x) > Mathf.Abs(y))
                 {
                     Tile subTile = currentTileShort;
                     ReplaceTileMat(subTile);
                     MoveTile(new Vector2(CurrentTileShort.Loc.x + 1, CurrentTileShort.Loc.y), CurrentTileShort);
                     ClearValue();
                 }
-                else if (/*Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical")*/y > 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) < Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
+                else if (y > 0 && Mathf.Abs(x) < Mathf.Abs(y))
                 {
                     Tile subTile = currentTileShort;
                     ReplaceTileMat(subTile);
                     MoveTile(new Vector2(CurrentTileShort.Loc.x, CurrentTileShort.Loc.y + 1), CurrentTileShort);
                     ClearValue();
                 }
-                else if (/*Input.GetButtonDown("Vertical") && Input.GetAxisRaw("Vertical")*/y < 0 && Mathf.Abs(x/*Input.GetAxisRaw("Horizontal")*/) < Mathf.Abs(y/*Input.GetAxisRaw("Vertical")*/))
+                else if (y < 0 && Mathf.Abs(x) < Mathf.Abs(y))
                 {
                     Tile subTile = currentTileShort;
                     ReplaceTileMat(subTile);
                     MoveTile(new Vector2(CurrentTileShort.Loc.x, CurrentTileShort.Loc.y - 1), CurrentTileShort);
                     ClearValue();
                 }
-                if (/*Input.GetButtonDown("Jump") || Input.GetButtonDown("Submit")*/isSubmitted)
-                {
+               
                     #region ZachNotes
                     //so this will pass an to the player depending on what we want to do 
                     //currently we only pass it the move;
                     #endregion ZachNotes
-                    if (CurrentTileShort.Movementvalue > 0 && !CurrentTileShort.IsPlayer && !CurrentTileShort.IsEnemy)
+                    if (CurrentTileShort!=null &&CurrentTileShort.moveable && !CurrentTileShort.IsPlayer && !CurrentTileShort.IsEnemy&&code.CurrPhase==GameManager.Phase.movementPhase&& isSubmitted && !squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Moving)
                     {
                         squadManager.Squad[squadManager.Selected].GetComponent<Movement>().MoveDestination = CurrentTile;
                         squadManager.Squad[squadManager.Selected].GetComponent<Movement>().ExecuteMovement = true;
+                       
                     }
-                    if (CurrentTileShort.Attackvalue > 0 && /*(currentTileShort.IsPlayer || currentTileShort.IsEnemy) &&*/ /*code.AttackPhase */code.CurrPhase == GameManager.Phase.attackPhase)
+                    if (CurrentTileShort != null && CurrentTileShort.Attackvalue > 0 && isSubmitted &&code.CurrPhase == GameManager.Phase.attackPhase)
                     {
                         currentPlayer = squadManager.Squad[squadManager.Selected].GetComponent<Bears>();
                         code.CurrPhase = GameManager.Phase.confPhase;
 
                     }
-                    
-                }
-                if (/*Input.GetButton("Back")*/isCancel&&code.CurrPhase!=GameManager.Phase.confPhase)
+                   
+                
+                if (isCancel&&code.CurrPhase!=GameManager.Phase.confPhase && isCancel && code.CurrPhase == GameManager.Phase.attackPhase && !squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Moving)
                 {
                     Movement.ClearTileMovementValues();
                     AttackRange.ClearTileAttackValues();
-                    code.CurrPhase = GameManager.Phase.menuPhase;
+                    code.CurrPhase = GameManager.Phase.attackSelectionPhase;
                   
                     squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Movementcheck = false;
                     squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
                    
+                }
+               else  if (isCancel && code.CurrPhase != GameManager.Phase.confPhase && isCancel && code.CurrPhase == GameManager.Phase.movementPhase && !squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Moving)
+                {
+                    Movement.ClearTileMovementValues();
+                    AttackRange.ClearTileAttackValues();
+                    code.CurrPhase = GameManager.Phase.menuPhase;
+
+                    squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Movementcheck = false;
+                    squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
+
                 }
 
             }

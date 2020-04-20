@@ -6,12 +6,18 @@ public class HunkerDown : Ability
 {
     public HunkerDown()
     {
-        Id = 9;
+        AltRange = false;
         Name = "Hunker Down";
         CastRange = 1;
         Aoe = 0;
         Alt = false;
     }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
+    }
+
     public override void CastAbility(Tile tileTooCastOn, int attack)
     {
         Bears Target = tileTooCastOn.GetComponentInChildren<Bears>();

@@ -6,7 +6,7 @@ public class BossBloodBite :Ability
 {
     public BossBloodBite()
     {
-        Id = 12;
+        AltRange = false;
         Name = "Blood Bite";
         CastRange = 1;
         Aoe = 1;
@@ -24,6 +24,8 @@ public class BossBloodBite :Ability
     public override void CastAbility(Tile tileToCastOn, int attack)
     {
         int damage = (int)(attack * (1.75));
+        this.transform.LookAt(tileToCastOn.GetComponent<Transform>().position);
+
         Bears hostbear = GetComponent<Bears>();
         hostbear.Hp += damage;
         if(hostbear.Hp>hostbear.TotalHP)
@@ -38,5 +40,10 @@ public class BossBloodBite :Ability
         }
         else
             hostbear.DealDamage(0, target);
+    }
+
+    public override void AltAttackRange(TileSelector tileselector, Tile tileToCastOn)
+    {
+        throw new System.NotImplementedException();
     }
 }
