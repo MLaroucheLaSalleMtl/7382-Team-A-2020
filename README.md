@@ -132,16 +132,58 @@ Once you have finished with a character you must end their turn individually to 
 
 **Resources:**
 
-**Bear Model** - 3D cartoon bear by visnum - [https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541](https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541) \
-**SkyBoxes** \
-Unity Asset Store \
-https://assetstore.unity.com/packages/2d/textures-materials/sky/8k-skybox-pack-free-150926 \
-**CampFire Pack** \
-DreamDev Studio \
-https://assetstore.unity.com/packages/3d/environments/fantasy/campfire-pack-11256 \
-**PolyGon Knights Package** \
-SynTy Studios \
-https://assetstore.unity.com/packages/3d/environments/fantasy/polygon-knights-pack-83694 \
+Resources:
+Models:
+Bear Model - 3D cartoon bear by visnum - https://www.turbosquid.com/3d-models/3d-bear-cartoon-1240541  
+Black Bear Boss - HybridCreature BlackBear V2 by printable_models - https://free3d.com/3d-model/hybridcreature-blackbear-v2--749600.html  
+Polar Bear Boss - HybridCreature PolarBear V2 by printable_models - https://free3d.com/3d-model/hybridcreature-polarbear-v2--960655.html  
+Buck Enemies - HybridCreature DeerBuck V2 by printable_models -  
+https://free3d.com/3d-model/hybridcreature-deerbuck-v2--973911.html  
+Ram Enemies - HybridCreature BigHornedRam V2 by printable_models -  
+https://free3d.com/3d-model/hybridcreature-bighornedram-v1--496882.html  
+Lion Enemies - HybridCreature Lion V2 by printable_models -  
+https://free3d.com/3d-model/hybridcreature-lion-v1--83341.html  
+Asset Packs:  
+8K Skybox Pack Free by BG Studio  
+Campfire Pack by DreamDev  
+LowPoly Water by Ebru Dogan  
+Neon Shapers by MAD Entertainment  
+POLYGON – Knight Pack by Synty Studios  
+POLYGON – Samurai Pack by Synty Studios  
+POLYGON – SCI-FI City Pack by Synty Studios  
+POLYGON – Vikings Pack by Synty Studios  
+Pictures:  
+Eyes:  
+Cartoon Eye PNG - https://flyclipart.com/eye-graphic-png-cartoon-eyes-googly-eyes-png-825640#  
+Owl Eyes Icons Png - http://getdrawings.com/get-silhouette#eyes-silhouette-21.png  
+Panda Eyes by inabox - https://www.songkick.com/images/37025287  
+Angry Eyes - https://www.pinclipart.com/maxpin/bTmhRh/  
+Symbols:  
+White Lightning by Y4K - https://www.redbubble.com/fr/people/-y4k-/works/29638178-foudre-blanche  
+Hermes Logo by Edga - https://www.cleanpng.com/png-caduceus-as-a-symbol-of-medicine-caduceus-as-a-sym-176344/  
+Bomb PNG Picture - http://www.pngmart.com/image/110146  
+Algiz Norse Rune - https://symbolikon.com/downloads/algiz-norse-runes/  
+Uruz Norse Rune - https://thewickedgriffin.com/elder-futhark-rune-meanings/  
+Fist Transparent Background - http://clipart-library.com/clip-art/fist-transparent-background-10.htm  
+Fiery Comet Fireball PNG by Ahkâm - https://www.freeiconspng.com/img/48503  
+Medic Free Icon - https://www.onlinewebfonts.com/icon/491107  
+Tattoos:  
+Tribal Chest Tattoo Png - https://www.pngkit.com/bigpic/u2t4o0i1o0o0r5o0/  
+Gothic Tattoo - http://pluspng.com/gothic-tattoos-png-526.html  
+Tribal Bear Tattoo by Raposakitsune - https://www.deviantart.com/raposakitsune/art/Tribal-bear-possibly-the-next-tattoo-442156150  
+Wrist Tribal Tattoo - http://clipart-library.com/clip-art/tribal-tattoo-transparent-background-7.htm  
+Tribal Sun Tattoo - http://www.freetattoodesigns.org/sun-tattoos.html  
+Images:  
+Happy Birthday Bear - https://bestwishes4birthday.com/happy-birthday-bear-meme/  
+Sad Bear - https://www.pinterest.ca/pin/8514686774558150/  
+Brown Bear - https://www.publicdomainpictures.net/en/view-image.php?image=214013&picture=brown-bear  
+Rounded Square Icon - https://icons8.com/icon/4knsel5keE42/rounded-square  
+LaSalle Logo Provided by Marc-Andre Larouche  
+Fonts:  
+Edmund by Typodermic Fonts - https://www.dafont.com/edmunds.font  
+Music/Sound:  
+Music Tracks done by Derek Roberts using Novation Launchpad App   
+Sound Clips recorded by Zachary Bolduc-Adolph  
+Animations:  
+All animations are from Mixamo  
 
-Everything else used so far – Built in Unity Assets. \
-Scripting help from unity resources
