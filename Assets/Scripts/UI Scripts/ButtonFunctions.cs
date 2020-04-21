@@ -33,6 +33,7 @@ public class ButtonFunctions : MonoBehaviour
    // }
     public void SwitchToAttackEnum()
     {
+        AttackRange.ClearTileAttackValues();
         code.CurrPhase = GameManager.Phase.attackPhase;
     }
     public void SwitchToMovementEnum()

@@ -24,7 +24,26 @@ public class AttackRange : MonoBehaviour
     public int Range { get => range; set => range = value; }
     public bool JustOnce { get => justOnce; set => justOnce = value; }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (tag == "Player")
+        {
+            if (other.tag == "Tile")
+            {
+                #region ZachNotes
+                //these should be on the player stats script cause we may want to disable this script in the future
+                //or we can have another check to see when to call the updates but that may be cumbersome
+                #endregion ZachNotes
+                this.x = other.GetComponent<Tile>().X;
+                this.y = other.GetComponent<Tile>().Y;
+               
+             
+            }
 
+        }
+
+
+    }
     void Start()
     {
         tilemanager = TileManager.instance;

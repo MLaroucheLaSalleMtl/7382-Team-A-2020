@@ -63,6 +63,7 @@ public class BtnManager : MonoBehaviour, IPointerEnterHandler, IDeselectHandler,
     {
         if (/*!AttackIsSelected*/code.CurrPhase != GameManager.Phase.attackSelectionPhase)
         {
+           // AttackRange.ClearTileAttackValues();
             onlyOnce = true;
             AttackIsSelected = true;
             code.CurrPhase = GameManager.Phase.attackSelectionPhase;

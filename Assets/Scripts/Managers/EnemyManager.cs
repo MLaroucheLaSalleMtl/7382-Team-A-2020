@@ -9,10 +9,11 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GameObject[] enemies;
     [SerializeField]   private GameManager code;
     [SerializeField] private EnemyAIBase test;
-    private int enemiesAlive;
+    [SerializeField]private int enemiesAlive;
     private GameObject actingEnemy;
     private bool onlyOnce = false;
     bool firstEnemyHasActed = false;
+    
     public GameObject ActingEnemy { get => actingEnemy; set => actingEnemy = value; }
     public GameObject[] Enemies { get => enemies; set => enemies = value; }
     public bool FirstEnemyHasActed { get => firstEnemyHasActed; set => firstEnemyHasActed = value; }
@@ -59,6 +60,8 @@ public class EnemyManager : MonoBehaviour
         code.CurrPhase = GameManager.Phase.menuPhase;
         FirstEnemyHasActed = false;
         code.PlayerTurn = true;
+        BtnManager.instance.x = 0;
+        BtnManager.instance.y = 1;
     }
     public void ResetEnemyTurns()
     {

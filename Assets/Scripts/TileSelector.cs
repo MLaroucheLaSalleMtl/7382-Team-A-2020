@@ -46,7 +46,7 @@ public class TileSelector : MonoBehaviour
         {
           
                 isCancel = !isCancel;
-          
+            AttackRange.ClearTileAttackValues();
         }
     }
 

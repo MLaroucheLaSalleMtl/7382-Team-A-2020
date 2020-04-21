@@ -347,12 +347,7 @@ public class Bears : MonoBehaviour
                 break;
         }
         anim.SetTrigger("Attacking");
-       // if(Target!=null)
-        //if (Target.hp <= 0)
-        //{
-        //    EnemyManager.instance.EnemiesAlive--;
-        //        Debug.Log("Enemies Alive: "+EnemyManager.instance.EnemiesAlive);
-        //}
+      
         AttackRange.ClearTileAttackValues();
         GameManager.instance.CurrPhase = GameManager.Phase.menuPhase;
         BtnManager.instance.OnClickAttack();
