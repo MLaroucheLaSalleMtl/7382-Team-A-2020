@@ -12,7 +12,7 @@ public class BearPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI newAbilityDesc;
     private CurrentAbilities currentBear;
     private int basicOrSpecial=1;
-
+    [SerializeField] Button btnSwap;
     public void SetCurrentPanel(int colour)
     {
         color = colour;
@@ -84,6 +84,7 @@ public class BearPanel : MonoBehaviour
         DisableLeftButtons();
         subPanel.SetActive(true);
         basicOrSpecial = 1;
+        btnSwap.Select();
     }
     public void EnableSpecialAbilitySubPanel()
     {
@@ -114,22 +115,27 @@ public class BearPanel : MonoBehaviour
         DisableLeftButtons();
         subPanel.SetActive(true);
         basicOrSpecial = 2;
+        btnSwap.Select();
     }
     public void DisableLeftButtons()
     {
-        foreach(Button button in originalSkills)
+        newSkills[0].Select();
+        foreach (Button button in originalSkills)
         {
             button.interactable = false;
         }
-        newSkills[0].Select();
+     
+     
+        
     }
     public void EnableLeftButtons()
     {
+        originalSkills[0].Select();
         foreach (Button button in originalSkills)
         {
             button.interactable = true;
         }
-        originalSkills[0].Select();
+      
     }
    public void Back()
     {

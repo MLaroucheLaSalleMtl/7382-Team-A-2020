@@ -3231,6 +3231,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7649880575271882228, guid: 4d52ca3ad0e7de741ace194ffeeb42d7,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7649880575271882230, guid: 4d52ca3ad0e7de741ace194ffeeb42d7,
         type: 3}
       propertyPath: color
@@ -12720,6 +12725,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7649880575271882228, guid: 4d52ca3ad0e7de741ace194ffeeb42d7,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7649880575271882230, guid: 4d52ca3ad0e7de741ace194ffeeb42d7,
         type: 3}
       propertyPath: color
@@ -15494,6 +15504,11 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3562429611190701201, guid: 458cddb8f5da4f6488a62db14cafedb8,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3562429611190701207, guid: 458cddb8f5da4f6488a62db14cafedb8,
         type: 3}
       propertyPath: abilityIcon
@@ -15529,6 +15544,11 @@ PrefabInstance:
       propertyPath: SpecialIcon
       value: 
       objectReference: {fileID: 805878485}
+    - target: {fileID: 3895405414272759439, guid: 458cddb8f5da4f6488a62db14cafedb8,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4330449003988541021, guid: 458cddb8f5da4f6488a62db14cafedb8,
         type: 3}
       propertyPath: abilityIcon
@@ -15539,6 +15559,11 @@ PrefabInstance:
       propertyPath: SpecialIcon
       value: 
       objectReference: {fileID: 972095474}
+    - target: {fileID: 4330449003988541022, guid: 458cddb8f5da4f6488a62db14cafedb8,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6633711477923981697, guid: 458cddb8f5da4f6488a62db14cafedb8,
         type: 3}
       propertyPath: abilityIcon
@@ -15549,6 +15574,11 @@ PrefabInstance:
       propertyPath: SpecialIcon
       value: 
       objectReference: {fileID: 1775452673}
+    - target: {fileID: 6633711477923981698, guid: 458cddb8f5da4f6488a62db14cafedb8,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6633711477923981702, guid: 458cddb8f5da4f6488a62db14cafedb8,
         type: 3}
       propertyPath: m_UseGravity
@@ -15776,6 +15806,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ranged Lion
       objectReference: {fileID: 0}
+    - target: {fileID: 2897816760782613489, guid: dfb60810ce7cc684cb4be2097132483c,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dfb60810ce7cc684cb4be2097132483c, type: 3}
 --- !u!1001 &5471149821132845496
@@ -15919,6 +15954,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Healer Lion Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 3616495905446623764, guid: ccf008a22480a464eb2686279f7e09d4,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccf008a22480a464eb2686279f7e09d4, type: 3}
@@ -16799,6 +16839,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Melee Lion Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 841523042709502684, guid: 50c0c515d1a9304478b2266ff737bd6c,
+        type: 3}
+      propertyPath: m_ObstacleAvoidanceType
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4465012710259001554, guid: 50c0c515d1a9304478b2266ff737bd6c,
         type: 3}

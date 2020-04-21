@@ -5078,7 +5078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &723181182
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6749,7 +6749,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 4
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -15492,7 +15492,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2092349385
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15540,6 +15540,7 @@ MonoBehaviour:
   color: 0
   newAbilityName: {fileID: 1249654399}
   newAbilityDesc: {fileID: 340386572}
+  btnSwap: {fileID: 75511366}
 --- !u!114 &2092349387
 MonoBehaviour:
   m_ObjectHideFlags: 0

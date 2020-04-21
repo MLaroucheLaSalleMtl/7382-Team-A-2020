@@ -410,13 +410,13 @@ public class Bears : MonoBehaviour
         if(this.anim)
         this.anim.SetBool("isDead", true);
        // this.gameObject.transform.Rotate(90f, 0f, 0f);
-        if (this.color == EnumColour.MeleeEnemy || this.color == EnumColour.RangedEnemy || this.color == EnumColour.StrongMeleeEnemy||this.color==EnumColour.MeleeBoss)
+        if (this.gameObject.tag=="Enemy")
         {
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<CapsuleCollider>().enabled = false;
 
             Vector3 scale = gameObject.transform.localScale;
-            float scaler;
+            
             InvokeRepeating("Shrink",.5f,.01f);
             GetComponentInParent<Tile>().IsEnemy = false;
             Invoke("Gone", 4f);

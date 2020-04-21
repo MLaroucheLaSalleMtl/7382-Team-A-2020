@@ -226,7 +226,7 @@ public class TileSelector : MonoBehaviour
                     squadManager.Squad[squadManager.Selected].GetComponent<AttackRange>().JustOnce = false;
                    
                 }
-               else  if (isCancel && code.CurrPhase != GameManager.Phase.confPhase && isCancel && code.CurrPhase == GameManager.Phase.movementPhase && !squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Moving)
+               else  if (isCancel && code.CurrPhase != GameManager.Phase.confPhase && isCancel &&( code.CurrPhase == GameManager.Phase.movementPhase || code.CurrPhase == GameManager.Phase.mapPhase) && !squadManager.Squad[squadManager.Selected].GetComponent<Movement>().Moving)
                 {
                     Movement.ClearTileMovementValues();
                     AttackRange.ClearTileAttackValues();

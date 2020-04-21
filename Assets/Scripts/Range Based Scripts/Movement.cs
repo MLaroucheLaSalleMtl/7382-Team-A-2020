@@ -347,7 +347,7 @@ public class Movement : MonoBehaviour
         travelpoint = new Vector3(tilemanager.TileDic[tile].transform.position.x, tilemanager.TileDic[tile].transform.position.y + 2, tilemanager.TileDic[tile].transform.position.z);
         timepassed += Time.deltaTime;
         //this.transform.position = Vector3.Lerp(this.transform.position, travelpoint, timepassed/2);
-        if (Vector3.Distance(this.transform.position, travelpoint) > 0.3f)
+        if (Vector3.Distance(this.transform.position, travelpoint) > 0.35f)
         {
             this.agent.destination = travelpoint;
             if (Anim != null)
