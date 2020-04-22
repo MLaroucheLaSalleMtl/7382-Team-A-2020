@@ -17,12 +17,14 @@ public class Tutorial : MonoBehaviour
     [SerializeField] private TextMeshProUGUI body;
     [SerializeField] private GameObject[] Squad;
     [SerializeField] private GameObject blinkyTile;
+    private Bears selectedPlayer;
     private bool onlyOnce = false;
     private bool lockMovement = true;
     private bool lockAttack = true;
     private Transform originalPos;
     [SerializeField]private Tile tileToMoveTo;
     [SerializeField] private Tile tileToAttack;
+    [SerializeField] private GameObject subpanel;
     public int Section { get => section; set => section = value; }
     public bool LockMovement { get => lockMovement; set => lockMovement = value; }
     public bool LockAttack { get => lockAttack; set => lockAttack = value; }
@@ -64,13 +66,15 @@ public class Tutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Bears selectedPlayer = SquadSelection.instance.Squad[SquadSelection.instance.Selected].GetComponent<Bears>();
+        
         switch (Section)
         {
             case 0:
+               
                 if (!onlyOnce)
                 {
-                   StartCoroutine( Blinky());
+                  selectedPlayer = SquadSelection.instance.Squad[SquadSelection.instance.Selected].GetComponent<Bears>();
+                    StartCoroutine( Blinky());
                     
                     originalPos = Squad[4].transform;
                     selectedPlayer.HasAttacked = true;
@@ -96,7 +100,7 @@ public class Tutorial : MonoBehaviour
                 tileToAttack.Attackvalue = 1;
                 if (!OnlyOnce)
             {
-
+                    ResetTurn();
                     LockMovement = false;
                     selectedPlayer.HasAttacked = false;
                 OnlyOnce = true;
@@ -122,9 +126,10 @@ public class Tutorial : MonoBehaviour
                 attackButtons[1].interactable = true;
                 if (!OnlyOnce)
             {
+                    ResetTurn();
                     name.text = "Support Ability";
                     body.text = "Each Bear has abilites they can use every 2 turns, try eating some beans!";
-       
+              
                     lockAttack = false;
                     selectedPlayer.HasAttacked = false;
                 OnlyOnce = true;
@@ -138,10 +143,12 @@ public class Tutorial : MonoBehaviour
             case 3:
                 if (!OnlyOnce)
                 {
+                    ResetTurn();
                     selectedPlayer.HasAttacked = false;
                     OnlyOnce = true;
                     selectedPlayer.GetComponent<Movement>().HasMoved = true;
                     selectedPlayer.Special = true;
+        
 
                     selectedPlayer.counterSupport = 10;
                     selectedPlayer.Support = false;
@@ -165,6 +172,8 @@ public class Tutorial : MonoBehaviour
                     name.text = "Turns";
                     body.text = "Each Bear can move and attack once per turn then their turn is up! End the turn to continue";
                     lockAttack = false;
+
+                    ResetTurn();
                     selectedPlayer.GetComponent<Movement>().HasMoved = false;
                     tutEnemy.Hp = tutEnemy.TotalHP;
                     btnMap.interactable = true;
@@ -177,6 +186,8 @@ public class Tutorial : MonoBehaviour
             case 5:
                 if (!onlyOnce)
                 {
+                    GameManager.instance.CurrPhase = GameManager.Phase.menuPhase;
+                    ResetTurn();
                     Squad[4].gameObject.transform.position = originalPos.position;
                     for (int i = 0; i < Squad.Length; i++)
                     {
@@ -192,5 +203,12 @@ public class Tutorial : MonoBehaviour
         }
        
         Debug.Log(code.CurrPhase); 
+    }
+    private void ResetTurn()
+    {
+        BtnManager.instance.x = 0;
+        BtnManager.instance.y = 1;
+        subpanel.SetActive(false);
+
     }
 }

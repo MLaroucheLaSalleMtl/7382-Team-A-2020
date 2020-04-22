@@ -101,7 +101,7 @@ public class SquadSelection : MonoBehaviour
     {
         
         //also ya you can only swap selection during the menu phase
-        if(code.CurrPhase==GameManager.Phase.menuPhase && !BtnManager.instance.AttackIsSelected)
+        if(code.CurrPhase==GameManager.Phase.menuPhase/* && !BtnManager.instance.AttackIsSelected*/)
         {
             if (/*Input.GetAxisRaw("Horizontal") > 0 && Input.GetButtonDown("Horizontal")*/x > 0 && code.CurrPhase != GameManager.Phase.pausePhase)
             {

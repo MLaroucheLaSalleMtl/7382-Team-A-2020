@@ -225,8 +225,8 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                   if (selectedplayer.GetComponentInParent<Tile>())
-                    player.GetComponentInParent<Tile>().IsSelected = false;
+                   if (player.GetComponentInParent<Tile>())
+                        player.GetComponentInParent<Tile>().IsSelected = false;
                 }
             }
         }

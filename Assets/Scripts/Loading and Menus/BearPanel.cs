@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+
 public class BearPanel : MonoBehaviour
 {
     // Start is called before the first frame update
@@ -13,6 +14,7 @@ public class BearPanel : MonoBehaviour
     private CurrentAbilities currentBear;
     private int basicOrSpecial=1;
     [SerializeField] Button btnSwap;
+  
     public void SetCurrentPanel(int colour)
     {
         color = colour;
